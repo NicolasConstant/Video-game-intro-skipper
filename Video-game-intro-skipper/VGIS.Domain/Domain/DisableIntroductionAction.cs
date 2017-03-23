@@ -1,14 +1,11 @@
-﻿namespace VGIS.Domain.Domain
+﻿using VGIS.Domain.Enums;
+
+namespace VGIS.Domain.Domain
 {
     public class DisableIntroductionAction
     {
-        public DisableActionType Type { get; set; }
-    }
-
-    public enum DisableActionType
-    {
-        FolderRename,
-        FileRename, 
-        ShortcutEdition,
+        public DisableActionTypeEnum Type { get; set; }
+        public string InitialName { get; set; }
+        public string TargetName { get; set; }
     }
 }

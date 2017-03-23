@@ -40,12 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessRules\GameDetection.cs" />
-    <Compile Include="BusinessRules\SoftwareInitialization.cs" />
+    <Compile Include="BusinessRules\ApplyDisableIntroAction.cs" />
+    <Compile Include="BusinessRules\ApplyReenableIntroAction.cs" />
+    <Compile Include="BusinessRules\DetectGameStatus.cs" />
+    <Compile Include="BusinessRules\DetectAllGamesStatus.cs" />
+    <Compile Include="BusinessRules\DetectIntroductionState.cs" />
+    <Compile Include="BusinessRules\ValidateGameRoot.cs" />
     <Compile Include="Domain\DisableIntroductionAction.cs" />
     <Compile Include="Domain\GameDetectionResult.cs" />
     <Compile Include="Domain\GameSetting.cs" />
     <Compile Include="Domain\RootValidationRule.cs" />
+    <Compile Include="Enums\DisableActionTypeEnum.cs" />
+    <Compile Include="Enums\IntroductionStateEnum.cs" />
+    <Compile Include="Enums\RootValidationTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
