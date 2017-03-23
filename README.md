@@ -1,4 +1,4 @@
-# Video-game-intro-skipper (VGIS)
+# Video-Game Intro Skipper (VGIS)
 Permits you to skip video intros in your video-games
 
 ## License
