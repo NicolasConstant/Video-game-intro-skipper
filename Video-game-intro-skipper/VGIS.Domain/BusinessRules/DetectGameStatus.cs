@@ -30,7 +30,7 @@ namespace VGIS.Domain.BusinessRules
                 foreach (var rootDirectory in _gameSetting.PotentialRootFolderNames)
                 {
                     // Validate if game emplacement exists
-                    var potentialGameEmplacementPath = $"{installationDirectory}\\{rootDirectory}";
+                    var potentialGameEmplacementPath = $"{installationDirectory}\\{rootDirectory}\\";
                     if (!Directory.Exists(potentialGameEmplacementPath)) continue;
 
                     // Validate that the folder is the targeted one 
