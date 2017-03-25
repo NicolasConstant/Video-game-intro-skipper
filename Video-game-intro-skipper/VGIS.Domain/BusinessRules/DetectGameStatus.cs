@@ -19,7 +19,7 @@ namespace VGIS.Domain.BusinessRules
         }
         #endregion
 
-        public GameDetectionResult Run()
+        public GameDetectionResult Execute()
         {
             var detectionResult = new GameDetectionResult(_gameSetting.Name);
             string completeInstallationDirectory = null;
@@ -38,7 +38,7 @@ namespace VGIS.Domain.BusinessRules
                     foreach (var rootValidationRule in _gameSetting.ValidationRules)
                     {
                         var rootValidation = new ValidateGameRoot(potentialGameEmplacementPath, rootValidationRule);
-                        if (!rootValidation.Run())
+                        if (!rootValidation.Execute())
                             isValidated = false;
                     }
 
@@ -62,7 +62,7 @@ namespace VGIS.Domain.BusinessRules
             // Determine current introduction state 
             var introStateDetection = new DetectIntroductionState(detectionResult.InstallationPath,
                 _gameSetting.DisablingIntroductionActions);
-            detectionResult.IntroductionState = introStateDetection.Run();
+            detectionResult.IntroductionState = introStateDetection.Execute();
             
             // Return result
             return detectionResult;

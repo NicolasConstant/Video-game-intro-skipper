@@ -19,7 +19,7 @@ namespace VGIS.Domain.BusinessRules
         }
         #endregion
 
-        public bool Run()
+        public bool Execute()
         {
             var type = _rootValidationRule.Type;
             var witnessName = _rootValidationRule.WitnessName;

@@ -19,7 +19,7 @@ namespace VGIS.Domain.BusinessRules
         }
         #endregion
 
-        public IEnumerable<Tuple<GameSetting, GameDetectionResult>> Run()
+        public IEnumerable<Tuple<GameSetting, GameDetectionResult>> Execute()
         {
             //Load all game settings
             var gameSettings = _settingsRepository.GetAllGameSettings();
@@ -31,7 +31,7 @@ namespace VGIS.Domain.BusinessRules
             foreach (var gameSetting in gameSettings)
             {
                 var gameDetection = new DetectGameStatus(gameSetting, installationRepositories);
-                var gameDetectionResult = gameDetection.Run();
+                var gameDetectionResult = gameDetection.Execute();
 
                 yield return new Tuple<GameSetting, GameDetectionResult>(gameSetting, gameDetectionResult);
             }

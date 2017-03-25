@@ -42,19 +42,19 @@ namespace VGIS.Console
                     if (introState == IntroductionStateEnum.Disabled)
                     {
                         var reenableIntro = new ApplyReenableIntroAction(gameToModify.Item1, gameToModify.Item2);
-                        reenableIntro.Run();
+                        reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
                         var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2);
-                        reenableIntro.Run();
+                        reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
                         var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2);
-                        reenableIntro.Run();
+                        reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                 }
@@ -68,7 +68,7 @@ namespace VGIS.Console
         private static List<Tuple<GameSetting, GameDetectionResult>> LoadAllGames(DetectAllGamesStatus detectAllGamesStatus)
         {
             var allGames = new List<Tuple<GameSetting, GameDetectionResult>>();
-            foreach (var gameStatus in detectAllGamesStatus.Run())
+            foreach (var gameStatus in detectAllGamesStatus.Execute())
             {
                 allGames.Add(gameStatus);
 

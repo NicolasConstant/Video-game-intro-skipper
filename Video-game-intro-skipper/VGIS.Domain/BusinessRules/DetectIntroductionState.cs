@@ -26,7 +26,7 @@ namespace VGIS.Domain.BusinessRules
         }
         #endregion
 
-        public IntroductionStateEnum Run()
+        public IntroductionStateEnum Execute()
         {
             var actionStateList = new List<IntroductionStateEnum>();
 
