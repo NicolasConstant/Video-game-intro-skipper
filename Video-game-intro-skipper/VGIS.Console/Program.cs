@@ -72,7 +72,7 @@ namespace VGIS.Console
             {
                 allGames.Add(gameStatus);
 
-                var introMessage = gameStatus.Item2.Detected ? "Intro Video Enabled" : "Intro Video Disabled";
+                var introMessage = gameStatus.Item2.IntroductionState == IntroductionStateEnum.Enabled ? "Intro Video Enabled" : "Intro Video Disabled";
                 System.Console.WriteLine($"{allGames.Count} - {gameStatus.Item1.Name} : {introMessage} ");
             }
             return allGames;
