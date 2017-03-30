@@ -1,54 +1,30 @@
 ﻿using System;
 using System.IO;
+using VGIS.Domain.BusinessRules.Bases;
 using VGIS.Domain.Consts;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class ApplyDisableIntroAction
+    public class ApplyDisableIntroAction : DispatchActionsBase
     {
-        private readonly GameSetting _settings;
         private readonly GameDetectionResult _detectionResult;
 
         #region Ctor
         public ApplyDisableIntroAction(GameSetting settings, GameDetectionResult detectionResult)
+            :base(settings)
         {
-            _settings = settings;
             _detectionResult = detectionResult;
         }
         #endregion
 
         public bool Execute()
         {
-            var allActionSucceeded = true;
-
-            foreach (var action in _settings.DisablingIntroductionActions)
-            {
-                var actionSucceeded = DispatchActionsPerType(action);
-                if (!actionSucceeded) allActionSucceeded = false;
-            }
-
-            return allActionSucceeded;
+            return ExecuteAndDispatch();
         }
 
-
-        private bool DispatchActionsPerType(DisableIntroductionAction action)
-        {
-            switch (action.Type)
-            {
-                case DisableActionTypeEnum.FileRename:
-                    return RenameFile(action);
-                case DisableActionTypeEnum.FolderRename:
-                    return RenameFolder(action);
-                case DisableActionTypeEnum.ShortcutEdition:
-                    return EditShortcut(action);
-                default:
-                    throw new Exception($"DisableActionTypeEnum {action.Type} not found");
-            }
-        }
-
-        private bool RenameFile(DisableIntroductionAction action)
+        protected override bool RenameFile(DisableIntroductionAction action)
         {
             try
             {
@@ -66,7 +42,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        private bool RenameFolder(DisableIntroductionAction action)
+        protected override bool RenameFolder(DisableIntroductionAction action)
         {
             try
             {
@@ -84,7 +60,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        private bool EditShortcut(DisableIntroductionAction action)
+        protected override bool EditShortcut(DisableIntroductionAction action)
         {
             throw new NotImplementedException();
         }
