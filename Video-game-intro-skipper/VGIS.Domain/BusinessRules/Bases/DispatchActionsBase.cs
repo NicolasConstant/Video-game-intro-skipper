@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 
@@ -33,20 +34,26 @@ namespace VGIS.Domain.BusinessRules.Bases
             switch (action.Type)
             {
                 case DisableActionTypeEnum.FileRename:
-                    return RenameFile(action);
+                    return ProcessRenameFile(action);
                 case DisableActionTypeEnum.FolderRename:
-                    return RenameFolder(action);
+                    return ProcessRenameFolder(action);
                 case DisableActionTypeEnum.ShortcutEdition:
-                    return EditShortcut(action);
+                    return ProcessEditShortcut(action);
                 default:
                     throw new Exception($"DisableActionTypeEnum {action.Type} not found");
             }
         }
 
-        protected abstract bool RenameFile(DisableIntroductionAction action);
+        protected abstract bool ProcessRenameFile(DisableIntroductionAction action);
 
-        protected abstract bool RenameFolder(DisableIntroductionAction action);
+        protected abstract bool ProcessRenameFolder(DisableIntroductionAction action);
         
-        protected abstract bool EditShortcut(DisableIntroductionAction action);
+        protected abstract bool ProcessEditShortcut(DisableIntroductionAction action);
+
+        protected static void RenameFile(string sourceFileName, string destFileFullPath)
+        {
+            if (File.Exists(destFileFullPath)) File.Delete(destFileFullPath);
+            File.Move(sourceFileName, destFileFullPath);
+        }
     }
 }

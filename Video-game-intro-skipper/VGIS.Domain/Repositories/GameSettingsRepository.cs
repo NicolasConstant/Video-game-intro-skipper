@@ -55,12 +55,12 @@ namespace VGIS.Domain.Repositories
                     new DisableIntroductionAction()
                     {
                         Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\TRC\\004_English\\WarningSaving.bk2",
+                        InitialName = "\\videos\\TRC\\*\\WarningSaving.bk2",
                     },
                     new DisableIntroductionAction()
                     {
                         Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\TRC\\004_English\\Epilepsy.bk2",
+                        InitialName = "\\videos\\TRC\\*\\Epilepsy.bk2",
                     },
                 }
             };

@@ -24,7 +24,7 @@ namespace VGIS.Domain.BusinessRules
             return ExecuteAndDispatch();
         }
 
-        protected override bool RenameFile(DisableIntroductionAction action)
+        protected override bool ProcessRenameFile(DisableIntroductionAction action)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        protected override bool RenameFolder(DisableIntroductionAction action)
+        protected override bool ProcessRenameFolder(DisableIntroductionAction action)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        protected override bool EditShortcut(DisableIntroductionAction action)
+        protected override bool ProcessEditShortcut(DisableIntroductionAction action)
         {
             throw new NotImplementedException();
         }

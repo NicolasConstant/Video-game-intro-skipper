@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using VGIS.Domain.BusinessRules.Bases;
 using VGIS.Domain.Consts;
@@ -24,16 +25,65 @@ namespace VGIS.Domain.BusinessRules
             return ExecuteAndDispatch();
         }
 
-        protected override bool RenameFile(DisableIntroductionAction action)
+        protected override bool ProcessRenameFile(DisableIntroductionAction action)
         {
             try
             {
-                var fileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
-                var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
-
-                if(File.Exists(destinationFileFullPath)) File.Delete(destinationFileFullPath);
-
-                File.Move(fileFullPath, destinationFileFullPath);
+                var originFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
+                
+                //If the path doesn't contain '*' symbole, apply renaming directly
+                if (!originFileFullPath.Contains(SpecialChar.AnyDirectoryName.ToString()))
+                {
+                    var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
+                    RenameFile(originFileFullPath, destinationFileFullPath);
+                }
+                //Apply renaming by navigainge througt all '*' alternatives
+                else 
+                {
+                    var pathSections = originFileFullPath.Split(SpecialChar.AnyDirectoryName);
+                    var allPaths = new List<DirectoryInfo>();
+                    for (var i = 0; i < pathSections.Length; i++)
+                    {
+                        var subPath = pathSections[i];
+                        //Init
+                        if (i == 0)
+                        {
+                            allPaths.Add(new DirectoryInfo(subPath));
+                        }
+                        //Is a subfolder
+                        else if(!subPath.Contains(SpecialChar.AnyDirectoryName.ToString()))
+                        {
+                            for (var j = 0; j < allPaths.Count; j++ )
+                            {
+                                var completePath = allPaths[j];
+                                var completeSubPath = $"{completePath.FullName}\\{subPath}";
+                                if (Directory.Exists(completeSubPath))
+                                {
+                                    var subPathDirectoryInfo = new DirectoryInfo(completeSubPath);
+                                    allPaths[j] = subPathDirectoryInfo;
+                                }
+                            }
+                        }
+                        //Is a navigation order
+                        else if (subPath.Trim() == SpecialChar.AnyDirectoryName.ToString().Trim())
+                        {
+                            var allPathResults = new List<DirectoryInfo>();
+                            for (var j = 0; j < allPaths.Count; j++)
+                            {
+                                var completePath = allPaths[j];
+                                var allSubPaths = completePath.GetDirectories();
+                                allPathResults.AddRange(allSubPaths);
+                            }
+                            allPaths = allPathResults;
+                        }
+                        //Is unsupported
+                        else
+                        {
+                            throw new ArgumentException($"{originFileFullPath} is using a unsupported pattern");
+                        }
+                    }
+                }
+                
                 return true;
             }
             catch (Exception)
@@ -42,7 +92,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        protected override bool RenameFolder(DisableIntroductionAction action)
+        protected override bool ProcessRenameFolder(DisableIntroductionAction action)
         {
             try
             {
@@ -60,7 +110,7 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
-        protected override bool EditShortcut(DisableIntroductionAction action)
+        protected override bool ProcessEditShortcut(DisableIntroductionAction action)
         {
             throw new NotImplementedException();
         }
