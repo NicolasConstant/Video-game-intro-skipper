@@ -5,18 +5,21 @@ using VGIS.Domain.BusinessRules.Bases;
 using VGIS.Domain.Consts;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.BusinessRules
 {
     public class ApplyDisableIntroAction : DispatchActionsBase
     {
         private readonly GameDetectionResult _detectionResult;
+        private readonly IFileAndFolderRenamer _fileRenamer;
 
         #region Ctor
-        public ApplyDisableIntroAction(GameSetting settings, GameDetectionResult detectionResult)
+        public ApplyDisableIntroAction(GameSetting settings, GameDetectionResult detectionResult, IFileAndFolderRenamer fileRenamer)
             :base(settings)
         {
             _detectionResult = detectionResult;
+            _fileRenamer = fileRenamer;
         }
         #endregion
 
@@ -29,13 +32,13 @@ namespace VGIS.Domain.BusinessRules
         {
             try
             {
-                var originFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
-                
+                var originFileFullPath = GetCleanPath($"{_detectionResult.InstallationPath}\\{action.InitialName}");
+
                 //If the path doesn't contain '*' symbole, apply renaming directly
                 if (!originFileFullPath.Contains(SpecialChar.AnyDirectoryName.ToString()))
                 {
-                    var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
-                    RenameFile(originFileFullPath, destinationFileFullPath);
+                    var destinationFileFullPath = GetCleanPath($"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}");
+                    _fileRenamer.RenameFile(originFileFullPath, destinationFileFullPath);
                 }
                 //Apply renaming by navigainge througt all '*' alternatives
                 else 
@@ -82,6 +85,12 @@ namespace VGIS.Domain.BusinessRules
                             throw new ArgumentException($"{originFileFullPath} is using a unsupported pattern");
                         }
                     }
+
+                    //foreach (var directoryInfo in allPaths)
+                    //{
+                    //    var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
+                    //    _fileRenamer.RenameFile(directoryInfo.FullName );
+                    //}
                 }
                 
                 return true;

@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
+    <Compile Include="Tools\FileAndFolderRenamer.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

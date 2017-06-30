@@ -2,6 +2,7 @@
 using System.IO;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.BusinessRules.Bases
 {
@@ -50,10 +51,9 @@ namespace VGIS.Domain.BusinessRules.Bases
         
         protected abstract bool ProcessEditShortcut(DisableIntroductionAction action);
 
-        protected static void RenameFile(string sourceFileName, string destFileFullPath)
+        protected static string GetCleanPath(string path)
         {
-            if (File.Exists(destFileFullPath)) File.Delete(destFileFullPath);
-            File.Move(sourceFileName, destFileFullPath);
+            return path.Replace(@"\\", @"\");
         }
     }
 }
