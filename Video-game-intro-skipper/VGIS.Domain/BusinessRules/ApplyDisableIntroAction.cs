@@ -13,13 +13,15 @@ namespace VGIS.Domain.BusinessRules
     {
         private readonly GameDetectionResult _detectionResult;
         private readonly IFileAndFolderRenamer _fileRenamer;
+        private readonly IDirectoryBrowser _directoryBrowser;
 
         #region Ctor
-        public ApplyDisableIntroAction(GameSetting settings, GameDetectionResult detectionResult, IFileAndFolderRenamer fileRenamer)
-            :base(settings)
+        public ApplyDisableIntroAction(GameSetting settings, GameDetectionResult detectionResult, IFileAndFolderRenamer fileRenamer, IDirectoryBrowser directoryBrowser)
+            : base(settings)
         {
             _detectionResult = detectionResult;
             _fileRenamer = fileRenamer;
+            _directoryBrowser = directoryBrowser;
         }
         #endregion
 
@@ -41,41 +43,38 @@ namespace VGIS.Domain.BusinessRules
                     _fileRenamer.RenameFile(originFileFullPath, destinationFileFullPath);
                 }
                 //Apply renaming by navigainge througt all '*' alternatives
-                else 
+                else
                 {
-                    var pathSections = originFileFullPath.Split(SpecialChar.AnyDirectoryName);
-                    var allPaths = new List<DirectoryInfo>();
-                    for (var i = 0; i < pathSections.Length; i++)
+                    var pathSections = originFileFullPath.Split('\\');
+                    var allPaths = new List<string>();
+                    for (var i = 1; i < pathSections.Length; i++)
                     {
                         var subPath = pathSections[i];
                         //Init
-                        if (i == 0)
+                        if (i == 1)
                         {
-                            allPaths.Add(new DirectoryInfo(subPath));
+                            allPaths.Add($@"{pathSections[0]}\{pathSections[1]}");
                         }
                         //Is a subfolder
-                        else if(!subPath.Contains(SpecialChar.AnyDirectoryName.ToString()))
+                        else if (!subPath.Contains(SpecialChar.AnyDirectoryName.ToString()))
                         {
-                            for (var j = 0; j < allPaths.Count; j++ )
+                            for (var j = 0; j < allPaths.Count; j++)
                             {
                                 var completePath = allPaths[j];
-                                var completeSubPath = $"{completePath.FullName}\\{subPath}";
-                                if (Directory.Exists(completeSubPath))
-                                {
-                                    var subPathDirectoryInfo = new DirectoryInfo(completeSubPath);
-                                    allPaths[j] = subPathDirectoryInfo;
-                                }
+                                var completeSubPath = $"{completePath}\\{subPath}";
+                                allPaths[j] = completeSubPath;
                             }
                         }
                         //Is a navigation order
                         else if (subPath.Trim() == SpecialChar.AnyDirectoryName.ToString().Trim())
                         {
-                            var allPathResults = new List<DirectoryInfo>();
+                            var allPathResults = new List<string>();
                             for (var j = 0; j < allPaths.Count; j++)
                             {
                                 var completePath = allPaths[j];
-                                var allSubPaths = completePath.GetDirectories();
-                                allPathResults.AddRange(allSubPaths);
+                                var allSubPaths = _directoryBrowser.GetSubDirectories(completePath);
+                                foreach (var allSubPath in allSubPaths)
+                                    allPathResults.Add(allSubPath);
                             }
                             allPaths = allPathResults;
                         }
@@ -86,13 +85,10 @@ namespace VGIS.Domain.BusinessRules
                         }
                     }
 
-                    //foreach (var directoryInfo in allPaths)
-                    //{
-                    //    var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
-                    //    _fileRenamer.RenameFile(directoryInfo.FullName );
-                    //}
+                    foreach (var path in allPaths)
+                        _fileRenamer.RenameFile(path, $@"{path}{GlobalNamesStruct.RenameSuffix}");
                 }
-                
+
                 return true;
             }
             catch (Exception)

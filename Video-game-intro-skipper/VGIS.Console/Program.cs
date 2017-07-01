@@ -9,6 +9,7 @@ using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Console
 {
@@ -19,6 +20,8 @@ namespace VGIS.Console
             // Init
             var gameSettingsRepo = new GameSettingsRepository();
             var installationDirRepo = new InstallationDirectoriesRepository();
+            var fileAndFolderRenamer = new FileAndFolderRenamer();
+            var directoryBrowser = new DirectoryBrowser();
 
             var detectAllGamesStatus = new DetectAllGamesStatus(gameSettingsRepo, installationDirRepo);
 
@@ -47,13 +50,13 @@ namespace VGIS.Console
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, directoryBrowser);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, directoryBrowser);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
