@@ -22,6 +22,7 @@ namespace VGIS.Console
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
+            var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
 
             var detectAllGamesStatus = new DetectAllGamesStatus(gameSettingsRepo, installationDirRepo);
 
@@ -50,13 +51,13 @@ namespace VGIS.Console
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, directoryBrowser);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, directoryBrowser);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }

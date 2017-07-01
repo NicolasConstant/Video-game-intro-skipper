@@ -6,7 +6,12 @@ using VGIS.Domain.Consts;
 
 namespace VGIS.Domain.Tools
 {
-    public class PathPatternTranslator
+    public interface IPathPatternTranslator
+    {
+        IEnumerable<string> GetPathFromPattern(string pattern);
+    }
+
+    public class PathPatternTranslator : IPathPatternTranslator
     {
         private readonly IDirectoryBrowser _directoryBrowser;
 
@@ -19,13 +24,12 @@ namespace VGIS.Domain.Tools
 
         public IEnumerable<string> GetPathFromPattern(string pattern)
         {
-            var pathSections = pattern.Split('\\');
-
             //If no navigation needed, return the pattern
-            if (!pathSections.Contains(SpecialChar.AnyDirectoryName.ToString()))
+            if (!pattern.Contains(SpecialChar.AnyDirectoryName.ToString()))
                 return new[] { pattern };
-
+            
             //Analyse the pattern and navigate when needed
+            var pathSections = pattern.Split('\\');
             var allPaths = new List<string>();
             for (var i = 1; i < pathSections.Length; i++)
             {

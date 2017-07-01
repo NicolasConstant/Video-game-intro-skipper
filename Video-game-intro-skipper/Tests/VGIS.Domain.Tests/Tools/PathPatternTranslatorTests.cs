@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -85,6 +86,21 @@ namespace VGIS.Domain.Tests.Tools
             Assert.IsTrue(result.Contains(@"C:\Temp\videos\sub2\data3\dummy\second\third6\Nvidia.bk2"));
             Assert.IsTrue(result.Contains(@"C:\Temp\videos\sub2\data4\dummy\second\third7\Nvidia.bk2"));
             Assert.IsTrue(result.Contains(@"C:\Temp\videos\sub2\data4\dummy\second\third8\Nvidia.bk2"));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void WrongPattern()
+        {
+            //Set constants
+            const string pattern = @"C:\Temp\v*id**eos\Nvidia.bk2";
+
+            //Set Mocks
+            var directoryBrowser = MockRepository.GenerateMock<IDirectoryBrowser>();
+
+            //Run test
+            var businessRule = new PathPatternTranslator(directoryBrowser);
+            businessRule.GetPathFromPattern(pattern);
         }
     }
 }

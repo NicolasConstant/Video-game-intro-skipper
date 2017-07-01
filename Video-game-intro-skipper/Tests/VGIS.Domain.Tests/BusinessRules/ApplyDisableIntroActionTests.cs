@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
@@ -9,7 +8,7 @@ using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Tools;
 
-namespace VGIS.Domain.Tests
+namespace VGIS.Domain.Tests.BusinessRules
 {
     [TestClass]
     public class ApplyDisableIntroActionTests
@@ -45,14 +44,16 @@ namespace VGIS.Domain.Tests
             var fileAndFolderRenamerMock = MockRepository.GenerateMock<IFileAndFolderRenamer>();
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal($"{installPath}{fileToRename}"), Arg<string>.Is.Equal($"{installPath}{fileToRename}{GlobalNamesStruct.RenameSuffix}")));
 
-            var directoryBrowser = MockRepository.GenerateMock<IDirectoryBrowser>();
+            var pathPatternTranslatorMock = MockRepository.GenerateMock<IPathPatternTranslator>();
+            pathPatternTranslatorMock.Expect(x => x.GetPathFromPattern($"{installPath}{fileToRename}")).Return(new []{ $"{installPath}{fileToRename}" });
 
             //Run test
-            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, directoryBrowser);
+            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, pathPatternTranslatorMock);
             businessRule.Execute();
 
             //Validate 
             fileAndFolderRenamerMock.VerifyAllExpectations();
+            pathPatternTranslatorMock.VerifyAllExpectations();
         }
 
         [TestMethod]
@@ -92,10 +93,12 @@ namespace VGIS.Domain.Tests
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal($"{installPath}{fileToRename1}"), Arg<string>.Is.Equal($"{installPath}{fileToRename1}{GlobalNamesStruct.RenameSuffix}")));
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal($"{installPath}{fileToRename2}"), Arg<string>.Is.Equal($"{installPath}{fileToRename2}{GlobalNamesStruct.RenameSuffix}")));
 
-            var directoryBrowser = MockRepository.GenerateMock<IDirectoryBrowser>();
+            var pathPatternTranslatorMock = MockRepository.GenerateMock<IPathPatternTranslator>();
+            pathPatternTranslatorMock.Expect(x => x.GetPathFromPattern($"{installPath}{fileToRename1}")).Return(new[] { $"{installPath}{fileToRename1}" });
+            pathPatternTranslatorMock.Expect(x => x.GetPathFromPattern($"{installPath}{fileToRename2}")).Return(new[] { $"{installPath}{fileToRename2}" });
 
             //Run test
-            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, directoryBrowser);
+            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, pathPatternTranslatorMock);
             businessRule.Execute();
 
             //Validate 
@@ -130,18 +133,19 @@ namespace VGIS.Domain.Tests
             };
 
             //Set Mocks
-            var directoryBrowser = MockRepository.GenerateMock<IDirectoryBrowser>();
-            directoryBrowser.Expect(x => x.GetSubDirectories(Arg<string>.Matches(y => y == @"C:\Temp\videos"))).Return(new []{ @"C:\Temp\videos\sub1", @"C:\Temp\videos\sub2"});
+            var pathPatternTranslatorMock = MockRepository.GenerateMock<IPathPatternTranslator>();
+            pathPatternTranslatorMock.Expect(x => x.GetPathFromPattern($"{installPath}{fileToRename}")).Return(new[] { @"C:\Temp\videos\sub1\Nvidia.bk2", @"C:\Temp\videos\sub2\Nvidia.bk2" });
 
             var fileAndFolderRenamerMock = MockRepository.GenerateMock<IFileAndFolderRenamer>();
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal(@"C:\Temp\videos\sub1\Nvidia.bk2"), Arg<string>.Is.Equal($@"C:\Temp\videos\sub1\Nvidia.bk2{GlobalNamesStruct.RenameSuffix}")));
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal(@"C:\Temp\videos\sub2\Nvidia.bk2"), Arg<string>.Is.Equal($@"C:\Temp\videos\sub2\Nvidia.bk2{GlobalNamesStruct.RenameSuffix}")));
 
             //Run test
-            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, directoryBrowser);
+            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, pathPatternTranslatorMock);
             businessRule.Execute();
 
             //Validate 
+            pathPatternTranslatorMock.VerifyAllExpectations();
             fileAndFolderRenamerMock.VerifyAllExpectations();
         }
 
@@ -173,10 +177,14 @@ namespace VGIS.Domain.Tests
             };
 
             //Set Mocks
-            var directoryBrowser = MockRepository.GenerateMock<IDirectoryBrowser>();
-            directoryBrowser.Expect(x => x.GetSubDirectories(Arg<string>.Matches(y => y == @"C:\Temp\videos"))).Return(new[] { @"C:\Temp\videos\sub1", @"C:\Temp\videos\sub2" });
-            directoryBrowser.Expect(x => x.GetSubDirectories(Arg<string>.Matches(y => y == @"C:\Temp\videos\sub1\data\second"))).Return(new[] { @"C:\Temp\videos\sub1\data\second\third1", @"C:\Temp\videos\sub1\data\second\third2" });
-            directoryBrowser.Expect(x => x.GetSubDirectories(Arg<string>.Matches(y => y == @"C:\Temp\videos\sub2\data\second"))).Return(new[] { @"C:\Temp\videos\sub2\data\second\third3", @"C:\Temp\videos\sub2\data\second\third4" });
+            var pathPatternTranslatorMock = MockRepository.GenerateMock<IPathPatternTranslator>();
+            pathPatternTranslatorMock.Expect(x => x.GetPathFromPattern($"{installPath}{fileToRename}")).Return(new[]
+            {
+                @"C:\Temp\videos\sub1\data\second\third1\Nvidia.bk2",
+                @"C:\Temp\videos\sub1\data\second\third2\Nvidia.bk2",
+                @"C:\Temp\videos\sub2\data\second\third3\Nvidia.bk2",
+                @"C:\Temp\videos\sub2\data\second\third4\Nvidia.bk2"
+            });
 
             var fileAndFolderRenamerMock = MockRepository.GenerateMock<IFileAndFolderRenamer>();
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal(@"C:\Temp\videos\sub1\data\second\third1\Nvidia.bk2"), Arg<string>.Is.Equal($@"C:\Temp\videos\sub1\data\second\third1\Nvidia.bk2{GlobalNamesStruct.RenameSuffix}")));
@@ -185,10 +193,11 @@ namespace VGIS.Domain.Tests
             fileAndFolderRenamerMock.Expect(x => x.RenameFile(Arg<string>.Is.Equal(@"C:\Temp\videos\sub2\data\second\third4\Nvidia.bk2"), Arg<string>.Is.Equal($@"C:\Temp\videos\sub2\data\second\third4\Nvidia.bk2{GlobalNamesStruct.RenameSuffix}")));
 
             //Run test
-            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, directoryBrowser);
+            var businessRule = new ApplyDisableIntroAction(settings, gameDetectionResult, fileAndFolderRenamerMock, pathPatternTranslatorMock);
             businessRule.Execute();
 
             //Validate 
+            pathPatternTranslatorMock.VerifyAllExpectations();
             fileAndFolderRenamerMock.VerifyAllExpectations();
         }
     }
