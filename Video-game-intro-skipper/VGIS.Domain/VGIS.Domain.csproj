@@ -61,6 +61,7 @@
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
     <Compile Include="Tools\DirectoryBrowser.cs" />
     <Compile Include="Tools\FileAndFolderRenamer.cs" />
+    <Compile Include="Tools\PathPatternTranslator.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

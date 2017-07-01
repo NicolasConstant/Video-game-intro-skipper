@@ -51,8 +51,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplyDisableIntroActionTests.cs" />
+    <Compile Include="BusinessRules\ApplyDisableIntroActionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\PathPatternTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
