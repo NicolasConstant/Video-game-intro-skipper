@@ -4,18 +4,23 @@ using VGIS.Domain.BusinessRules.Bases;
 using VGIS.Domain.Consts;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.BusinessRules
 {
     public class ApplyReenableIntroAction : DispatchActionsBase
     {
         private readonly GameDetectionResult _detectionResult;
+        private readonly IFileAndFolderRenamer _fileRenamer;
+        private readonly IPathPatternTranslator _pathPatternTranslator;
 
         #region Ctor
-        public ApplyReenableIntroAction(GameSetting settings, GameDetectionResult detectionResult)
+        public ApplyReenableIntroAction(GameSetting settings, GameDetectionResult detectionResult, IFileAndFolderRenamer fileRenamer, IPathPatternTranslator pathPatternTranslator)
             : base(settings)
         {
             _detectionResult = detectionResult;
+            _fileRenamer = fileRenamer;
+            _pathPatternTranslator = pathPatternTranslator;
         }
         #endregion
 
@@ -28,12 +33,17 @@ namespace VGIS.Domain.BusinessRules
         {
             try
             {
-                var fileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
-                var destinationFileFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
+                var pattern = GetCleanPath($"{_detectionResult.InstallationPath}\\{action.InitialName}");
+                var pathsToRename = _pathPatternTranslator.GetPathFromPattern(pattern);
 
-                if (File.Exists(destinationFileFullPath)) File.Delete(destinationFileFullPath);
+                foreach (var path in pathsToRename)
+                {
+                    var desactivatedFileFullPath = $"{path}{GlobalNamesStruct.RenameSuffix}";
 
-                File.Move(fileFullPath, destinationFileFullPath);
+                    //TODO give insight to user
+                    _fileRenamer.RenameFile(desactivatedFileFullPath, path, false);
+                }
+
                 return true;
             }
             catch (Exception)
@@ -46,7 +56,7 @@ namespace VGIS.Domain.BusinessRules
         {
             try
             {
-                var directoryFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}"; 
+                var directoryFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
                 var destinationDirectoryFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
 
                 if (Directory.Exists(destinationDirectoryFullPath)) File.Delete(destinationDirectoryFullPath);

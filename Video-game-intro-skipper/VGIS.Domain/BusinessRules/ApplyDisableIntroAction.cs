@@ -37,7 +37,10 @@ namespace VGIS.Domain.BusinessRules
                 var pattern = GetCleanPath($"{_detectionResult.InstallationPath}\\{action.InitialName}");
                 var pathsToRename = _pathPatternTranslator.GetPathFromPattern(pattern);
                 foreach (var path in pathsToRename)
-                    _fileRenamer.RenameFile(path, $@"{path}{GlobalNamesStruct.RenameSuffix}");
+                {
+                    var destinationFileFullPath = $@"{path}{GlobalNamesStruct.RenameSuffix}";
+                    _fileRenamer.RenameFile(path, destinationFileFullPath);
+                }
 
                 return true;
             }
