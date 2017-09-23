@@ -10,8 +10,7 @@
         <DataTemplate x:Key="GameTemplate">
             <Button>
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                    <!--{Binding ImageUrl}-->
+                    <Image Source="{Binding ImageUrl}" Width="200"></Image>
                     <Canvas Width="40" Height="94" Background="Black"></Canvas>
                 </StackPanel>
             </Button>
@@ -20,7 +19,7 @@
         <!--<viewModel:MainViewModel x:Key="MainViewModel" />-->
     </Window.Resources>
     <Grid Margin="0">
-       
+
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="25" />
@@ -33,60 +32,16 @@
         </StackPanel>
         <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center" Text="{Binding Filter}"></TextBox>
         <ScrollViewer Grid.Row="2">
-            <ListBox ItemsSource="{Binding Path=DetectedGames}" ItemTemplate="{StaticResource GameTemplate}" 
+            <ListBox ItemsSource="{Binding DetectedGames}" ItemTemplate="{StaticResource GameTemplate}" 
                 Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-
-                <!--<ListBox.Template>
+                <ListBox.Template>
                     <ControlTemplate TargetType="ItemsControl">
                         <Border>
                             <ItemsPresenter />
                         </Border>
                     </ControlTemplate>
-                </ListBox.Template>-->
-
-
-                <!--<ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>-->
+                </ListBox.Template>
             </ListBox>
-
         </ScrollViewer>
     </Grid>
 </Window>
