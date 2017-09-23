@@ -6,7 +6,7 @@ using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class DetectGameStatus
+    internal class DetectGameStatus
     {
         private readonly GameSetting _gameSetting;
         private readonly IEnumerable<DirectoryInfo> _installationDirectories;
@@ -60,10 +60,13 @@ namespace VGIS.Domain.BusinessRules
                 detectionResult.InstallationPath = new DirectoryInfo(completeInstallationDirectory);
 
             // Determine current introduction state 
-            var introStateDetection = new DetectIntroductionState(detectionResult.InstallationPath,
-                _gameSetting.DisablingIntroductionActions);
-            detectionResult.IntroductionState = introStateDetection.Execute();
-            
+            if (detectionResult.Detected)
+            {
+                var introStateDetection = new DetectIntroductionState(detectionResult.InstallationPath,
+                    _gameSetting.DisablingIntroductionActions);
+                detectionResult.IntroductionState = introStateDetection.Execute();
+            }
+
             // Return result
             return detectionResult;
         }

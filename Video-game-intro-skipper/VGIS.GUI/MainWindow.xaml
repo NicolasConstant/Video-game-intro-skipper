@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VGIS.GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" MinWidth="285" MaxWidth="285">
+        Title="MainWindow" Height="500" MinWidth="285" MaxWidth="285"
+        d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <DataTemplate x:Key="GameTemplate">
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Image Opacity="{Binding Opacity}" Source="{Binding IllustrationUrl}" Width="200"></Image>
+                    <Canvas Opacity="{Binding Opacity}" Width="40" Height="94" Background="Black"></Canvas>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+
+        <!--<viewModel:MainViewModel x:Key="MainViewModel" />-->
+    </Window.Resources>
     <Grid Margin="0">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="25" />
@@ -17,9 +31,10 @@
             <Button Margin="5" Padding="5 0">Activate all</Button>
             <Button Margin="0 5 5 5" Padding="5 0">Disable all</Button>
         </StackPanel>
-        <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center">Test</TextBox>
+        <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center" Text="{Binding Filter}"></TextBox>
         <ScrollViewer Grid.Row="2">
-            <ListBox Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox ItemsSource="{Binding DetectedGames}" ItemTemplate="{StaticResource GameTemplate}" 
+                Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.Template>
                     <ControlTemplate TargetType="ItemsControl">
                         <Border>
@@ -27,48 +42,7 @@
                         </Border>
                     </ControlTemplate>
                 </ListBox.Template>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428" Width="200"></Image>
-                            <Canvas Width="40" Height="94" Background="Black"></Canvas>
-                        </StackPanel>
-                    </Button>
-                </ListBoxItem>
             </ListBox>
-            
         </ScrollViewer>
     </Grid>
 </Window>

@@ -45,7 +45,7 @@ namespace VGIS.Console
                     var introState = gameToModify.Item2.IntroductionState;
                     if (introState == IntroductionStateEnum.Disabled)
                     {
-                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Item1, gameToModify.Item2);
+                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
