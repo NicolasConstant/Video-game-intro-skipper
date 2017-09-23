@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.Domain
 {
@@ -11,5 +12,7 @@ namespace VGIS.Domain.Domain
         public List<string> PotentialRootFolderNames { get; set; }
         public List<RootValidationRule> ValidationRules { get; set; }
         public List<DisableIntroductionAction> DisablingIntroductionActions { get; set; }
+        public IllustrationPlatformEnum IllustrationPlatform { get; set; }
+        public string IllustrationId { get; set; }
     }
 }

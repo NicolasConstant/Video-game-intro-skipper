@@ -50,10 +50,12 @@
     <Compile Include="Consts\GlobalNamesStruct.cs" />
     <Compile Include="Consts\SpecialChar.cs" />
     <Compile Include="Domain\DisableIntroductionAction.cs" />
+    <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\GameDetectionResult.cs" />
     <Compile Include="Domain\GameSetting.cs" />
     <Compile Include="Domain\RootValidationRule.cs" />
     <Compile Include="Enums\DisableActionTypeEnum.cs" />
+    <Compile Include="Enums\IllustrationPlatformEnum.cs" />
     <Compile Include="Enums\IntroductionStateEnum.cs" />
     <Compile Include="Enums\RootValidationTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

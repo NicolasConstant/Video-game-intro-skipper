@@ -13,6 +13,8 @@ namespace VGIS.Domain.Repositories
             {
                 Name = "Ghost Recon: Wildlands",
                 PublisherName = "Ubisoft",
+                IllustrationPlatform = IllustrationPlatformEnum.Steam,
+                IllustrationId = "460930",
                 PotentialRootFolderNames = new List<string>
                 {
                     "Tom Clancy's Ghost Recon Wildlands",

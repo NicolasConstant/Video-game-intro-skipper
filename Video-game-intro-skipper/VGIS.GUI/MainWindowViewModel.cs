@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Prism.Mvvm;
+using VGIS.Domain.BusinessRules;
 using VGIS.GUI.Annotations;
+using VGIS.GUI.ViewModels;
 
 namespace VGIS.GUI
 {
     public class MainWindowViewModel : BindableBase
     {
         private string _filter = "test";
-        private ObservableCollection<DetectedGame> _detectedGames;
+        private ObservableCollection<GameViewModel> _detectedGames;
 
-        public ObservableCollection<DetectedGame> DetectedGames
+        public ObservableCollection<GameViewModel> DetectedGames
         {
             get => _detectedGames;
             set => SetProperty(ref _detectedGames, value);
@@ -32,47 +34,56 @@ namespace VGIS.GUI
         }
 
         #region Ctor
-        public MainWindowViewModel()
+        public MainWindowViewModel(DetectAllGamesStatus allGameStatusDetector)
         {
-            var list = new List<DetectedGame>();
-            for (var i = 0; i < 15; i++)
+            //Load games
+            DetectedGames = new ObservableCollection<GameViewModel>();
+            var games = allGameStatusDetector.Execute(); //TODO store this for refresh
+            foreach (var game in games)
             {
-                list.Add(new DetectedGame()
-                {
-                    ImageUrl = "http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428",
-                });
+                DetectedGames.Add(new GameViewModel(game));
             }
-            DetectedGames = new ObservableCollection<DetectedGame>(list);
 
 
-            Task.Run(() =>
-            {
-                Filter = "go";
-                Thread.Sleep(3000);
-                Filter = "loaded";
-                for (var i = 0; i < 15; i++)
-                {
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                    {
-                        DetectedGames.Add(new DetectedGame()
-                        {
-                            ImageUrl = "http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428",
-                        });
-                    }));
-                }
-            });
+            //var list = new List<DetectedGame>();
+            //for (var i = 0; i < 15; i++)
+            //{
+            //    list.Add(new DetectedGame()
+            //    {
+            //        ImageUrl = "http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428",
+            //    });
+            //}
+            //DetectedGames = new ObservableCollection<DetectedGame>(list);
+
+
+            //Task.Run(() =>
+            //{
+            //    Filter = "go";
+            //    Thread.Sleep(3000);
+            //    Filter = "loaded";
+            //    for (var i = 0; i < 15; i++)
+            //    {
+            //        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            //        {
+            //            DetectedGames.Add(new DetectedGame()
+            //            {
+            //                ImageUrl = "http://cdn.edgecast.steamstatic.com/steam/apps/493340/header.jpg?t=1504868428",
+            //            });
+            //        }));
+            //    }
+            //});
         }
         #endregion
     }
 
-    public class DetectedGame : BindableBase
-    {
-        private string _imageUrl;
+    //public class DetectedGame : BindableBase
+    //{
+    //    private string _imageUrl;
 
-        public string ImageUrl
-        {
-            get => _imageUrl;
-            set => SetProperty(ref _imageUrl, value);
-        }
-    }
+    //    public string ImageUrl
+    //    {
+    //        get => _imageUrl;
+    //        set => SetProperty(ref _imageUrl, value);
+    //    }
+    //}
 }

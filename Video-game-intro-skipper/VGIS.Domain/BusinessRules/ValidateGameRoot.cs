@@ -6,7 +6,7 @@ using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class ValidateGameRoot
+    internal class ValidateGameRoot
     {
         private readonly string _potentialGameEmplacementPath;
         private readonly RootValidationRule _rootValidationRule;

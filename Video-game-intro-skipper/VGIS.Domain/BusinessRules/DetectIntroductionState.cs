@@ -8,7 +8,7 @@ using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class DetectIntroductionState
+    internal class DetectIntroductionState
     {
         private List<DisableIntroductionAction> _disablingIntroductionActions;
         private DirectoryInfo _installationPath;
