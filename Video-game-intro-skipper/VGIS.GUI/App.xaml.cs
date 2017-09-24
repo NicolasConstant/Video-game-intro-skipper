@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,7 +23,7 @@ namespace VGIS.GUI
 
             //Init data 
             // Init
-            var gameSettingsRepo = new GameSettingsRepository();
+            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();

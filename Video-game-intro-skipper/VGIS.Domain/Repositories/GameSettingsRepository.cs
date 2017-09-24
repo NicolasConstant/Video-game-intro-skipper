@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 
@@ -7,65 +9,33 @@ namespace VGIS.Domain.Repositories
 {
     public class GameSettingsRepository
     {
+        private readonly string _gameSettingsFilesPath;
+
+        #region Ctor
+        public GameSettingsRepository(string gameSettingsFilesPath)
+        {
+            _gameSettingsFilesPath = gameSettingsFilesPath;
+        }
+        #endregion
+
         public IEnumerable<GameSetting> GetAllGameSettings()
         {
-            yield return new GameSetting()
+            var dir = new DirectoryInfo(_gameSettingsFilesPath);
+            var settingsFiles = dir.GetFiles();
+            foreach (var file in settingsFiles)
             {
-                Name = "Ghost Recon: Wildlands",
-                PublisherName = "Ubisoft",
-                IllustrationPlatform = IllustrationPlatformEnum.Steam,
-                IllustrationId = "460930",
-                PotentialRootFolderNames = new List<string>
+                GameSetting data = null;
+                try
                 {
-                    "Tom Clancy's Ghost Recon Wildlands",
-                },
-                ValidationRules = new List<RootValidationRule>
-                {
-                    new RootValidationRule
-                    {
-                        Type = RootValidationTypeEnum.FileValidation,
-                        WitnessName = "GRW.exe"
-                    }
-                },
-                DisablingIntroductionActions = new List<DisableIntroductionAction>()
-                {
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\Nvidia.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\Ubisoft_Logo.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\VIDEO_EXPERIENCE.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\VIDEO_GLOBA_000.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\VIDEO_INTRO_GAM.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\TRC\\*\\WarningSaving.bk2",
-                    },
-                    new DisableIntroductionAction()
-                    {
-                        Type = DisableActionTypeEnum.FileRename,
-                        InitialName = "\\videos\\TRC\\*\\Epilepsy.bk2",
-                    },
+                    var jsonFileData = File.ReadAllText(file.FullName);
+                    data = JsonConvert.DeserializeObject<GameSetting>(jsonFileData);
                 }
-            };
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                if(data != null) yield return data;
+            }
         }
     }
 }

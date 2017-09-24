@@ -2,7 +2,7 @@
 {
     public enum RootValidationTypeEnum
     {
-        FolderValidation,
-        FileValidation
+        FolderValidation = 1,
+        FileValidation = 2
     }
 }

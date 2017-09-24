@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -18,7 +19,7 @@ namespace VGIS.Console
         static void Main(string[] args)
         {
             // Init
-            var gameSettingsRepo = new GameSettingsRepository();
+            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
@@ -42,22 +43,22 @@ namespace VGIS.Console
                     if(indexValue > allGames.Count || indexValue < 1) continue;
 
                     var gameToModify = allGames[indexValue - 1];
-                    var introState = gameToModify.Item2.IntroductionState;
+                    var introState = gameToModify.DetectionResult.IntroductionState;
                     if (introState == IntroductionStateEnum.Disabled)
                     {
-                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
+                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
+                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
                         reenableIntro.Execute();
                         allGames = LoadAllGames(detectAllGamesStatus);
                     }
@@ -69,15 +70,15 @@ namespace VGIS.Console
             }
         }
 
-        private static List<Tuple<GameSetting, GameDetectionResult>> LoadAllGames(DetectAllGamesStatus detectAllGamesStatus)
+        private static List<Game> LoadAllGames(DetectAllGamesStatus detectAllGamesStatus)
         {
-            var allGames = new List<Tuple<GameSetting, GameDetectionResult>>();
+            var allGames = new List<Game>();
             foreach (var gameStatus in detectAllGamesStatus.Execute())
             {
                 allGames.Add(gameStatus);
 
-                var introMessage = gameStatus.Item2.IntroductionState == IntroductionStateEnum.Enabled ? "Intro Video Enabled" : "Intro Video Disabled";
-                System.Console.WriteLine($"{allGames.Count} - {gameStatus.Item1.Name} : {introMessage} ");
+                var introMessage = gameStatus.DetectionResult.IntroductionState == IntroductionStateEnum.Enabled ? "Intro Video Enabled" : "Intro Video Disabled";
+                System.Console.WriteLine($"{allGames.Count} - {gameStatus.Settings.Name} : {introMessage} ");
             }
             return allGames;
         }
