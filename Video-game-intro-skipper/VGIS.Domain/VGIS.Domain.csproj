@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
+    <Compile Include="Services\IntroEditionService.cs" />
     <Compile Include="Tools\DirectoryBrowser.cs" />
     <Compile Include="Tools\FileAndFolderRenamer.cs" />
     <Compile Include="Tools\PathPatternTranslator.cs" />

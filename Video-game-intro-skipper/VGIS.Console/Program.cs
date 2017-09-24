@@ -10,6 +10,7 @@ using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
+using VGIS.Domain.Services;
 using VGIS.Domain.Tools;
 
 namespace VGIS.Console
@@ -25,10 +26,12 @@ namespace VGIS.Console
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
 
-            var detectAllGamesStatus = new DetectAllGamesStatus(gameSettingsRepo, installationDirRepo);
+
+            var introEditionService = new IntroEditionService(gameSettingsRepo, installationDirRepo, fileAndFolderRenamer, pathPatternTranslator);
+            Func<IEnumerable<Game>> introEditionServiceFunc = () => introEditionService.GetAllGames();
 
             // Load all games
-            var allGames = LoadAllGames(detectAllGamesStatus);
+            var allGames = LoadAllGames(introEditionServiceFunc);
 
             for (;;)
             {
@@ -46,21 +49,18 @@ namespace VGIS.Console
                     var introState = gameToModify.DetectionResult.IntroductionState;
                     if (introState == IntroductionStateEnum.Disabled)
                     {
-                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.ReenableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.DisableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Settings, gameToModify.DetectionResult, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.DisableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                 }
                 else if (inputValue?.ToLower() == "q" || inputValue?.ToLower() == "quit")
@@ -70,10 +70,10 @@ namespace VGIS.Console
             }
         }
 
-        private static List<Game> LoadAllGames(DetectAllGamesStatus detectAllGamesStatus)
+        private static List<Game> LoadAllGames(Func<IEnumerable<Game>> detectAllGamesStatusFunc)
         {
             var allGames = new List<Game>();
-            foreach (var gameStatus in detectAllGamesStatus.Execute())
+            foreach (var gameStatus in detectAllGamesStatusFunc())
             {
                 allGames.Add(gameStatus);
 

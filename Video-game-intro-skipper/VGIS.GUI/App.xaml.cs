@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Repositories;
+using VGIS.Domain.Services;
 using VGIS.Domain.Tools;
 
 namespace VGIS.GUI
@@ -28,10 +29,12 @@ namespace VGIS.GUI
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
-            var detectAllGamesStatus = new DetectAllGamesStatus(gameSettingsRepo, installationDirRepo);
+            
+            //Init Service
+            var introEdotionService = new IntroEditionService(gameSettingsRepo, installationDirRepo, fileAndFolderRenamer, pathPatternTranslator);
 
             //Load GUI
-            var viewModel = new MainWindowViewModel(detectAllGamesStatus);
+            var viewModel = new MainWindowViewModel(introEdotionService);
             var view = new MainWindow(viewModel);
 
             Application.Current.MainWindow = view;
