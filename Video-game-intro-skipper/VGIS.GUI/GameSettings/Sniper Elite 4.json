@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Sniper Elite 4",
+  "PublisherName": "Rebellion",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "Sniper Elite 4" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "bin\\SniperElite4_DX12.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\FMV\\Rebellion.webm"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "312660"
+}
