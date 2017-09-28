@@ -1,0 +1,20 @@
+﻿{
+  "Name": "PLAYERUNKNOWN'S BATTLEBROUND",
+  "PublisherName": "Bluehole, Inc",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "PUBG" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "TslGame\\Binaries\\Win64\\TslGame.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\TslGame\\Content\\Movies\\LoadingScreen.mp4"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "578080"
+}

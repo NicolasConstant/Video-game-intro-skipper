@@ -110,6 +110,9 @@
     <None Include="GameSettings\Ghost Recon Wildlands.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="GameSettings\PUBG.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="GameSettings\Rainbow Six Siege.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
