@@ -8,16 +8,70 @@
         Title="MainWindow" Height="500" MinWidth="285" MaxWidth="285"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
+        <Style x:Key="MyButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                                BorderThickness="0"
+                                Padding="0" 
+                                Margin="5 0"
+                                BorderBrush="DarkGray" 
+                                CornerRadius="0" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <DataTemplate x:Key="GameTemplate">
-            <Button>
+            <Button IsEnabled="{Binding IsDetected}"  Command="{Binding ChangeStateCommand}" BorderThickness="0"  
+                    Style="{StaticResource MyButtonStyle}">
+                <!--  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" -->
                 <StackPanel Orientation="Horizontal">
                     <Image Opacity="{Binding Opacity}" Source="{Binding IllustrationUrl}" Width="200"></Image>
-                    <Canvas Opacity="{Binding Opacity}" Width="40" Height="94" Background="Black"></Canvas>
+                    <Canvas Opacity="{Binding Opacity}" Width="40" Height="94" Background="Black">
+                        <TextBlock Foreground="AliceBlue" Text="{Binding DisplayableState}"></TextBlock>
+                    </Canvas>
                 </StackPanel>
             </Button>
         </DataTemplate>
-
-        <!--<viewModel:MainViewModel x:Key="MainViewModel" />-->
+        <Style x:Key="ListBoxItemStyleNeutral" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, 
+            RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment,
+             RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="2,0,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
+                                Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" TargetName="Bd" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
     </Window.Resources>
     <Grid Margin="0">
 
@@ -34,7 +88,8 @@
         <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center" Text="{Binding Filter}"></TextBox>
         <ScrollViewer Grid.Row="2">
             <ListBox ItemsSource="{Binding DetectedGames}" ItemTemplate="{StaticResource GameTemplate}" 
-                Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemContainerStyle="{DynamicResource ListBoxItemStyleNeutral}">
+                
                 <ListBox.Template>
                     <ControlTemplate TargetType="ItemsControl">
                         <Border>

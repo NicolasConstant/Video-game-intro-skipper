@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -9,6 +10,7 @@ using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
+using VGIS.Domain.Services;
 using VGIS.Domain.Tools;
 
 namespace VGIS.Console
@@ -18,16 +20,18 @@ namespace VGIS.Console
         static void Main(string[] args)
         {
             // Init
-            var gameSettingsRepo = new GameSettingsRepository();
+            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
 
-            var detectAllGamesStatus = new DetectAllGamesStatus(gameSettingsRepo, installationDirRepo);
+
+            var introEditionService = new IntroEditionService(gameSettingsRepo, installationDirRepo, fileAndFolderRenamer, pathPatternTranslator);
+            Func<IEnumerable<Game>> introEditionServiceFunc = () => introEditionService.GetAllGames();
 
             // Load all games
-            var allGames = LoadAllGames(detectAllGamesStatus);
+            var allGames = LoadAllGames(introEditionServiceFunc);
 
             for (;;)
             {
@@ -42,24 +46,21 @@ namespace VGIS.Console
                     if(indexValue > allGames.Count || indexValue < 1) continue;
 
                     var gameToModify = allGames[indexValue - 1];
-                    var introState = gameToModify.Item2.IntroductionState;
+                    var introState = gameToModify.DetectionResult.IntroductionState;
                     if (introState == IntroductionStateEnum.Disabled)
                     {
-                        var reenableIntro = new ApplyReenableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.ReenableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                     else if (introState == IntroductionStateEnum.Enabled)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.DisableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                     else if(introState == IntroductionStateEnum.Unknown)
                     {
-                        var reenableIntro = new ApplyDisableIntroAction(gameToModify.Item1, gameToModify.Item2, fileAndFolderRenamer, pathPatternTranslator);
-                        reenableIntro.Execute();
-                        allGames = LoadAllGames(detectAllGamesStatus);
+                        introEditionService.DisableIntro(gameToModify);
+                        allGames = LoadAllGames(introEditionServiceFunc);
                     }
                 }
                 else if (inputValue?.ToLower() == "q" || inputValue?.ToLower() == "quit")
@@ -69,15 +70,15 @@ namespace VGIS.Console
             }
         }
 
-        private static List<Tuple<GameSetting, GameDetectionResult>> LoadAllGames(DetectAllGamesStatus detectAllGamesStatus)
+        private static List<Game> LoadAllGames(Func<IEnumerable<Game>> detectAllGamesStatusFunc)
         {
-            var allGames = new List<Tuple<GameSetting, GameDetectionResult>>();
-            foreach (var gameStatus in detectAllGamesStatus.Execute())
+            var allGames = new List<Game>();
+            foreach (var gameStatus in detectAllGamesStatusFunc())
             {
                 allGames.Add(gameStatus);
 
-                var introMessage = gameStatus.Item2.IntroductionState == IntroductionStateEnum.Enabled ? "Intro Video Enabled" : "Intro Video Disabled";
-                System.Console.WriteLine($"{allGames.Count} - {gameStatus.Item1.Name} : {introMessage} ");
+                var introMessage = gameStatus.DetectionResult.IntroductionState == IntroductionStateEnum.Enabled ? "Intro Video Enabled" : "Intro Video Disabled";
+                System.Console.WriteLine($"{allGames.Count} - {gameStatus.Settings.Name} : {introMessage} ");
             }
             return allGames;
         }

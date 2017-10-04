@@ -8,7 +8,7 @@ using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class ApplyReenableIntroAction : DispatchActionsBase
+    internal class ApplyReenableIntroAction : DispatchActionsBase
     {
         private readonly GameDetectionResult _detectionResult;
         private readonly IFileAndFolderRenamer _fileRenamer;

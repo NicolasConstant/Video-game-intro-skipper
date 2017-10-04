@@ -1,0 +1,24 @@
+﻿{
+  "Name": "Rainbow Six Siege",
+  "PublisherName": "Ubisoft",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "Tom Clancy's Rainbow Six Siege" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "RainbowSix.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 1,
+      "InitialName": "\\videos\\startup"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\rainbow_6_intro_playgo.bik"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "359550"
+}

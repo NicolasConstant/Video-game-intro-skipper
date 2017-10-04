@@ -1,0 +1,44 @@
+﻿{
+  "Name": "Ghost Recon: Wildlands",
+  "PublisherName": "Ubisoft",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "Tom Clancy's Ghost Recon Wildlands" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "GRW.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\Nvidia.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\Ubisoft_Logo.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\VIDEO_EXPERIENCE.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\VIDEO_GLOBA_000.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\VIDEO_INTRO_GAM.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\TRC\\*\\WarningSaving.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\TRC\\*\\Epilepsy.bk2"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "460930"
+}

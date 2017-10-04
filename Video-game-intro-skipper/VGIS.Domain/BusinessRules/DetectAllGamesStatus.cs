@@ -6,7 +6,7 @@ using VGIS.Domain.Repositories;
 
 namespace VGIS.Domain.BusinessRules
 {
-    public class DetectAllGamesStatus
+    internal class DetectAllGamesStatus
     {
         private readonly GameSettingsRepository _settingsRepository;
         private readonly InstallationDirectoriesRepository _installationDirectoryRepository;
