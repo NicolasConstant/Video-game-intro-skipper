@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Dead by Daylight",
+  "PublisherName": "Starbreeze Publishing AB",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "Dead by Daylight" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "DeadByDaylight.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\DeadByDaylight\\Content\\Movies\\LoadingScreen.mp4"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "381210"
+}
