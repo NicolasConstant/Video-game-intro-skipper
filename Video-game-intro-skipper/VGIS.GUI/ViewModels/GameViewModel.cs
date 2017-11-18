@@ -31,6 +31,7 @@ namespace VGIS.GUI.ViewModels
         public ICommand ChangeStateCommand { get; }
 
         public string IllustrationUrl => _game.IllustrationUrl;
+        public string Name => _game.Name;
         public float Opacity => _game.IsDetected ? 1f : 0.2f;
         public bool IsDetected => _game.IsDetected;
         public bool IsEnabled;
