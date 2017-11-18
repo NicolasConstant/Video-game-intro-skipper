@@ -85,15 +85,12 @@ namespace VGIS.GUI
         {
             Task.Run(() =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                foreach (var gameViewModel in DetectedGames)
                 {
-                    foreach (var gameViewModel in DetectedGames)
-                    {
-                        if (gameViewModel.IsDetected &&
-                            gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Enabled)
-                            gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Enabled);
-                    }
-                }));
+                    if (gameViewModel.IsDetected &&
+                        gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Enabled)
+                        gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Enabled);
+                }
             });
         }
 
@@ -101,15 +98,12 @@ namespace VGIS.GUI
         {
             Task.Run(() =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                foreach (var gameViewModel in DetectedGames)
                 {
-                    foreach (var gameViewModel in DetectedGames)
-                    {
-                        if (gameViewModel.IsDetected &&
-                            gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Disabled)
-                            gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Disabled);
-                    }
-                }));
+                    if (gameViewModel.IsDetected &&
+                        gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Disabled)
+                        gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Disabled);
+                }
             });
         }
 
@@ -117,11 +111,12 @@ namespace VGIS.GUI
         {
             Task.Run(() =>
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                DispatchToBackground(() =>
                 {
                     DetectedGames.Clear();
-                    LoadGames();
-                }));
+                });
+                Thread.Sleep(150); //Make sure user see the action
+                LoadGames();
             });
         }
 
@@ -130,9 +125,20 @@ namespace VGIS.GUI
             var games = _introEditionService.GetAllGames();
             foreach (var game in games)
             {
-                DetectedGames.Add(new GameViewModel(game, _introEditionService));
+                DispatchToBackground(() =>
+                {
+                    DetectedGames.Add(new GameViewModel(game, _introEditionService));
+                });
             }
-            FilteredDetectedGames.Refresh();
+            DispatchToBackground(() =>
+            {
+                FilteredDetectedGames.Refresh();
+            });
+        }
+
+        private void DispatchToBackground(Action action)
+        {
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
         }
     }
 }
