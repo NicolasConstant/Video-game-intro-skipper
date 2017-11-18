@@ -1,0 +1,20 @@
+﻿{
+  "Name": "The Witcher 3",
+  "PublisherName": "CD PROJEKT RED",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "The Witcher 3", "The Witcher 3 Wild Hunt" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "bin\\x64\\witcher3.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\content\\content0\\movies\\cutscenes\\gamestart\bumpers\\bumpers.usm"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "292030"
+}
