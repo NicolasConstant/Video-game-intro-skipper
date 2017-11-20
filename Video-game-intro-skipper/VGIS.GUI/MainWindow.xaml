@@ -85,6 +85,7 @@
             <Button Command="{Binding ActivateAllCommand}" Margin="5" Padding="5 0">Activate all</Button>
             <Button Command="{Binding DisableAllCommand}" Margin="0 5 5 5" Padding="5 0">Disable all</Button>
             <Button Command="{Binding RefreshCommand}" Margin="0 5 5 5" Padding="5 0">Refresh</Button>
+            <Button Command="{Binding AddNewGameCommand}" Margin="0 5 5 5" Padding="5 0">Add</Button>
         </StackPanel>
         <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <ScrollViewer Grid.Row="2">

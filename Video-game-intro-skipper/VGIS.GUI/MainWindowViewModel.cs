@@ -16,6 +16,7 @@ using Prism.Mvvm;
 using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
+using VGIS.GUI.AddNewGame;
 using VGIS.GUI.Annotations;
 using VGIS.GUI.ViewModels;
 
@@ -68,6 +69,7 @@ namespace VGIS.GUI
             ActivateAllCommand = new DelegateCommand(ActivateAll);
             DisableAllCommand = new DelegateCommand(DisableAll);
             RefreshCommand = new DelegateCommand(Refresh);
+            AddNewGameCommand = new DelegateCommand(AddNewGame);
 
             //Load games
             DetectedGames = new ObservableCollection<GameViewModel>();
@@ -80,6 +82,15 @@ namespace VGIS.GUI
         public ICommand DisableAllCommand { get; set; }
 
         public ICommand RefreshCommand { get; set; }
+
+        public ICommand AddNewGameCommand { get; set; }
+
+        private void AddNewGame()
+        {
+            var newGameWindow = new AddNewGameView(new AddNewGameViewModel());
+            newGameWindow.Show();
+            newGameWindow.Activate();
+        }
 
         private void ActivateAll()
         {
