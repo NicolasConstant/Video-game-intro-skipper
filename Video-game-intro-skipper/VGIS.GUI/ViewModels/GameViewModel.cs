@@ -2,6 +2,7 @@
 using System.Security.RightsManagement;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Markup.Localizer;
 using Prism.Commands;
 using Prism.Mvvm;
 using VGIS.Domain.Domain;
@@ -31,6 +32,7 @@ namespace VGIS.GUI.ViewModels
         public ICommand ChangeStateCommand { get; }
 
         public string IllustrationUrl => _game.IllustrationUrl;
+        public string Name => _game.Name;
         public float Opacity => _game.IsDetected ? 1f : 0.2f;
         public bool IsDetected => _game.IsDetected;
         public bool IsEnabled;
@@ -68,31 +70,55 @@ namespace VGIS.GUI.ViewModels
             if (IntroductionCurrentState == IntroductionStateEnum.Enabled ||
                 IntroductionCurrentState == IntroductionStateEnum.Unknown)
             {
-                var disableTask = Task.Run(() => { _introEditionService.DisableIntro(_game); });
-                disableTask.ContinueWith(p =>
-                {
-                    IntroductionCurrentState = IntroductionStateEnum.Disabled;
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
-                disableTask.ContinueWith(p =>
-                {
-                    Console.WriteLine("DisableTask didn't complete");
-                    IntroductionCurrentState = IntroductionStateEnum.Unknown;
-                }, TaskContinuationOptions.NotOnRanToCompletion);
-
+                DisableIntro();
             }
             else if (IntroductionCurrentState == IntroductionStateEnum.Disabled)
             {
-                var reenableTask = Task.Run(() => { _introEditionService.ReenableIntro(_game); });
-                reenableTask.ContinueWith(p =>
-                {
-                    IntroductionCurrentState = IntroductionStateEnum.Enabled;
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
-                reenableTask.ContinueWith(p =>
-                {
-                    Console.WriteLine("DisableTask didn't complete");
-                    IntroductionCurrentState = IntroductionStateEnum.Unknown;
-                }, TaskContinuationOptions.NotOnRanToCompletion);
+                EnableIntro();
             }
+        }
+
+        public void ChangeStateCommandTo(IntroductionStateEnum newState)
+        {
+            switch (newState)
+            {
+                case IntroductionStateEnum.Enabled:
+                    EnableIntro();
+                    break;
+                case IntroductionStateEnum.Disabled:
+                    DisableIntro();
+                    break;
+                default:
+                    throw new Exception("Not Supported");
+            }
+        }
+
+        private void EnableIntro()
+        {
+            var reenableTask = Task.Run(() => { _introEditionService.ReenableIntro(_game); });
+            reenableTask.ContinueWith(p =>
+            {
+                IntroductionCurrentState = IntroductionStateEnum.Enabled;
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            reenableTask.ContinueWith(p =>
+            {
+                Console.WriteLine("DisableTask didn't complete");
+                IntroductionCurrentState = IntroductionStateEnum.Unknown;
+            }, TaskContinuationOptions.NotOnRanToCompletion);
+        }
+
+        private void DisableIntro()
+        {
+            var disableTask = Task.Run(() => { _introEditionService.DisableIntro(_game); });
+            disableTask.ContinueWith(p =>
+            {
+                IntroductionCurrentState = IntroductionStateEnum.Disabled;
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            disableTask.ContinueWith(p =>
+            {
+                Console.WriteLine("DisableTask didn't complete");
+                IntroductionCurrentState = IntroductionStateEnum.Unknown;
+            }, TaskContinuationOptions.NotOnRanToCompletion);
         }
     }
 }

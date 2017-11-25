@@ -70,7 +70,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddNewGame\AddNewGameView.xaml.cs">
+      <DependentUpon>AddNewGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewGame\AddNewGameViewModel.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
+    <Page Include="AddNewGame\AddNewGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +115,9 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <None Include="GameSettings\Dead by Daylight.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="GameSettings\Ghost Recon Wildlands.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -117,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="GameSettings\Sniper Elite 4.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="GameSettings\The Witcher 3.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
