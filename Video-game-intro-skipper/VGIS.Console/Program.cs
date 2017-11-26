@@ -22,7 +22,7 @@ namespace VGIS.Console
         {
             // Init
             var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\", new FileSystemDal());
-            var installationDirRepo = new InstallationDirectoriesRepository();
+            var installationDirRepo = new InstallationDirectoriesRepository($@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json", new FileSystemDal());
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
