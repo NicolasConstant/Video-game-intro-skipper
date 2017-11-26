@@ -18,6 +18,7 @@ using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
 using VGIS.GUI.AddNewGame;
 using VGIS.GUI.Annotations;
+using VGIS.GUI.Options;
 using VGIS.GUI.ViewModels;
 
 namespace VGIS.GUI
@@ -70,6 +71,7 @@ namespace VGIS.GUI
             DisableAllCommand = new DelegateCommand(DisableAll);
             RefreshCommand = new DelegateCommand(Refresh);
             AddNewGameCommand = new DelegateCommand(AddNewGame);
+            OpenOptionsCommand = new DelegateCommand(OpenOptions);
 
             //Load games
             DetectedGames = new ObservableCollection<GameViewModel>();
@@ -85,11 +87,18 @@ namespace VGIS.GUI
 
         public ICommand AddNewGameCommand { get; set; }
 
+        public ICommand OpenOptionsCommand { get; set; }
+
         private void AddNewGame()
         {
             var newGameWindow = new AddNewGameView(new AddNewGameViewModel());
-            newGameWindow.Show();
-            newGameWindow.Activate();
+            newGameWindow.ShowDialog();
+        }
+
+        private void OpenOptions()
+        {
+            var optionsWindow = new OptionsView(new OptionsViewModel());
+            optionsWindow.ShowDialog();
         }
 
         private void ActivateAll()
