@@ -12,6 +12,7 @@ using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
 using VGIS.Domain.Services;
+using VGIS.Domain.Settings;
 using VGIS.Domain.Tools;
 
 namespace VGIS.Console
@@ -21,13 +22,17 @@ namespace VGIS.Console
         static void Main(string[] args)
         {
             //Settings
-            var gameSettingsDir = $@"{Directory.GetCurrentDirectory()}\GameSettings\";
-            var defaultInstallFolderConfig = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json";
-            var customInstallFolderConfig = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json";
+            var globalSettings = new GlobalSettings()
+            {
+                GamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
+                DefaultInstallFolderConfigFile = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json",
+                CustomInstallFolderConfigFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json"
+            };
+
 
             // Init
-            var gameSettingsRepo = new GameSettingsRepository(gameSettingsDir, new FileSystemDal());
-            var installationDirRepo = new InstallationDirectoriesRepository(defaultInstallFolderConfig, customInstallFolderConfig, new FileSystemDal());
+            var gameSettingsRepo = new GameSettingsRepository(globalSettings, new FileSystemDal());
+            var installationDirRepo = new InstallationDirectoriesRepository(globalSettings, new FileSystemDal());
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);

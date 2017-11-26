@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Domain;
+using VGIS.Domain.Settings;
 
 namespace VGIS.Domain.Repositories
 {
@@ -16,10 +17,10 @@ namespace VGIS.Domain.Repositories
         private readonly IFileSystemDal _fileSystemDal;
 
         #region Ctor
-        public InstallationDirectoriesRepository(string defaultInstallFolderSettingsFile, string customInstallFolderSettingsFile, IFileSystemDal fileSystemDal)
+        public InstallationDirectoriesRepository(GlobalSettings settings, IFileSystemDal fileSystemDal)
         {
-            _defaultInstallFolderSettingsFile = defaultInstallFolderSettingsFile;
-            _customInstallFolderSettingsFile = customInstallFolderSettingsFile;
+            _defaultInstallFolderSettingsFile = settings.DefaultInstallFolderConfigFile;
+            _customInstallFolderSettingsFile = settings.CustomInstallFolderConfigFile;
             _fileSystemDal = fileSystemDal;
             
             if (!_fileSystemDal.FileExists(_customInstallFolderSettingsFile))
@@ -54,7 +55,7 @@ namespace VGIS.Domain.Repositories
             try
             {
                 var foldersJson = _fileSystemDal.ReadAllText(configFile);
-                return JsonConvert.DeserializeObject<string[]>(foldersJson);
+                return JsonConvert.DeserializeObject<string[]>(foldersJson) ?? new string[0];
             }
             catch (Exception e)
             {

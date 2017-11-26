@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Settings;
 
 namespace VGIS.Domain.Repositories
 {
@@ -14,9 +15,9 @@ namespace VGIS.Domain.Repositories
         private readonly IFileSystemDal _fileSystemDal;
 
         #region Ctor
-        public GameSettingsRepository(string gameSettingsFilesPath, IFileSystemDal fileSystemDal)
+        public GameSettingsRepository(GlobalSettings settings, IFileSystemDal fileSystemDal)
         {
-            _gameSettingsFilesPath = gameSettingsFilesPath;
+            _gameSettingsFilesPath = settings.GamesSettingsFolder;
             _fileSystemDal = fileSystemDal;
         }
         #endregion

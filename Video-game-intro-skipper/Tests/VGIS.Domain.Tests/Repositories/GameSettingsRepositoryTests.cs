@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Repositories;
+using VGIS.Domain.Settings;
 
 namespace VGIS.Domain.Tests.Repositories
 {
@@ -21,6 +22,9 @@ namespace VGIS.Domain.Tests.Repositories
             const string customPath = "myCustomPath";
 
             #region Stubs and Mocks
+            var globalSettingsStub = MockRepository.GenerateStub<GlobalSettings>();
+            globalSettingsStub.GamesSettingsFolder = customPath;
+
             var file1 = MockRepository.GenerateStub<FileInfo>();
             file1.Expect(x => x.FullName).Return("fullName1");
 
@@ -33,7 +37,7 @@ namespace VGIS.Domain.Tests.Repositories
             dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(file2.FullName))).Return(File2);
             #endregion
 
-            var repo = new GameSettingsRepository(customPath, dalMock);
+            var repo = new GameSettingsRepository(globalSettingsStub, dalMock);
             var settings = repo.GetAllGameSettings().ToList();
 
             #region Validate 
