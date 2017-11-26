@@ -52,6 +52,8 @@
     <Compile Include="BusinessRules\ValidateGameRoot.cs" />
     <Compile Include="Consts\GlobalNamesStruct.cs" />
     <Compile Include="Consts\SpecialChar.cs" />
+    <Compile Include="DataAccessLayers\FileSystemDal.cs" />
+    <Compile Include="DataAccessLayers\IFileSystemDal.cs" />
     <Compile Include="Domain\DisableIntroductionAction.cs" />
     <Compile Include="Domain\Game.cs" />
     <Compile Include="Domain\GameDetectionResult.cs" />

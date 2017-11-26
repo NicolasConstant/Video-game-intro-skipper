@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using VGIS.Domain.BusinessRules;
+using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
@@ -20,7 +21,7 @@ namespace VGIS.Console
         static void Main(string[] args)
         {
             // Init
-            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
+            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\", new FileSystemDal());
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();

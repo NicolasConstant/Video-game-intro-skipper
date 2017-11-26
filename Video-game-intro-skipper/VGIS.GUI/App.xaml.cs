@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using VGIS.Domain.BusinessRules;
+using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Repositories;
 using VGIS.Domain.Services;
 using VGIS.Domain.Tools;
@@ -24,7 +25,7 @@ namespace VGIS.GUI
 
             //Init data 
             // Init
-            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
+            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\", new FileSystemDal());
             var installationDirRepo = new InstallationDirectoriesRepository();
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
