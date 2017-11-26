@@ -21,5 +21,29 @@ namespace VGIS.Domain.DataAccessLayers
         {
             return File.ReadAllText(fileFullName);
         }
+
+        public bool FileExists(string filePath)
+        {
+            return File.Exists(filePath);
+        }
+
+        public void FileCreate(string filePath)
+        {
+            var fileInfo = new FileInfo(filePath);
+            var dir = fileInfo.DirectoryName;
+
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            File.Create(filePath);
+        }
+
+        public bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public void FileWriteAllText(string path, string content)
+        {
+            File.WriteAllText(path, content);
+        }
     }
 }

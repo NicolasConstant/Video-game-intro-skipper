@@ -8,5 +8,9 @@ namespace VGIS.Domain.DataAccessLayers
     {
         IEnumerable<FileInfo> GetFiles(string path);
         string ReadAllText(string fileFullName);
+        bool FileExists(string filePath);
+        void FileCreate(string filePath);
+        bool DirectoryExists(string path);
+        void FileWriteAllText(string path, string content);
     }
 }

@@ -20,9 +20,14 @@ namespace VGIS.Console
     {
         static void Main(string[] args)
         {
+            //Settings
+            var gameSettingsDir = $@"{Directory.GetCurrentDirectory()}\GameSettings\";
+            var defaultInstallFolderConfig = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json";
+            var customInstallFolderConfig = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json";
+
             // Init
-            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\", new FileSystemDal());
-            var installationDirRepo = new InstallationDirectoriesRepository($@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json", new FileSystemDal());
+            var gameSettingsRepo = new GameSettingsRepository(gameSettingsDir, new FileSystemDal());
+            var installationDirRepo = new InstallationDirectoriesRepository(defaultInstallFolderConfig, customInstallFolderConfig, new FileSystemDal());
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
