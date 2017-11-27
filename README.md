@@ -12,7 +12,7 @@ Sorry, no binaries available, please build your own from the source code.
 - [x] detect installed games
 - [x] enable/disable intro on detected games
 - [x] batch enable/batch disable
-- [ ] support custom installation folders
+- [x] support custom installation folders
 - [ ] support adding a new game
 - [ ] API + crowdsourcing the game settings
 - [ ] find logo, good name, enhance GUI

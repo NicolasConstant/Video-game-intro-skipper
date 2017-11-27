@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using VGIS.Domain.BusinessRules;
@@ -18,6 +19,7 @@ using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
 using VGIS.GUI.AddNewGame;
 using VGIS.GUI.Annotations;
+using VGIS.GUI.Options;
 using VGIS.GUI.ViewModels;
 
 namespace VGIS.GUI
@@ -25,6 +27,7 @@ namespace VGIS.GUI
     public class MainWindowViewModel : BindableBase
     {
         private readonly IntroEditionService _introEditionService;
+        private readonly IUnityContainer _container;
 
         private string _filter = "";
         private ObservableCollection<GameViewModel> _detectedGames;
@@ -62,14 +65,17 @@ namespace VGIS.GUI
         }
 
         #region Ctor
-        public MainWindowViewModel(IntroEditionService introEditionService)
+        public MainWindowViewModel(IntroEditionService introEditionService, IUnityContainer container)
         {
             _introEditionService = introEditionService;
+            _container = container;
+
             //Init commands
             ActivateAllCommand = new DelegateCommand(ActivateAll);
             DisableAllCommand = new DelegateCommand(DisableAll);
             RefreshCommand = new DelegateCommand(Refresh);
             AddNewGameCommand = new DelegateCommand(AddNewGame);
+            OpenOptionsCommand = new DelegateCommand(OpenOptions);
 
             //Load games
             DetectedGames = new ObservableCollection<GameViewModel>();
@@ -85,11 +91,20 @@ namespace VGIS.GUI
 
         public ICommand AddNewGameCommand { get; set; }
 
+        public ICommand OpenOptionsCommand { get; set; }
+
         private void AddNewGame()
         {
-            var newGameWindow = new AddNewGameView(new AddNewGameViewModel());
-            newGameWindow.Show();
-            newGameWindow.Activate();
+            var newGameWindow = _container.Resolve<AddNewGameView>();
+            newGameWindow.ShowDialog();
+            Refresh();
+        }
+
+        private void OpenOptions()
+        {
+            var optionsWindow = _container.Resolve<OptionsView>();
+            optionsWindow.ShowDialog();
+            Refresh();
         }
 
         private void ActivateAll()

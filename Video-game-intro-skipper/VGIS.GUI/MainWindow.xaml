@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VGIS.GUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" MinWidth="285" MaxWidth="285"
+        Title="VGIS" Height="500" MinWidth="285" MaxWidth="285"
         d:DataContext="{d:DesignInstance local:MainWindowViewModel, IsDesignTimeCreatable=True}">
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">
@@ -86,6 +86,7 @@
             <Button Command="{Binding DisableAllCommand}" Margin="0 5 5 5" Padding="5 0">Disable all</Button>
             <Button Command="{Binding RefreshCommand}" Margin="0 5 5 5" Padding="5 0">Refresh</Button>
             <Button Command="{Binding AddNewGameCommand}" Margin="0 5 5 5" Padding="5 0">Add</Button>
+            <Button Command="{Binding OpenOptionsCommand}" Margin="0 5 5 5" Padding="5 0">Opt</Button>
         </StackPanel>
         <TextBox Grid.Row="1" Margin="5 0 5 5"  VerticalContentAlignment="Center" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <ScrollViewer Grid.Row="2">

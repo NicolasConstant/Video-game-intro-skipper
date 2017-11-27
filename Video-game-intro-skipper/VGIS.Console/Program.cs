@@ -7,10 +7,12 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using VGIS.Domain.BusinessRules;
+using VGIS.Domain.DataAccessLayers;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Repositories;
 using VGIS.Domain.Services;
+using VGIS.Domain.Settings;
 using VGIS.Domain.Tools;
 
 namespace VGIS.Console
@@ -19,9 +21,18 @@ namespace VGIS.Console
     {
         static void Main(string[] args)
         {
+            //Settings
+            var globalSettings = new GlobalSettings()
+            {
+                GamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
+                DefaultInstallFolderConfigFile = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json",
+                CustomInstallFolderConfigFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json"
+            };
+
+
             // Init
-            var gameSettingsRepo = new GameSettingsRepository($@"{Directory.GetCurrentDirectory()}\GameSettings\");
-            var installationDirRepo = new InstallationDirectoriesRepository();
+            var gameSettingsRepo = new GameSettingsRepository(globalSettings, new FileSystemDal());
+            var installationDirRepo = new InstallationDirectoriesRepository(globalSettings, new FileSystemDal());
             var fileAndFolderRenamer = new FileAndFolderRenamer();
             var directoryBrowser = new DirectoryBrowser();
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
