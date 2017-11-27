@@ -97,12 +97,14 @@ namespace VGIS.GUI
         {
             var newGameWindow = _container.Resolve<AddNewGameView>();
             newGameWindow.ShowDialog();
+            Refresh();
         }
 
         private void OpenOptions()
         {
             var optionsWindow = _container.Resolve<OptionsView>();
             optionsWindow.ShowDialog();
+            Refresh();
         }
 
         private void ActivateAll()
