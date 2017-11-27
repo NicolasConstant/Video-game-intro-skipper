@@ -45,5 +45,10 @@ namespace VGIS.Domain.DataAccessLayers
         {
             File.WriteAllText(path, content);
         }
+
+        public void FileDelete(string filePath)
+        {
+            File.Delete(filePath);
+        }
     }
 }

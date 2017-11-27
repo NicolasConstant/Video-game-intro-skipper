@@ -4,11 +4,14 @@ using System.Windows.Input;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
+using VGIS.Domain.Repositories;
+using VGIS.Domain.Services;
 
 namespace VGIS.GUI.Options
 {
     public class OptionsViewModel : BindableBase
     {
+        private readonly InstallFolderService _installFolderService;
         private ObservableCollection<string> _installFolders = new ObservableCollection<string>();
         private string _selectedFolder;
 
@@ -25,10 +28,11 @@ namespace VGIS.GUI.Options
         }
 
         #region Ctor
-        public OptionsViewModel()
+        public OptionsViewModel(InstallFolderService installFolderService)
         {
-            //TODO get install folder from repository
-            var installFolders = new[] { "path1", "path2", "path3" };
+            _installFolderService = installFolderService;
+
+            var installFolders = _installFolderService.GetAllInstallFolder();
 
             InstallFolders = new ObservableCollection<string>();
             InstallFolders.AddRange(installFolders);
@@ -53,8 +57,8 @@ namespace VGIS.GUI.Options
 
         private void ResetInstallFolders()
         {
-            //TODO get install folder from repository
-            var installFolders = new[] { "path1", "path2", "path3" };
+            _installFolderService.ResetInstallationFolders();
+            var installFolders = _installFolderService.GetAllInstallFolder();
 
             InstallFolders.Clear();
             InstallFolders.AddRange(installFolders);
@@ -64,8 +68,7 @@ namespace VGIS.GUI.Options
         {
             if (string.IsNullOrWhiteSpace(SelectedFolder) || !InstallFolders.Contains(SelectedFolder)) return;
 
-            //TODO remove 
-
+            _installFolderService.RemoveInstallationFolder(SelectedFolder);
             InstallFolders.Remove(SelectedFolder);
         }
 
@@ -78,8 +81,7 @@ namespace VGIS.GUI.Options
             {
                 var folder = dialog.FileName;
 
-                //TODO add to local storage
-
+                _installFolderService.AddInstallationFolder(folder);
                 if(!InstallFolders.Contains(folder)) InstallFolders.Add(folder);
             }
 

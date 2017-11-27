@@ -13,7 +13,6 @@ namespace VGIS.Domain.Repositories
     {
         private readonly string _defaultInstallFolderSettingsFile;
         private readonly string _customInstallFolderSettingsFile;
-        //private readonly string[] _defaultInstallFolder;
         private readonly IFileSystemDal _fileSystemDal;
 
         #region Ctor
@@ -22,23 +21,32 @@ namespace VGIS.Domain.Repositories
             _defaultInstallFolderSettingsFile = settings.DefaultInstallFolderConfigFile;
             _customInstallFolderSettingsFile = settings.CustomInstallFolderConfigFile;
             _fileSystemDal = fileSystemDal;
-            
+
             if (!_fileSystemDal.FileExists(_customInstallFolderSettingsFile))
-                _fileSystemDal.FileCreate(_customInstallFolderSettingsFile);
+                LoadAndCreateUserSettings();
         }
         #endregion
+
+        private void LoadAndCreateUserSettings()
+        {
+            //Get common settings
+            var defaultInstallFolders = ReadAndReturnDirectoriesFromConfigFile(_defaultInstallFolderSettingsFile).ToList();
+
+            //Serialize to file
+            var defaultInstallFoldersJson = JsonConvert.SerializeObject(defaultInstallFolders);
+            _fileSystemDal.FileWriteAllText(_customInstallFolderSettingsFile, defaultInstallFoldersJson);
+        }
 
         public IEnumerable<DirectoryInfo> GetAllInstallationFolders()
         {
             var allFolders = new List<string>();
-            allFolders.AddRange(ReadAndReturnDirectoriesFromConfigFile(_defaultInstallFolderSettingsFile));
             allFolders.AddRange(ReadAndReturnDirectoriesFromConfigFile(_customInstallFolderSettingsFile));
 
             foreach (var s in allFolders)
                 yield return new DirectoryInfo(s);
         }
 
-        public void AddNewCustomInstallFolder(string path)
+        public void AddNewInstallFolder(string path)
         {
             var allCurentCustomInstallFolder = ReadAndReturnDirectoriesFromConfigFile(_customInstallFolderSettingsFile).ToList();
 
@@ -48,6 +56,26 @@ namespace VGIS.Domain.Repositories
                 var foldersJson = JsonConvert.SerializeObject(allCurentCustomInstallFolder);
                 _fileSystemDal.FileWriteAllText(_customInstallFolderSettingsFile, foldersJson);
             }
+        }
+
+        public void RemoveInstallFolder(string path)
+        {
+            var allCurentCustomInstallFolder = ReadAndReturnDirectoriesFromConfigFile(_customInstallFolderSettingsFile).ToList();
+
+            if (allCurentCustomInstallFolder.Contains(path))
+            {
+                allCurentCustomInstallFolder.Remove(path);
+                var foldersJson = JsonConvert.SerializeObject(allCurentCustomInstallFolder);
+                _fileSystemDal.FileWriteAllText(_customInstallFolderSettingsFile, foldersJson);
+            }
+        }
+
+        public void ResetInstallationFolders()
+        {
+            if (_fileSystemDal.FileExists(_customInstallFolderSettingsFile))
+                _fileSystemDal.FileDelete(_customInstallFolderSettingsFile);
+
+            LoadAndCreateUserSettings();
         }
 
         private IEnumerable<string> ReadAndReturnDirectoriesFromConfigFile(string configFile)

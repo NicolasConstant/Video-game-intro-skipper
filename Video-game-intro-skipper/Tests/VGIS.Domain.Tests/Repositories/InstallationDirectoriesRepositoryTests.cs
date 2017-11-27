@@ -16,17 +16,22 @@ namespace VGIS.Domain.Tests.Repositories
     public class InstallationDirectoriesRepositoryTests
     {
         [TestMethod]
-        public void GetAllInstallationFolders_Default()
+        public void GetAllInstallationFolders_UserFileNotCreated()
         {
-            const string pathToSettingFile = "myCustomPath";
-            var defaultDirectories = "[\"dir1\", \"dir2\"]";
+            const string pathToDefaultSettingFile = "myDefaultPath";
+            const string pathToCustomSettingFile = "myCustomPath";
+            var defaultDirectories = "[\"dir1\",\"dir2\"]";
 
             #region Stubs and Mocks
             var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();
-            globalSettingsStub.DefaultInstallFolderConfigFile = pathToSettingFile;
+            globalSettingsStub.DefaultInstallFolderConfigFile = pathToDefaultSettingFile;
+            globalSettingsStub.CustomInstallFolderConfigFile = pathToCustomSettingFile;
 
             var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
-            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToSettingFile))).Return(defaultDirectories);
+            dalMock.Expect(x => x.FileExists(pathToCustomSettingFile)).Return(false);
+            dalMock.Expect(x => x.FileWriteAllText(Arg<string>.Is.Equal(pathToCustomSettingFile), Arg<string>.Is.Equal(defaultDirectories)));
+            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToDefaultSettingFile))).Return(defaultDirectories);
+            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToCustomSettingFile))).Return(defaultDirectories);
             #endregion
 
             var repo = new InstallationDirectoriesRepository(globalSettingsStub, dalMock);
@@ -41,12 +46,11 @@ namespace VGIS.Domain.Tests.Repositories
         }
 
         [TestMethod]
-        public void GetAllInstallationFolders_WtCustom()
+        public void GetAllInstallationFolders_UserFileCreated()
         {
             const string pathToDefaultSettingFile = "myDefaultPath";
             const string pathToCustomSettingFile = "myCustomPath";
-            var defaultDirectories = "[\"dir1\", \"dir2\"]";
-            var customDirectories = "[\"dir3\", \"dir4\"]";
+            var customDirectories = "[\"dir1\",\"dir2\"]";
 
             #region Stubs and Mocks
             var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();
@@ -54,7 +58,8 @@ namespace VGIS.Domain.Tests.Repositories
             globalSettingsStub.CustomInstallFolderConfigFile = pathToCustomSettingFile;
 
             var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
-            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToDefaultSettingFile))).Return(defaultDirectories);
+            dalMock.Expect(x => x.FileExists(pathToCustomSettingFile)).Return(true);
+            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToDefaultSettingFile))).Repeat.Never();
             dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToCustomSettingFile))).Return(customDirectories);
             #endregion
 
@@ -63,11 +68,9 @@ namespace VGIS.Domain.Tests.Repositories
 
             #region Validate 
             dalMock.VerifyAllExpectations();
-            Assert.AreEqual(4, installationFolders.Count);
+            Assert.AreEqual(2, installationFolders.Count);
             Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir1"));
             Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir2"));
-            Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir3"));
-            Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir4"));
             #endregion
         }
 
@@ -84,7 +87,8 @@ namespace VGIS.Domain.Tests.Repositories
             globalSettingsStub.CustomInstallFolderConfigFile = pathToCustomSettingFile;
 
             var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
-            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToDefaultSettingFile))).Return(defaultDirectories);
+            dalMock.Expect(x => x.FileExists(pathToCustomSettingFile)).Return(true);
+            dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToDefaultSettingFile))).Repeat.Never();
             dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToCustomSettingFile))).Return("");
             #endregion
 
@@ -93,9 +97,7 @@ namespace VGIS.Domain.Tests.Repositories
 
             #region Validate 
             dalMock.VerifyAllExpectations();
-            Assert.AreEqual(2, installationFolders.Count);
-            Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir1"));
-            Assert.IsNotNull(installationFolders.Where(x => x.Name == "dir2"));
+            Assert.AreEqual(0, installationFolders.Count);
             #endregion
         }
 
@@ -120,7 +122,7 @@ namespace VGIS.Domain.Tests.Repositories
             #endregion
 
             var repo = new InstallationDirectoriesRepository(globalSettingsStub, dalMock);
-            repo.AddNewCustomInstallFolder(newPathToAdd);
+            repo.AddNewInstallFolder(newPathToAdd);
 
             #region Validate 
             dalMock.VerifyAllExpectations();
@@ -128,7 +130,7 @@ namespace VGIS.Domain.Tests.Repositories
         }
 
         [TestMethod]
-        public void AddNewCustomFolder_PathDontExists()
+        public void AddNewFolder_PathDontExists_CustomFileAlreadyCreated()
         {
             const string pathToDefaultSettingFile = "myDefaultPath";
             const string pathToCustomSettingFile = "myCustomPath";
@@ -142,12 +144,13 @@ namespace VGIS.Domain.Tests.Repositories
 
             var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
             dalMock.Expect(x => x.ReadAllText(Arg<string>.Is.Equal(pathToCustomSettingFile))).Return(customDirectories);
+            dalMock.Expect(x => x.FileExists(Arg<string>.Is.Equal(pathToCustomSettingFile))).Return(true);
             dalMock.Expect(x => x.FileWriteAllText(Arg<string>.Is.Equal(pathToCustomSettingFile),Arg<string>.Is.Anything)).Repeat.Never(); 
             dalMock.Expect(x => x.DirectoryExists(newPathToAdd)).Return(false);
             #endregion
 
             var repo = new InstallationDirectoriesRepository(globalSettingsStub, dalMock);
-            repo.AddNewCustomInstallFolder(newPathToAdd);
+            repo.AddNewInstallFolder(newPathToAdd);
 
             #region Validate 
             dalMock.VerifyAllExpectations();

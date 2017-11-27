@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 using VGIS.Domain.BusinessRules;
@@ -26,6 +27,7 @@ namespace VGIS.GUI
     public class MainWindowViewModel : BindableBase
     {
         private readonly IntroEditionService _introEditionService;
+        private readonly IUnityContainer _container;
 
         private string _filter = "";
         private ObservableCollection<GameViewModel> _detectedGames;
@@ -63,9 +65,11 @@ namespace VGIS.GUI
         }
 
         #region Ctor
-        public MainWindowViewModel(IntroEditionService introEditionService)
+        public MainWindowViewModel(IntroEditionService introEditionService, IUnityContainer container)
         {
             _introEditionService = introEditionService;
+            _container = container;
+
             //Init commands
             ActivateAllCommand = new DelegateCommand(ActivateAll);
             DisableAllCommand = new DelegateCommand(DisableAll);
@@ -91,13 +95,13 @@ namespace VGIS.GUI
 
         private void AddNewGame()
         {
-            var newGameWindow = new AddNewGameView(new AddNewGameViewModel());
+            var newGameWindow = _container.Resolve<AddNewGameView>();
             newGameWindow.ShowDialog();
         }
 
         private void OpenOptions()
         {
-            var optionsWindow = new OptionsView(new OptionsViewModel());
+            var optionsWindow = _container.Resolve<OptionsView>();
             optionsWindow.ShowDialog();
         }
 
