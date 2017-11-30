@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VGIS.Domain.Repositories;
 
 namespace VGIS.Domain.Services
@@ -32,6 +33,11 @@ namespace VGIS.Domain.Services
         public void ResetInstallationFolders()
         {
             _repository.ResetInstallationFolders();
+        }
+
+        public IEnumerable<string> GetSubFolders(string parentFolder)
+        {
+            return _repository.GetSubFolders(parentFolder);
         }
     }
 }

@@ -92,5 +92,10 @@ namespace VGIS.Domain.Repositories
 
             return new string[0];
         }
+
+        public IEnumerable<string> GetSubFolders(string parentFolder)
+        {
+            return _fileSystemDal.DirectoryGetChildren(parentFolder).Select(x => x.Name);
+        }
     }
 }

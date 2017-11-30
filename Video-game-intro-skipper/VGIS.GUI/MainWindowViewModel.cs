@@ -27,6 +27,7 @@ namespace VGIS.GUI
     public class MainWindowViewModel : BindableBase
     {
         private readonly IntroEditionService _introEditionService;
+        private readonly GameService _gameService;
         private readonly IUnityContainer _container;
 
         private string _filter = "";
@@ -65,9 +66,10 @@ namespace VGIS.GUI
         }
 
         #region Ctor
-        public MainWindowViewModel(IntroEditionService introEditionService, IUnityContainer container)
+        public MainWindowViewModel(IntroEditionService introEditionService, GameService gameService, IUnityContainer container)
         {
             _introEditionService = introEditionService;
+            _gameService = gameService;
             _container = container;
 
             //Init commands
@@ -148,7 +150,7 @@ namespace VGIS.GUI
 
         private void LoadGames()
         {
-            var games = _introEditionService.GetAllGames();
+            var games = _gameService.GetAllGames();
             foreach (var game in games)
             {
                 DispatchToBackground(() =>

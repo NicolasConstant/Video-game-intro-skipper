@@ -14,5 +14,6 @@ namespace VGIS.Domain.DataAccessLayers
         void FileDelete(string filePath);
         bool DirectoryExists(string path);
         void DirectoryCreate(string path);
+        IEnumerable<DirectoryInfo> DirectoryGetChildren(string path);
     }
 }

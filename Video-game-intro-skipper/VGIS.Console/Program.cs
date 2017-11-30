@@ -38,8 +38,9 @@ namespace VGIS.Console
             var pathPatternTranslator = new PathPatternTranslator(directoryBrowser);
 
 
-            var introEditionService = new IntroEditionService(gameSettingsRepo, installationDirRepo, fileAndFolderRenamer, pathPatternTranslator);
-            Func<IEnumerable<Game>> introEditionServiceFunc = () => introEditionService.GetAllGames();
+            var introEditionService = new IntroEditionService(fileAndFolderRenamer, pathPatternTranslator);
+            var gameService = new GameService(gameSettingsRepo, installationDirRepo);
+            Func<IEnumerable<Game>> introEditionServiceFunc = () => gameService.GetAllGames();
 
             // Load all games
             var allGames = LoadAllGames(introEditionServiceFunc);

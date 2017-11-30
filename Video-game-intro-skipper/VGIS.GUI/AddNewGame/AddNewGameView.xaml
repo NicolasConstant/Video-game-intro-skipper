@@ -29,9 +29,12 @@
         <Label Grid.Row="1">Publisher:</Label>
         <TextBox  VerticalContentAlignment="Center"  Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"></TextBox>
         <Label Grid.Row="2">Install Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"></ComboBox> <Button Margin="2" Grid.Row="2" Grid.Column="4">+</Button>
+        <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+                  ItemsSource="{Binding InstallFolders}" SelectedItem="{Binding Path=SelectedInstallFolder, Mode=TwoWay}"
+                  /> <Button Margin="2" Grid.Row="2" Grid.Column="4">+</Button>
         <Label Grid.Row="3">Game Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4"></ComboBox>
+        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4"
+                  ItemsSource="{Binding PotentialGameFolders}" SelectedItem="{Binding Path=SelectedGameFolder, Mode=TwoWay}"/>
         <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5">Elements to rename:</Label>
         <ListView Grid.Row="5"  Grid.Column="0" Grid.ColumnSpan="5" Margin="0 2 0 2">
             
