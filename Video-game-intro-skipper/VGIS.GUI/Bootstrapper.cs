@@ -31,11 +31,12 @@ namespace VGIS.GUI
         protected override void ConfigureContainer()
         {
             // Register global settings
-            var globalSettings = new GlobalSettings()
+            var globalSettings = new GlobalSettings
             {
-                GamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
+                DefaultGamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
                 DefaultInstallFolderConfigFile = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json",
-                CustomInstallFolderConfigFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json"
+                CustomInstallFolderConfigFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json",
+                CustomGamesSettingsFolder = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\GameSettings\"
             };
             Container.RegisterInstance(globalSettings, new ContainerControlledLifetimeManager());
 

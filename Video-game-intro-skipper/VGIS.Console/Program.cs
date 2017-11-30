@@ -24,7 +24,7 @@ namespace VGIS.Console
             //Settings
             var globalSettings = new GlobalSettings()
             {
-                GamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
+                DefaultGamesSettingsFolder = $@"{Directory.GetCurrentDirectory()}\GameSettings\",
                 DefaultInstallFolderConfigFile = $@"{Directory.GetCurrentDirectory()}\DefaultInstallFolders.json",
                 CustomInstallFolderConfigFile = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\CustomInstallFolders.json"
             };

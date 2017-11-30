@@ -41,6 +41,11 @@ namespace VGIS.Domain.DataAccessLayers
             return Directory.Exists(path);
         }
 
+        public void DirectoryCreate(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
+
         public void FileWriteAllText(string path, string content)
         {
             File.WriteAllText(path, content);
