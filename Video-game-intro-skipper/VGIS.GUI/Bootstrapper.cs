@@ -41,14 +41,14 @@ namespace VGIS.GUI
 
             // Register repositories
             Container.RegisterTypes(
-                AllClasses.FromLoadedAssemblies().Where(x => x.Name.Contains("Repository")),
+                AllClasses.FromLoadedAssemblies().Where(x => x.Name.EndsWith("Repository")),
                 WithMappings.FromMatchingInterface,
                 WithName.Default,
                 WithLifetime.ContainerControlled);
 
             // Register services
             Container.RegisterTypes(
-                AllClasses.FromLoadedAssemblies().Where(x => x.Name.Contains("Service")),
+                AllClasses.FromLoadedAssemblies().Where(x => x.Name.EndsWith("Service")),
                 WithMappings.FromMatchingInterface,
                 WithName.Default,
                 WithLifetime.ContainerControlled);
