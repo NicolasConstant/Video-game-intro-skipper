@@ -7,10 +7,12 @@ namespace VGIS.Domain.Services
     {
         private readonly InstallationDirectoriesRepository _repository;
 
+        #region Ctor
         public InstallFolderService(InstallationDirectoriesRepository repository)
         {
             _repository = repository;
         }
+        #endregion
 
         public string[] GetAllInstallFolder()
         {

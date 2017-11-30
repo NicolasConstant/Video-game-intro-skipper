@@ -39,7 +39,21 @@ namespace VGIS.GUI
             };
             Container.RegisterInstance(globalSettings, new ContainerControlledLifetimeManager());
 
-            // Register all types
+            // Register repositories
+            Container.RegisterTypes(
+                AllClasses.FromLoadedAssemblies().Where(x => x.Name.Contains("Repository")),
+                WithMappings.FromMatchingInterface,
+                WithName.Default,
+                WithLifetime.ContainerControlled);
+
+            // Register services
+            Container.RegisterTypes(
+                AllClasses.FromLoadedAssemblies().Where(x => x.Name.Contains("Service")),
+                WithMappings.FromMatchingInterface,
+                WithName.Default,
+                WithLifetime.ContainerControlled);
+
+            // Register all other types
             Container.RegisterTypes(
                 AllClasses.FromLoadedAssemblies(),
                 WithMappings.FromMatchingInterface,
