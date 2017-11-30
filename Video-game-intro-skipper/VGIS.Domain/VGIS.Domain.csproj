@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessRules\AddNewGameSettings.cs" />
     <Compile Include="BusinessRules\ApplyDisableIntroAction.cs" />
     <Compile Include="BusinessRules\ApplyReenableIntroAction.cs" />
     <Compile Include="BusinessRules\Bases\DispatchActionsBase.cs" />
