@@ -1,5 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using Prism.Commands;
 using Prism.Mvvm;
 using VGIS.Domain.Services;
 
@@ -43,6 +47,9 @@ namespace VGIS.GUI.AddNewGame
             get => _selectedGameFolder;
             set => SetProperty(ref _selectedGameFolder, value);
         }
+        
+        public event Action CloseEvent;
+        public event Action FocusEvent;
 
         #region Ctor
         public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService)
@@ -52,8 +59,28 @@ namespace VGIS.GUI.AddNewGame
 
             InstallFolders.AddRange(_installFolderService.GetAllInstallFolder());
             SelectedInstallFolder = InstallFolders?.FirstOrDefault();
+
+            AddInstallFolderCommand = new DelegateCommand(AddInstallFolder);
         }
         #endregion
+        
+        public ICommand AddInstallFolderCommand { get; set; }
+
+        private void AddInstallFolder()
+        {
+            var dialog = new CommonOpenFileDialog { IsFolderPicker = true };
+            var result = dialog.ShowDialog();
+
+            if (result == CommonFileDialogResult.Ok && dialog.IsFolderPicker)
+            {
+                var folder = dialog.FileName;
+
+                _installFolderService.AddInstallationFolder(folder);
+                if (!InstallFolders.Contains(folder)) InstallFolders.Add(folder);
+            }
+            
+            FocusEvent?.Invoke();
+        }
 
         private void BrowseAndDetectPotentialGameFolders(string parentFolder)
         {
