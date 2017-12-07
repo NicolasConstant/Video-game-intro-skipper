@@ -1,0 +1,40 @@
+﻿{
+  "Name": "Assassin's Creed Unity",
+  "PublisherName": "Ubisoft",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "Assassin's Creed Unity" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "ACU.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\2secACUlogo.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\AbstergoLogo.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\pc_TWIMTBP.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\UbisoftLogo.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\*\\pc_WarningSaving.bk2"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\videos\\*\\pc_WarningDisclaimer.bk2"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "289650"
+}
