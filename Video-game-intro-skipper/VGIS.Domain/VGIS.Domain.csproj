@@ -68,6 +68,7 @@
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
     <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\IllustrationValidationService.cs" />
     <Compile Include="Services\InstallFolderService.cs" />
     <Compile Include="Services\IntroEditionService.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
