@@ -24,7 +24,7 @@ namespace VGIS.Domain.BusinessRules
                 case IllustrationPlatformEnum.Gog:
                     return ValidateGog(_illustrationUrl);
                 case IllustrationPlatformEnum.BattleNet:
-                    throw new NotImplementedException();
+                    return ValidateBattleNet(_illustrationUrl);
                 case IllustrationPlatformEnum.Origin:
                     return ValidateOrigin(_illustrationUrl);
                 case IllustrationPlatformEnum.Steam:
@@ -37,9 +37,15 @@ namespace VGIS.Domain.BusinessRules
             }
         }
 
+        private bool ValidateBattleNet(string illustrationUrl)
+        {
+            const string pattern = @"bnetproduct-[a-zA-Z]+.[a-zA-Z]+.net//[a-zA-Z0-9]+/[a-zA-Z0-9]+-prod-card-tall.jpg";
+            return ValidateRegex(pattern, illustrationUrl);
+        }
+
         private bool ValidateOrigin(string illustrationUrl)
         {
-            const string pattern = @"originassets.akamaized.net/origin-com-store-final-assets-prod/[0-9]+/[xX0-9\.]+/[0-9]+_LB_[xX0-9]+_[a-zA-Z]+_[a-zA-Z]+_[a-zA-Z0-9\%]+_[0-9\-]+_[a-zA-Z0-9]+.jpg";
+            const string pattern = @"originassets.[a-zA-Z]+.net/origin-com-store-final-assets-prod/[0-9]+/[xX0-9\.]+/[0-9]+_LB_[xX0-9]+_[a-zA-Z]+_[a-zA-Z]+_[a-zA-Z0-9\%]+_[0-9\-]+_[a-zA-Z0-9]+.jpg";
             return ValidateRegex(pattern, illustrationUrl);
         }
 
