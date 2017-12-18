@@ -30,28 +30,35 @@ namespace VGIS.Domain.BusinessRules
                 case IllustrationPlatformEnum.Steam:
                     return ValidateSteam(_illustrationUrl);
                 case IllustrationPlatformEnum.Uplay:
-                    throw new NotImplementedException();
+                    return ValidateUplay(_illustrationUrl);
                 default:
                     throw new NotImplementedException();
 
             }
+        }
 
-
-            throw new NotImplementedException();
+        private bool ValidateUplay(string illustrationUrl)
+        {
+            const string pattern = @"store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/default/dw266cd145/images/large/[a-zA-Z0-9]+.jpg";
+            return ValidateRegex(pattern, illustrationUrl);
         }
 
         private bool ValidateGog(string illustrationUrl)
         {
             const string pattern = @"images-([0-9]+).gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_([a-zA-Z0-9]+(_)*)*.jpg";
-            var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            return reg.IsMatch(illustrationUrl);
+            return ValidateRegex(pattern, illustrationUrl);
         }
 
         private bool ValidateSteam(string illustrationUrl)
         {
             const string pattern = @"steamstatic.com/steam/apps/([0-9]+)/header.jpg";
+            return ValidateRegex(pattern, illustrationUrl);
+        }
+
+        private bool ValidateRegex(string pattern, string illustration)
+        {
             var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            return reg.IsMatch(illustrationUrl);            
+            return reg.IsMatch(illustration);
         }
     }
 }
