@@ -122,5 +122,36 @@ namespace VGIS.Domain.Tests.BusinessRules
             #endregion
         }
 
+        [TestMethod]
+        public void ValidateOrigin_ValidPattern()
+        {
+            const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-assets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ValidateIllustrationAction(platformType, illustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(true, result);
+            #endregion
+        }
+
+        [TestMethod]
+        public void ValidateOrigin_HasNotValue()
+        {
+            const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-assets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ValidateIllustrationAction(platformType, illustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(false, result);
+            #endregion
+        }
+
+
+
+
     }
 }

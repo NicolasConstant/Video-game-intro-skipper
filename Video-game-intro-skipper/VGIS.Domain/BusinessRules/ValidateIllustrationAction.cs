@@ -26,7 +26,7 @@ namespace VGIS.Domain.BusinessRules
                 case IllustrationPlatformEnum.BattleNet:
                     throw new NotImplementedException();
                 case IllustrationPlatformEnum.Origin:
-                    throw new NotImplementedException();
+                    return ValidateOrigin(_illustrationUrl);
                 case IllustrationPlatformEnum.Steam:
                     return ValidateSteam(_illustrationUrl);
                 case IllustrationPlatformEnum.Uplay:
@@ -35,6 +35,12 @@ namespace VGIS.Domain.BusinessRules
                     throw new NotImplementedException();
 
             }
+        }
+
+        private bool ValidateOrigin(string illustrationUrl)
+        {
+            const string pattern = @"originassets.akamaized.net/origin-com-store-final-assets-prod/[0-9]+/[xX0-9\.]+/[0-9]+_LB_[xX0-9]+_[a-zA-Z]+_[a-zA-Z]+_[a-zA-Z0-9\%]+_[0-9\-]+_[a-zA-Z0-9]+.jpg";
+            return ValidateRegex(pattern, illustrationUrl);
         }
 
         private bool ValidateUplay(string illustrationUrl)
