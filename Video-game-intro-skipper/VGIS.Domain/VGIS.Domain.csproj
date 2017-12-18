@@ -60,6 +60,7 @@
     <Compile Include="Domain\GameDetectionResult.cs" />
     <Compile Include="Domain\GameSetting.cs" />
     <Compile Include="Domain\RootValidationRule.cs" />
+    <Compile Include="BusinessRules\ValidateIllustrationAction.cs" />
     <Compile Include="Enums\DisableActionTypeEnum.cs" />
     <Compile Include="Enums\IllustrationPlatformEnum.cs" />
     <Compile Include="Enums\IntroductionStateEnum.cs" />
