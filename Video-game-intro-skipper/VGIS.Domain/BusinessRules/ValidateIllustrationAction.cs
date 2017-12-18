@@ -22,7 +22,7 @@ namespace VGIS.Domain.BusinessRules
             switch (_platformType)
             {
                 case IllustrationPlatformEnum.Gog:
-                    throw new NotImplementedException();
+                    return ValidateGog(_illustrationUrl);
                 case IllustrationPlatformEnum.BattleNet:
                     throw new NotImplementedException();
                 case IllustrationPlatformEnum.Origin:
@@ -38,6 +38,13 @@ namespace VGIS.Domain.BusinessRules
 
 
             throw new NotImplementedException();
+        }
+
+        private bool ValidateGog(string illustrationUrl)
+        {
+            const string pattern = @"images-([0-9]+).gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_([a-zA-Z0-9]+(_)*)*.jpg";
+            var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            return reg.IsMatch(illustrationUrl);
         }
 
         private bool ValidateSteam(string illustrationUrl)

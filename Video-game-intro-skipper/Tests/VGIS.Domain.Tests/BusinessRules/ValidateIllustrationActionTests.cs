@@ -52,6 +52,47 @@ namespace VGIS.Domain.Tests.BusinessRules
             #endregion
         }
 
+        [TestMethod]
+        public void ValidateGog_ValidPattern()
+        {
+            const string steamIllustrationUrl = "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Gog;
+
+            var action = new ValidateIllustrationAction(platformType, steamIllustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(true, result);
+            #endregion
+        }
+
+        [TestMethod]
+        public void ValidateGog_HasNotValue()
+        {
+            const string steamIllustrationUrl = "https://images-1.gog.com/_product_quartet_250_2x.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Gog;
+
+            var action = new ValidateIllustrationAction(platformType, steamIllustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(false, result);
+            #endregion
+        }
+
+        [TestMethod]
+        public void ValidateGog_HasNotSubValue()
+        {
+            const string steamIllustrationUrl = "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Gog;
+
+            var action = new ValidateIllustrationAction(platformType, steamIllustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(true, result);
+            #endregion
+        }
 
     }
 }
