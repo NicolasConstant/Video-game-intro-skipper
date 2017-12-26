@@ -50,6 +50,7 @@
     <Compile Include="BusinessRules\DetectGameStatus.cs" />
     <Compile Include="BusinessRules\DetectAllGamesStatus.cs" />
     <Compile Include="BusinessRules\DetectIntroductionState.cs" />
+    <Compile Include="BusinessRules\ExtractIllustrationCodeAction.cs" />
     <Compile Include="BusinessRules\ValidateGameRoot.cs" />
     <Compile Include="Consts\GlobalNamesStruct.cs" />
     <Compile Include="Consts\SpecialChar.cs" />
