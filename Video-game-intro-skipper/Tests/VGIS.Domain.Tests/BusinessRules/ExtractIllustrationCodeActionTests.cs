@@ -23,7 +23,7 @@ namespace VGIS.Domain.Tests.BusinessRules
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(ArgumentException))]
         public void ExtractSteam_UnvalidPattern()
         {
             const string illustrationUrl = "http://cdn.edgecast.steamstatic.com/steam/aPPpps/110800/header.jpg?t=1482775022";

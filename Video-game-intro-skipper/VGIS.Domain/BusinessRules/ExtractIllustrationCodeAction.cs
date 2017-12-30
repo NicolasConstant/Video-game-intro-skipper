@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VGIS.Domain.Enums;
 
@@ -57,12 +58,34 @@ namespace VGIS.Domain.BusinessRules
 
         private string ExtractSteam(string illustrationUrl)
         {
-            throw new NotImplementedException();
+            const string pre = "steamstatic.com/steam/apps/";
+            const string post = "/header.jpg";
+
+            // Remove preposition
+            var prePosition = illustrationUrl.LastIndexOf(pre, StringComparison.InvariantCultureIgnoreCase);
+            var illustrationUrlWtPre = illustrationUrl.Substring(prePosition + pre.Length);
+
+            // Remove postposition
+            var postPosition = illustrationUrlWtPre.IndexOf(post, StringComparison.InvariantCultureIgnoreCase);
+            var illustrationCode = illustrationUrlWtPre.Substring(0, postPosition);
+
+            // Validate data
+            const string pattern = @"^([0-9]+)$";
+            if (!ValidateRegex(pattern, illustrationCode))
+                throw new ArgumentException("illustration url not valid");
+
+            return illustrationCode;
         }
 
         private string ExtractUplay(string illustrationUrl)
         {
             throw new NotImplementedException();
+        }
+
+        private bool ValidateRegex(string pattern, string illustration)
+        {
+            var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            return reg.IsMatch(illustration);
         }
     }
 }
