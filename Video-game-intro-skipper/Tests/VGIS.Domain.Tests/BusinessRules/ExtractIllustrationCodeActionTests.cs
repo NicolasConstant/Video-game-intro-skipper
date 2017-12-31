@@ -11,7 +11,8 @@ namespace VGIS.Domain.Tests.BusinessRules
         [TestMethod]
         public void ExtractSteam_ValidPattern()
         {
-            const string illustrationUrl = "http://cdn.edgecast.steamstatic.com/steam/apps/110800/header.jpg?t=1482775022";
+            const string illustrationUrl =
+                "http://cdn.edgecast.steamstatic.com/steam/apps/110800/header.jpg?t=1482775022";
             const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Steam;
 
             var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
@@ -26,11 +27,57 @@ namespace VGIS.Domain.Tests.BusinessRules
         [ExpectedException(typeof(Exception))]
         public void ExtractSteam_UnvalidPattern()
         {
-            const string illustrationUrl = "http://cdn.edgecast.steamstatic.com/steam/aPPpps/110800/header.jpg?t=1482775022";
+            const string illustrationUrl =
+                "http://cdn.edgecast.steamstatic.com/steam/aPPpps/110800/header.jpg?t=1482775022";
             const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Steam;
 
             var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
             action.Execute();
+        }
+
+        public void ExtractGog_ValidPattern()
+        {
+
+            const string illustrationUrl =
+                "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+
+        }
+
+        public void ExtractGog_UnvalidPattern()
+        {
+
+            const string illustrationUrl =
+                "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+
+        }
+
+        public void ExtractUplay_ValidPattern()
+        {
+            const string illustrationUrl = "http://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/default/dw266cd145/images/large/584543894e01656a168b4567.jpg?sw=192&sh=245&sm=fit";
+        }
+
+        public void ExtractUplay_UnvalidPattern()
+        {
+        }
+
+
+        public void ExtractOrigin_ValidPattern()
+        {
+            const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-assets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+        }
+
+        public void ExtractOrigin_UnvalidPattern()
+        {
+        }
+
+        public void ExtractBattleNet_ValidPattern()
+        {
+            const string illustrationUrl = "http://bnetproduct-a.akamaihd.net//f84/7d453e354c9df8ca335ad45da020704c-prod-card-tall.jpg";
+
+        }
+
+        public void ExtractBattleNet_UnvalidPattern()
+        {
         }
     }
 }
