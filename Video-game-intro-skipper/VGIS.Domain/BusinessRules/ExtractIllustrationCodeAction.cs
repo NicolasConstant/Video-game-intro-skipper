@@ -72,7 +72,7 @@ namespace VGIS.Domain.BusinessRules
             // Validate data
             const string pattern = @"^([0-9]+)$";
             if (!ValidateRegex(pattern, illustrationCode))
-                throw new ArgumentException("illustration url not valid");
+                throw new Exception("extracted illustration code not valid");
 
             return illustrationCode;
         }
