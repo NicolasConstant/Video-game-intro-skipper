@@ -35,20 +35,31 @@ namespace VGIS.Domain.Tests.BusinessRules
             action.Execute();
         }
 
+        [TestMethod]
         public void ExtractGog_ValidPattern()
         {
-
             const string illustrationUrl =
                 "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Gog;
+            
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
 
+            #region Validate
+            Assert.AreEqual("b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42", code);
+            #endregion
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractGog_UnvalidPattern()
         {
-
             const string illustrationUrl =
-                "https://images-1.gog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+                "https://images-1.gogog.com/b509eebef606ff5cebde31c74e31b01352e9c347e60afaefacff8924b1111b42_product_quartet_250_2x.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Gog;
 
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
 
         public void ExtractUplay_ValidPattern()

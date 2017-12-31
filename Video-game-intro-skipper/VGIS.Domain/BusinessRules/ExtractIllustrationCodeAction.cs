@@ -43,7 +43,18 @@ namespace VGIS.Domain.BusinessRules
 
         private string ExtractGog(string illustrationUrl)
         {
-            throw new NotImplementedException();
+            const string pre = ".gog.com/";
+            const string post = "_product";
+
+            //Extract code
+            var illustrationCode = ExtractIllustrationCode(illustrationUrl, pre, post);
+
+            // Validate data
+            const string pattern = @"^([a-zA-Z0-9]+)$";
+            if (!ValidateRegex(pattern, illustrationCode))
+                throw new Exception("extracted illustration code not valid");
+
+            return illustrationCode;
         }
 
         private string ExtractBattleNet(string illustrationUrl)
@@ -61,13 +72,8 @@ namespace VGIS.Domain.BusinessRules
             const string pre = "steamstatic.com/steam/apps/";
             const string post = "/header.jpg";
 
-            // Remove preposition
-            var prePosition = illustrationUrl.LastIndexOf(pre, StringComparison.InvariantCultureIgnoreCase);
-            var illustrationUrlWtPre = illustrationUrl.Substring(prePosition + pre.Length);
-
-            // Remove postposition
-            var postPosition = illustrationUrlWtPre.IndexOf(post, StringComparison.InvariantCultureIgnoreCase);
-            var illustrationCode = illustrationUrlWtPre.Substring(0, postPosition);
+            //Extract code
+            var illustrationCode = ExtractIllustrationCode(illustrationUrl, pre, post);
 
             // Validate data
             const string pattern = @"^([0-9]+)$";
@@ -86,6 +92,18 @@ namespace VGIS.Domain.BusinessRules
         {
             var reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             return reg.IsMatch(illustration);
+        }
+
+        private string ExtractIllustrationCode(string illustrationUrl, string pre, string post)
+        {
+            // Remove preposition
+            var prePosition = illustrationUrl.LastIndexOf(pre, StringComparison.InvariantCultureIgnoreCase);
+            var illustrationUrlWtPre = illustrationUrl.Substring(prePosition + pre.Length);
+
+            // Remove postposition
+            var postPosition = illustrationUrlWtPre.IndexOf(post, StringComparison.InvariantCultureIgnoreCase);
+            var illustrationCode = illustrationUrlWtPre.Substring(0, postPosition);
+            return illustrationCode;
         }
     }
 }
