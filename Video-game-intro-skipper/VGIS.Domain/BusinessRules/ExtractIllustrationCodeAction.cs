@@ -59,7 +59,18 @@ namespace VGIS.Domain.BusinessRules
 
         private string ExtractBattleNet(string illustrationUrl)
         {
-            throw new NotImplementedException();
+            const string pre = "akamaihd.net/cms/page_media/";
+            const string post = ".jpg";
+
+            //Extract code
+            var illustrationCode = ExtractIllustrationCode(illustrationUrl, pre, post);
+
+            // Validate data
+            const string pattern = @"^([a-zA-Z0-9]+)$";
+            if (!ValidateRegex(pattern, illustrationCode))
+                throw new Exception("extracted illustration code not valid");
+
+            return illustrationCode;
         }
 
         private string ExtractOrigin(string illustrationUrl)

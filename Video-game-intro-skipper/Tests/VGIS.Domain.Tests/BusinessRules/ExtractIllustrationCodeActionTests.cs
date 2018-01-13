@@ -113,14 +113,29 @@ namespace VGIS.Domain.Tests.BusinessRules
             action.Execute();
         }
 
+        [TestMethod]
         public void ExtractBattleNet_ValidPattern()
         {
-            const string illustrationUrl = "http://bnetproduct-a.akamaihd.net//f84/7d453e354c9df8ca335ad45da020704c-prod-card-tall.jpg";
+            const string illustrationUrl = "https://bnetcmsus-a.akamaihd.net/cms/page_media/BZ5PE09UZVHF1506441173647.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.BattleNet;
 
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("BZ5PE09UZVHF1506441173647", code);
+            #endregion
         }
-
+        
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractBattleNet_UnvalidPattern()
         {
+            const string illustrationUrl = "https://bnetcmsus-a.akamaihd.net/cms/page_me0dia/BZ5PE09UZVHF1506441173647.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.BattleNet;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
     }
 }
