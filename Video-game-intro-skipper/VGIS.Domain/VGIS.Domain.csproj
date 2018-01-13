@@ -67,6 +67,7 @@
     <Compile Include="Enums\IllustrationPlatformEnum.cs" />
     <Compile Include="Enums\IntroductionStateEnum.cs" />
     <Compile Include="Enums\RootValidationTypeEnum.cs" />
+    <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
