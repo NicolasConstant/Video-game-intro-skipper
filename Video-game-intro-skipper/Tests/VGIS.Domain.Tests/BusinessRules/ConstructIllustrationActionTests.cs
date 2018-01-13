@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VGIS.Domain.BusinessRules;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.Tests.BusinessRules
 {
@@ -17,7 +20,9 @@ namespace VGIS.Domain.Tests.BusinessRules
             var url = action.Execute();
 
             #region Validate
-            Assert.AreEqual("http://cdn.edgecast.steamstatic.com/steam/apps/110800/header.jpg", url);
+            var epoch = EpochHandler.GenerateEpochNow() - 60;
+            Assert.AreEqual("http://cdn.edgecast.steamstatic.com/steam/apps/110800/header.jpg", url.Split(new []{ "?t=" }, StringSplitOptions.RemoveEmptyEntries).First());
+            Assert.IsTrue(epoch < int.Parse(url.Split(new []{ "?t=" }, StringSplitOptions.RemoveEmptyEntries).Last()));
             #endregion
         }
         

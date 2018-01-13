@@ -1,5 +1,6 @@
 ﻿using System;
 using VGIS.Domain.Enums;
+using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.BusinessRules
 {
@@ -53,7 +54,8 @@ namespace VGIS.Domain.BusinessRules
 
         private string GenerateSteamIllustration(string illustrationUrl)
         {
-            return "http://" + $"cdn.edgecast.steamstatic.com/steam/apps/{illustrationUrl}/header.jpg";
+            var epochNow = EpochHandler.GenerateEpochNow();
+            return "http://" + $"cdn.edgecast.steamstatic.com/steam/apps/{illustrationUrl}/header.jpg?t={epochNow}";
         }
 
         private string GenerateUplayIllustration(string illustrationUrl)
