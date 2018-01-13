@@ -47,6 +47,7 @@
     <Compile Include="BusinessRules\ApplyDisableIntroAction.cs" />
     <Compile Include="BusinessRules\ApplyReenableIntroAction.cs" />
     <Compile Include="BusinessRules\Bases\DispatchActionsBase.cs" />
+    <Compile Include="BusinessRules\ConstructIllustrationAction.cs" />
     <Compile Include="BusinessRules\DetectGameStatus.cs" />
     <Compile Include="BusinessRules\DetectAllGamesStatus.cs" />
     <Compile Include="BusinessRules\DetectIntroductionState.cs" />
