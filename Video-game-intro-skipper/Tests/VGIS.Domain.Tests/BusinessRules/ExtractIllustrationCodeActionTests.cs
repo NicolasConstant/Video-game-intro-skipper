@@ -62,13 +62,29 @@ namespace VGIS.Domain.Tests.BusinessRules
             action.Execute();
         }
 
+        [TestMethod]
         public void ExtractUplay_ValidPattern()
         {
             const string illustrationUrl = "http://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/default/dw266cd145/images/large/584543894e01656a168b4567.jpg?sw=192&sh=245&sm=fit";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Uplay;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("dw266cd145-584543894e01656a168b4567", code);
+            #endregion
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractUplay_UnvalidPattern()
         {
+            const string illustrationUrl = "http://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-mastertalog/default/dw266cd145/images/large/584543894e01656a168b4567.jpg?sw=192&sh=245&sm=fit";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Uplay;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
 
 
