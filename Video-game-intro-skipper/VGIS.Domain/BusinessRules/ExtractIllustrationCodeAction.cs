@@ -64,7 +64,22 @@ namespace VGIS.Domain.BusinessRules
 
         private string ExtractOrigin(string illustrationUrl)
         {
-            throw new NotImplementedException();
+            const string pre = "akamaized.net/origin-com-store-final-assets-prod/";
+            const string post = ".jpg";
+
+            //Extract code
+            var illustrationCode = ExtractIllustrationCode(illustrationUrl, pre, post);
+
+            // Validate data
+            var constraint1 = illustrationCode.Split('/')[0];
+            var constraint2 = illustrationCode.Split('/')[2].Split('_').Last();
+
+            const string pattern1 = @"^([0-9]+)$";
+            const string pattern2 = @"^([a-zA-Z0-9]+)$";
+            if (!ValidateRegex(pattern1, constraint1) || !ValidateRegex(pattern2, constraint2))
+                throw new Exception("extracted illustration code not valid");
+
+            return illustrationCode;
         }
 
         private string ExtractSteam(string illustrationUrl)

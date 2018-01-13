@@ -87,14 +87,30 @@ namespace VGIS.Domain.Tests.BusinessRules
             action.Execute();
         }
 
-
+        [TestMethod]
         public void ExtractOrigin_ValidPattern()
         {
             const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-assets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f", code);
+            #endregion
         }
 
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractOrigin_UnvalidPattern()
         {
+            const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-ass00ets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
 
         public void ExtractBattleNet_ValidPattern()
