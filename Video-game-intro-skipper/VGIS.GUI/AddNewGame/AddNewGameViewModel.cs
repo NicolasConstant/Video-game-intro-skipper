@@ -28,11 +28,32 @@ namespace VGIS.GUI.AddNewGame
         private ObservableCollection<ElementToProcess> _elementsToProcess = new ObservableCollection<ElementToProcess>();
         private ElementToProcess _selectedElementsToProcess;
 
-        private string _selectedIllustrationPlatform;
-        private IllustrationPlatformEnum _selectedIllustrationPlatformEnum;
+        private string _name;
+        private string _publisher;
+        private string _developer;
         private string _selectedInstallFolder;
         private string _selectedGameFolder;
+        private string _selectedIllustrationPlatform;
+        private IllustrationPlatformEnum _selectedIllustrationPlatformEnum;
         private string _gameIllustrationUrl;
+
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        public string Publisher
+        {
+            get => _publisher;
+            set => SetProperty(ref _publisher, value);
+        }
+
+        public string Developer
+        {
+            get => _developer;
+            set => SetProperty(ref _developer, value);
+        }
 
         public ObservableCollection<ElementToProcess> ElementsToProcess
         {

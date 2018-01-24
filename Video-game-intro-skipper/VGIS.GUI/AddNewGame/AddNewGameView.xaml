@@ -13,6 +13,7 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
@@ -28,26 +29,31 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0">Name:</Label>
-        <TextBox  VerticalContentAlignment="Center" Margin="2" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
-        <Label Grid.Row="1">Publisher:</Label>
-        <TextBox  VerticalContentAlignment="Center"  Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
-        <Label Grid.Row="2">Install Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"
+        <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" 
+            VerticalContentAlignment="Center" Margin="2" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="1">Developer:</Label>
+        <TextBox Text="{Binding Path=Developer, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalContentAlignment="Center"  Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="2">Publisher:</Label>
+        <TextBox Text="{Binding Path=Publisher, UpdateSourceTrigger=PropertyChanged}" 
+            VerticalContentAlignment="Center"  Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="3">Install Folder:</Label>
+        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5"
                   ItemsSource="{Binding InstallFolders}" SelectedItem="{Binding Path=SelectedInstallFolder, Mode=TwoWay}"
                   />
-        <Button Command="{Binding AddInstallFolderCommand}" Margin="2" Grid.Row="2" Grid.Column="6">+</Button>
-        <Label Grid.Row="3">Game Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="6"
+        <Button Command="{Binding AddInstallFolderCommand}" Margin="2" Grid.Row="3" Grid.Column="6">+</Button>
+        <Label Grid.Row="4">Game Folder:</Label>
+        <ComboBox Margin="2" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="6"
                   ItemsSource="{Binding PotentialGameFolders}" SelectedItem="{Binding Path=SelectedGameFolder, Mode=TwoWay}"/>
-        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4">Elements to rename:</Label>
+        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4">Elements to rename:</Label>
         <Button Command="{Binding PickFilesToRenameCommand}"
-                Grid.Row="4" Grid.Column="3"  Margin="2">Add File(s)</Button>
+                Grid.Row="5" Grid.Column="3"  Margin="2">Add File(s)</Button>
         <Button Command="{Binding PickFoldersToRenameCommand}"
-                Grid.Row="4" Grid.Column="4"  Margin="2">Add Folder(s)</Button>
+                Grid.Row="5" Grid.Column="4"  Margin="2">Add Folder(s)</Button>
         <Button Command="{Binding RemoveElementCommand}"
-                Grid.Row="4" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Remove</Button>
+                Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Remove</Button>
         <ListView ItemsSource="{Binding ElementsToProcess}" SelectedItem="{Binding SelectedElementToProcess}"
-            Grid.Row="5"  Grid.Column="0" Grid.ColumnSpan="7" Margin="0 2 0 2">
+            Grid.Row="6"  Grid.Column="0" Grid.ColumnSpan="7" Margin="0 2 0 2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="400" Header="Path"
@@ -57,17 +63,17 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Grid.Row="6" Grid.Column="0">Game Illustration:</Label>
-        <ComboBox Margin="2" Grid.Row="6" Grid.Column="1" 
+        <Label Grid.Row="7" Grid.Column="0">Game Illustration:</Label>
+        <ComboBox Margin="2" Grid.Row="7" Grid.Column="1" 
                   ItemsSource="{Binding IllustrationPlatforms}" SelectedItem="{Binding Path=SelectedIllustrationPlatform, Mode=TwoWay}"
                   />
         <TextBox Text="{Binding Path=GameIllustration, UpdateSourceTrigger=PropertyChanged}" 
-                 VerticalContentAlignment="Center" Margin="2" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="4"></TextBox>
+                 VerticalContentAlignment="Center" Margin="2" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="4"></TextBox>
         <!--BorderThickness="1" BorderBrush="Red"-->
-        <Button Margin="2" Grid.Row="6" Grid.Column="6">?</Button>
+        <Button Margin="2" Grid.Row="7" Grid.Column="6">?</Button>
 
-        <Button Grid.Row="7" Grid.Column="3" Margin="2">Test</Button>
-        <Button Grid.Row="7" Grid.Column="4" Margin="2">Cancel</Button>
-        <Button Grid.Row="7" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Save</Button>
+        <Button Grid.Row="8" Grid.Column="3" Margin="2">Test</Button>
+        <Button Grid.Row="8" Grid.Column="4" Margin="2">Cancel</Button>
+        <Button Grid.Row="8" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Save</Button>
     </Grid>
 </Window>
