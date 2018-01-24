@@ -139,6 +139,10 @@ namespace VGIS.GUI.AddNewGame
             PickFilesToRenameCommand = new DelegateCommand(PickFilesToRename);
             PickFoldersToRenameCommand = new DelegateCommand(PickFoldersToRename);
             RemoveElementCommand = new DelegateCommand(RemoveElement);
+            TestCommand = new DelegateCommand(Test);
+            CancelCommand = new DelegateCommand(Cancel);
+            SaveCommand = new DelegateCommand(Save);
+            IllustrationHelpCommand = new DelegateCommand(LaunchIllustrationHelp);
 
             InitIllustrationPlatformList();
         }
@@ -159,6 +163,10 @@ namespace VGIS.GUI.AddNewGame
         public ICommand PickFilesToRenameCommand { get; set; }
         public ICommand PickFoldersToRenameCommand { get; set; }
         public ICommand RemoveElementCommand { get; set; }
+        public ICommand TestCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand IllustrationHelpCommand { get; set; }
 
         private void ClearElementsToProcess()
         {
@@ -179,6 +187,8 @@ namespace VGIS.GUI.AddNewGame
             };
 
             var result = dialog.ShowDialog();
+            FocusEvent?.Invoke();
+
             if (result == CommonFileDialogResult.Ok)
             {
                 var selectedElements = dialog.FileNames;
@@ -200,6 +210,7 @@ namespace VGIS.GUI.AddNewGame
             };
 
             var result = dialog.ShowDialog();
+            FocusEvent?.Invoke();
 
             if (result == CommonFileDialogResult.Ok)
             {
@@ -257,15 +268,33 @@ namespace VGIS.GUI.AddNewGame
             SelectedGameFolder = PotentialGameFolders?.FirstOrDefault();
         }
 
+        private void SetSelectedIllustrationPlatformEnum(string value)
+        {
+            _selectedIllustrationPlatformEnum = _illustrationDisplayableValue[value];
+        }
 
-        private void ValidateGameIllustrationUrl(string value)
+
+        private void Test()
         {
 
         }
 
-        private void SetSelectedIllustrationPlatformEnum(string value)
+        private void Cancel()
         {
-            _selectedIllustrationPlatformEnum = _illustrationDisplayableValue[value];
+            CloseEvent?.Invoke();
+        }
+
+        private void Save()
+        {
+            //TODO Save data
+            //TODO Call API
+            CloseEvent?.Invoke();
+        }
+
+        private void LaunchIllustrationHelp()
+        {
+            //TODO set in config file URL to doc
+            Process.Start("https://github.com/NicolasConstant/Video-game-intro-skipper"); 
         }
     }
 }
