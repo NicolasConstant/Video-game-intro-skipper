@@ -62,33 +62,80 @@ namespace VGIS.Domain.Tests.BusinessRules
             action.Execute();
         }
 
+        [TestMethod]
         public void ExtractUplay_ValidPattern()
         {
             const string illustrationUrl = "http://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-masterCatalog/default/dw266cd145/images/large/584543894e01656a168b4567.jpg?sw=192&sh=245&sm=fit";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Uplay;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("dw266cd145-584543894e01656a168b4567", code);
+            #endregion
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractUplay_UnvalidPattern()
         {
+            const string illustrationUrl = "http://store.ubi.com/dw/image/v2/ABBS_PRD/on/demandware.static/-/Sites-mastertalog/default/dw266cd145/images/large/584543894e01656a168b4567.jpg?sw=192&sh=245&sm=fit";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Uplay;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
 
-
+        [TestMethod]
         public void ExtractOrigin_ValidPattern()
         {
             const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-assets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f", code);
+            #endregion
         }
 
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractOrigin_UnvalidPattern()
         {
+            const string illustrationUrl = "https://originassets.akamaized.net/origin-com-store-final-ass00ets-prod/193632/231.0x326.0/1047228_LB_231x326_en_US_%5E_2017-05-26-22-43-31_4a0f2ef46a1183b885840fb8d0a7b7cc795b4a9f.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Origin;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
 
+        [TestMethod]
         public void ExtractBattleNet_ValidPattern()
         {
-            const string illustrationUrl = "http://bnetproduct-a.akamaihd.net//f84/7d453e354c9df8ca335ad45da020704c-prod-card-tall.jpg";
+            const string illustrationUrl = "https://bnetcmsus-a.akamaihd.net/cms/page_media/BZ5PE09UZVHF1506441173647.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.BattleNet;
 
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            var code = action.Execute();
+
+            #region Validate
+            Assert.AreEqual("BZ5PE09UZVHF1506441173647", code);
+            #endregion
         }
-
+        
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
         public void ExtractBattleNet_UnvalidPattern()
         {
+            const string illustrationUrl = "https://bnetcmsus-a.akamaihd.net/cms/page_me0dia/BZ5PE09UZVHF1506441173647.jpg";
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.BattleNet;
+
+            var action = new ExtractIllustrationCodeAction(platformType, illustrationUrl);
+            action.Execute();
         }
     }
 }

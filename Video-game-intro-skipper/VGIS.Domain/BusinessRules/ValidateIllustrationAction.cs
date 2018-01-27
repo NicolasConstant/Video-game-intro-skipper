@@ -39,7 +39,7 @@ namespace VGIS.Domain.BusinessRules
 
         private bool ValidateBattleNet(string illustrationUrl)
         {
-            const string pattern = @"bnetproduct-[a-zA-Z]+.[a-zA-Z]+.net//[a-zA-Z0-9]+/[a-zA-Z0-9]+-prod-card-tall.jpg";
+            const string pattern = @"akamaihd.net/cms/page_media/[a-zA-Z0-9]+.jpg";
             return ValidateRegex(pattern, illustrationUrl);
         }
 

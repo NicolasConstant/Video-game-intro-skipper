@@ -153,7 +153,7 @@ namespace VGIS.Domain.Tests.BusinessRules
         [TestMethod]
         public void ValidateBattleNet_ValidPattern()
         {
-            const string illustrationUrl = "http://bnetproduct-a.akamaihd.net//f84/7d453e354c9df8ca335ad45da020704c-prod-card-tall.jpg";
+            const string illustrationUrl = "https://bnetcmsus-a.akamaihd.net/cms/page_media/BZ5PE09UZVHF1506441173647.jpg";
             const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.BattleNet;
 
             var action = new ValidateIllustrationAction(platformType, illustrationUrl);
