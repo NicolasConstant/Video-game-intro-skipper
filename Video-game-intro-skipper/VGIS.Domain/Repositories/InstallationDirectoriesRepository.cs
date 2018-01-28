@@ -95,7 +95,7 @@ namespace VGIS.Domain.Repositories
 
         public IEnumerable<string> GetSubFolders(string parentFolder)
         {
-            if(!Directory.Exists(parentFolder)) return new string[0];
+            if(!_fileSystemDal.DirectoryExists(parentFolder)) return new string[0];
 
             return _fileSystemDal.DirectoryGetChildren(parentFolder).Select(x => x.Name);
         }
