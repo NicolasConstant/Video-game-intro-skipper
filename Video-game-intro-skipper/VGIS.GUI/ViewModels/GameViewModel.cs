@@ -14,13 +14,13 @@ namespace VGIS.GUI.ViewModels
     public class GameViewModel : BindableBase
     {
         private readonly Game _game;
-        private readonly IntroEditionService _introEditionService;
+        private readonly IntroductionActivationService _introEditionService;
 
         private IntroductionStateEnum _introductionCurrentState;
         private string _displayableState = "U";
 
         #region Ctor
-        public GameViewModel(Game game, IntroEditionService introEditionService)
+        public GameViewModel(Game game, IntroductionActivationService introEditionService)
         {
             _game = game;
             _introEditionService = introEditionService;

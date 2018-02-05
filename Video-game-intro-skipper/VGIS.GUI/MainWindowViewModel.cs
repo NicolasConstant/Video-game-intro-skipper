@@ -26,7 +26,7 @@ namespace VGIS.GUI
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IntroEditionService _introEditionService;
+        private readonly IntroductionActivationService _introEditionService;
         private readonly GameService _gameService;
         private readonly IUnityContainer _container;
 
@@ -66,7 +66,7 @@ namespace VGIS.GUI
         }
 
         #region Ctor
-        public MainWindowViewModel(IntroEditionService introEditionService, GameService gameService, IUnityContainer container)
+        public MainWindowViewModel(IntroductionActivationService introEditionService, GameService gameService, IUnityContainer container)
         {
             _introEditionService = introEditionService;
             _gameService = gameService;

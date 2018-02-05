@@ -6,13 +6,13 @@ using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.Services
 {
-    public class IntroEditionService
+    public class IntroductionActivationService
     {
         private readonly FileAndFolderRenamer _fileAndFolderRenamer;
         private readonly PathPatternTranslator _pathPatternTranslator;
 
         #region Ctor
-        public IntroEditionService(FileAndFolderRenamer fileAndFolderRenamer, PathPatternTranslator pathPatternTranslator)
+        public IntroductionActivationService(FileAndFolderRenamer fileAndFolderRenamer, PathPatternTranslator pathPatternTranslator)
         {
             _fileAndFolderRenamer = fileAndFolderRenamer;
             _pathPatternTranslator = pathPatternTranslator;

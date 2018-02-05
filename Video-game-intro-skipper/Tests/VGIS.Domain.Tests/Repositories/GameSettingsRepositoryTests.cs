@@ -123,7 +123,7 @@ namespace VGIS.Domain.Tests.Repositories
             #endregion
 
             var repo = new GameSettingsRepository(globalSettingsStub, dalMock);
-            repo.AddNewGameSettings(gameSettingStub);
+            repo.SaveNewGameSettings(gameSettingStub);
             
             #region Validate 
             dalMock.VerifyAllExpectations();
@@ -162,7 +162,7 @@ namespace VGIS.Domain.Tests.Repositories
             #endregion
 
             var repo = new GameSettingsRepository(globalSettingsStub, dalMock);
-            repo.AddNewGameSettings(gameSettingStub);
+            repo.SaveNewGameSettings(gameSettingStub);
 
             #region Validate 
             dalMock.VerifyAllExpectations();

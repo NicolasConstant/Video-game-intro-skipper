@@ -33,6 +33,7 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +53,8 @@
     <Compile Include="BusinessRules\DetectAllGamesStatus.cs" />
     <Compile Include="BusinessRules\DetectIntroductionState.cs" />
     <Compile Include="BusinessRules\ExtractIllustrationCodeAction.cs" />
+    <Compile Include="BusinessRules\GenerateNewGameSettingAction.cs" />
+    <Compile Include="BusinessRules\GenerateRootValidationRulesAction.cs" />
     <Compile Include="BusinessRules\ValidateGameRoot.cs" />
     <Compile Include="Consts\GlobalNamesStruct.cs" />
     <Compile Include="Consts\SpecialChar.cs" />
@@ -74,7 +77,7 @@
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\IllustrationValidationService.cs" />
     <Compile Include="Services\InstallFolderService.cs" />
-    <Compile Include="Services\IntroEditionService.cs" />
+    <Compile Include="Services\IntroductionActivationService.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="Tools\DirectoryBrowser.cs" />
     <Compile Include="Tools\EpochHandler.cs" />

@@ -276,7 +276,7 @@ namespace VGIS.GUI.AddNewGame
 
         private void Test()
         {
-
+            throw new NotImplementedException();
         }
 
         private void Cancel()

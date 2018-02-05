@@ -21,7 +21,7 @@ namespace VGIS.Domain.BusinessRules
         {
             //TODO add crowdsourcing here
 
-            _gameSettingsRepository.AddNewGameSettings(_newGame);
+            _gameSettingsRepository.SaveNewGameSettings(_newGame);
         }
     }
 }
