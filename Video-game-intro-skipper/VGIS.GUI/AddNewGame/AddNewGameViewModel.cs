@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
+using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
 
@@ -21,12 +22,13 @@ namespace VGIS.GUI.AddNewGame
         private readonly Dictionary<string, IllustrationPlatformEnum> _illustrationDisplayableValue = new Dictionary<string, IllustrationPlatformEnum>();
         private readonly InstallFolderService _installFolderService;
         private readonly GameService _gameService;
+        private readonly IllustrationValidationService _illustrationValidationService;
 
         private ObservableCollection<string> _installFolders = new ObservableCollection<string>();
         private ObservableCollection<string> _potentialGameFolders = new ObservableCollection<string>();
         private ObservableCollection<string> _illustrationPlatforms = new ObservableCollection<string>();
-        private ObservableCollection<ElementToProcess> _elementsToProcess = new ObservableCollection<ElementToProcess>();
-        private ElementToProcess _selectedElementsToProcess;
+        private ObservableCollection<DisableIntroductionAction> _elementsToProcess = new ObservableCollection<DisableIntroductionAction>();
+        private DisableIntroductionAction _selectedElementsToProcess;
 
         private string _name;
         private string _publisher;
@@ -55,13 +57,13 @@ namespace VGIS.GUI.AddNewGame
             set => SetProperty(ref _developer, value);
         }
 
-        public ObservableCollection<ElementToProcess> ElementsToProcess
+        public ObservableCollection<DisableIntroductionAction> ElementsToProcess
         {
             get => _elementsToProcess;
             set => SetProperty(ref _elementsToProcess, value);
         }
 
-        public ElementToProcess SelectedElementToProcess
+        public DisableIntroductionAction SelectedElementToProcess
         {
             get => _selectedElementsToProcess;
             set => SetProperty(ref _selectedElementsToProcess, value);
@@ -126,10 +128,11 @@ namespace VGIS.GUI.AddNewGame
         public event Action FocusEvent;
 
         #region Ctor
-        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService)
+        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService, IllustrationValidationService illustrationValidationService)
         {
             _installFolderService = installFolderService;
             _gameService = gameService;
+            _illustrationValidationService = illustrationValidationService;
 
             InstallFolders.AddRange(_installFolderService.GetAllInstallFolder());
             SelectedInstallFolder = InstallFolders?.FirstOrDefault();
@@ -223,10 +226,10 @@ namespace VGIS.GUI.AddNewGame
         {
             foreach (var data in elements)
             {
-                var el = new ElementToProcess
+                var el = new DisableIntroductionAction
                 {
-                    ActionType = actionType,
-                    FullIdentifier = data
+                    Type = actionType,
+                    InitialName = data
                 };
                 ElementsToProcess.Add(el);
             }
@@ -234,16 +237,16 @@ namespace VGIS.GUI.AddNewGame
 
         private void RemoveElement()
         {
-            var findedElement = ElementsToProcess.FirstOrDefault(x => x.FullIdentifier == SelectedElementToProcess.FullIdentifier);
+            var findedElement = ElementsToProcess.FirstOrDefault(x => x.InitialName == SelectedElementToProcess.InitialName);
 
             if (findedElement != null) ElementsToProcess.Remove(findedElement);
         }
 
-        public class ElementToProcess
-        {
-            public DisableActionTypeEnum ActionType { get; set; }
-            public string FullIdentifier { get; set; }
-        }
+        //public class ElementToProcess
+        //{
+        //    public DisableActionTypeEnum ActionType { get; set; }
+        //    public string FullIdentifier { get; set; }
+        //}
 
         private void AddInstallFolder()
         {
@@ -276,7 +279,7 @@ namespace VGIS.GUI.AddNewGame
 
         private void Test()
         {
-            throw new NotImplementedException();
+            var gameSetting = GenerateGameSetting();
         }
 
         private void Cancel()
@@ -295,6 +298,14 @@ namespace VGIS.GUI.AddNewGame
         {
             //TODO set in config file URL to doc
             Process.Start("https://github.com/NicolasConstant/Video-game-intro-skipper"); 
+        }
+
+        private GameSetting GenerateGameSetting()
+        {
+            var isIllustrationValid = _illustrationValidationService.IsIllustrationValid(_selectedIllustrationPlatformEnum, GameIllustrationUrl);
+
+
+            return _gameService.GetGameSetting(Name, Publisher, Developer, SelectedInstallFolder, SelectedGameFolder, ElementsToProcess.ToList(), _selectedIllustrationPlatformEnum, GameIllustrationUrl);
         }
     }
 }

@@ -4,20 +4,20 @@ using VGIS.Domain.Enums;
 
 namespace VGIS.Domain.Services
 {
-    public class IllustrationValidationService
-    {
+    //public class IllustrationValidationService
+    //{
 
-        #region Ctor
-        public IllustrationValidationService()
-        {
+    //    #region Ctor
+    //    public IllustrationValidationService()
+    //    {
             
-        }
-        #endregion
+    //    }
+    //    #endregion
 
-        public bool IsIllustrationValid(IllustrationPlatformEnum platformType, string illustrationUrl)
-        {
-            var action = new ValidateIllustrationAction(platformType, illustrationUrl);
-            return action.Execute();
-        }
-    }
+    //    public bool IsIllustrationValid(IllustrationPlatformEnum platformType, string illustrationUrl)
+    //    {
+    //        var action = new ValidateIllustrationAction(platformType, illustrationUrl);
+    //        return action.Execute();
+    //    }
+    //}
 }

@@ -6,6 +6,5 @@ namespace VGIS.Domain.Domain
     {
         public DisableActionTypeEnum Type { get; set; }
         public string InitialName { get; set; }
-        //public string TargetName { get; set; }
     }
 }
