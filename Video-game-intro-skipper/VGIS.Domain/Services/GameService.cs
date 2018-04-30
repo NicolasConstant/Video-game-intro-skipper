@@ -13,18 +13,20 @@ namespace VGIS.Domain.Services
 {
     public class GameService
     {
+        private readonly GameFactory _gameFactory;
         private readonly GameSettingsRepository _gameSettingsRepository;
         private readonly InstallationDirectoriesRepository _installationDirRepository;
         private readonly IGameFactory _gameFact;
         private readonly IFileSystemDal _fileSystemDal;
 
         #region Ctor
-        public GameService(GameSettingsRepository gameSettingsRepository, InstallationDirectoriesRepository installationDirRepository, IGameFactory gameFact, IFileSystemDal fileSystemDal)
+        public GameService(GameSettingsRepository gameSettingsRepository, InstallationDirectoriesRepository installationDirRepository, IGameFactory gameFact, IFileSystemDal fileSystemDal, GameFactory gameFactory)
         {
             _gameSettingsRepository = gameSettingsRepository;
             _installationDirRepository = installationDirRepository;
             _gameFact = gameFact;
             _fileSystemDal = fileSystemDal;
+            _gameFactory = gameFactory;
         }
         #endregion
 
@@ -32,6 +34,15 @@ namespace VGIS.Domain.Services
         {
             var detectAllGamesStatus = new DetectAllGamesStatus(_gameSettingsRepository, _installationDirRepository, _gameFact);
             return detectAllGamesStatus.Execute();
+        }
+
+        public Game GetGameFromSettings(GameSetting setting)
+        {
+            var allInstallDirs = _installationDirRepository.GetAllInstallationFolders();
+            var detectStatusAction = new DetectGameStatus(setting, allInstallDirs);
+            var gameDetectionResult = detectStatusAction.Execute();
+
+            return _gameFactory.GetGame(setting, gameDetectionResult);
         }
 
         public GameSetting GetGameSetting(string gameName, string publisherName, string developerName, string platformFolder, string gameRootFolder, List<DisableIntroductionAction> disablingIntroductionActions,  IllustrationPlatformEnum platformType, string illustrationUrl)

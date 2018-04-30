@@ -19,6 +19,8 @@ namespace VGIS.Domain.BusinessRules
 
         public bool Execute()
         {
+            if (string.IsNullOrWhiteSpace(_illustrationUrl)) return false;
+
             switch (_platformType)
             {
                 case IllustrationPlatformEnum.Gog:
@@ -31,6 +33,8 @@ namespace VGIS.Domain.BusinessRules
                     return ValidateSteam(_illustrationUrl);
                 case IllustrationPlatformEnum.Uplay:
                     return ValidateUplay(_illustrationUrl);
+                case IllustrationPlatformEnum.Unknown:
+                    return false;
                 default:
                     throw new NotImplementedException();
 

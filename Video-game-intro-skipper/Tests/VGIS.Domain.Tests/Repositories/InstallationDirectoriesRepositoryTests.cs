@@ -79,7 +79,6 @@ namespace VGIS.Domain.Tests.Repositories
         {
             const string pathToDefaultSettingFile = "myDefaultPath";
             const string pathToCustomSettingFile = "myCustomPath";
-            var defaultDirectories = "[\"dir1\", \"dir2\"]";
 
             #region Stubs and Mocks
             var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();

@@ -31,6 +31,8 @@ namespace VGIS.Domain.BusinessRules
                     return GenerateSteamIllustration(_illustrationUrl);
                 case IllustrationPlatformEnum.Uplay:
                     return GenerateUplayIllustration(_illustrationUrl);
+                case IllustrationPlatformEnum.Unknown:
+                    return string.Empty;
                 default:
                     throw new NotImplementedException();
 

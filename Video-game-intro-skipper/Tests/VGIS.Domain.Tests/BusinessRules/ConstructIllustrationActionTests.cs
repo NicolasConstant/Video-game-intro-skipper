@@ -11,6 +11,20 @@ namespace VGIS.Domain.Tests.BusinessRules
     public class ConstructIllustrationActionTests
     {
         [TestMethod]
+        public void GenerateUnknow_ValidPattern()
+        {
+            var illustrationUrl = string.Empty;
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Unknown;
+
+            var action = new ConstructIllustrationAction(platformType, illustrationUrl);
+            var url = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(string.Empty, url);
+            #endregion
+        }
+
+        [TestMethod]
         public void GenerateSteam_ValidPattern()
         {
             const string illustrationUrl = "110800";

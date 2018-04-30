@@ -9,6 +9,33 @@ namespace VGIS.Domain.Tests.BusinessRules
     [TestClass]
     public class ValidateIllustrationActionTests
     {
+        [TestMethod]
+        public void ValidateSteam_EmptyIsNotValid()
+        {
+            var illustrationUrl = string.Empty;
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Steam;
+
+            var action = new ValidateIllustrationAction(platformType, illustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(false, result);
+            #endregion
+        }
+
+        [TestMethod]
+        public void ValidateSteam_NullIsNotValid()
+        {
+            const string illustrationUrl = null;
+            const IllustrationPlatformEnum platformType = IllustrationPlatformEnum.Steam;
+
+            var action = new ValidateIllustrationAction(platformType, illustrationUrl);
+            var result = action.Execute();
+
+            #region Validate
+            Assert.AreEqual(false, result);
+            #endregion
+        }
 
         [TestMethod]
         public void ValidateSteam_ValidPattern()

@@ -23,6 +23,7 @@ namespace VGIS.GUI.AddNewGame
         private readonly InstallFolderService _installFolderService;
         private readonly GameService _gameService;
         private readonly IllustrationValidationService _illustrationValidationService;
+        private readonly IntroductionActivationService _introductionActivationService;
 
         private ObservableCollection<string> _installFolders = new ObservableCollection<string>();
         private ObservableCollection<string> _potentialGameFolders = new ObservableCollection<string>();
@@ -128,11 +129,12 @@ namespace VGIS.GUI.AddNewGame
         public event Action FocusEvent;
 
         #region Ctor
-        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService, IllustrationValidationService illustrationValidationService)
+        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService, IllustrationValidationService illustrationValidationService, IntroductionActivationService introductionActivationService)
         {
             _installFolderService = installFolderService;
             _gameService = gameService;
             _illustrationValidationService = illustrationValidationService;
+            _introductionActivationService = introductionActivationService;
 
             InstallFolders.AddRange(_installFolderService.GetAllInstallFolder());
             SelectedInstallFolder = InstallFolders?.FirstOrDefault();
@@ -280,6 +282,20 @@ namespace VGIS.GUI.AddNewGame
         private void Test()
         {
             var gameSetting = GenerateGameSetting();
+            var game =  _gameService.GetGameFromSettings(gameSetting);
+
+            if (game.IsDetected && game.State == IntroductionStateEnum.Disabled)
+            {
+                _introductionActivationService.ReenableIntro(game);
+            }
+            else if (game.IsDetected && game.State == IntroductionStateEnum.Enabled)
+            {
+                _introductionActivationService.DisableIntro(game);
+            }
+            else
+            {
+                //TODO show info to user
+            }
         }
 
         private void Cancel()
@@ -289,9 +305,20 @@ namespace VGIS.GUI.AddNewGame
 
         private void Save()
         {
-            //TODO Save data
-            //TODO Call API
-            CloseEvent?.Invoke();
+            var gameSetting = GenerateGameSetting();
+            var game = _gameService.GetGameFromSettings(gameSetting);
+
+            if (game.IsDetected)
+            {
+                _gameService.SaveNewGame(gameSetting);
+
+                //TODO Call API
+                CloseEvent?.Invoke();
+            }
+            else
+            {
+                //TODO show info to user
+            }
         }
 
         private void LaunchIllustrationHelp()
@@ -302,8 +329,16 @@ namespace VGIS.GUI.AddNewGame
 
         private GameSetting GenerateGameSetting()
         {
-            var isIllustrationValid = _illustrationValidationService.IsIllustrationValid(_selectedIllustrationPlatformEnum, GameIllustrationUrl);
-
+            if (!string.IsNullOrWhiteSpace(GameIllustrationUrl))
+            {
+                var isIllustrationValid = _illustrationValidationService.IsIllustrationValid(_selectedIllustrationPlatformEnum,
+                        GameIllustrationUrl);
+                if (!isIllustrationValid)
+                {
+                    //TODO show error to user
+                    GameIllustrationUrl = string.Empty;
+                }
+            }
 
             return _gameService.GetGameSetting(Name, Publisher, Developer, SelectedInstallFolder, SelectedGameFolder, ElementsToProcess.ToList(), _selectedIllustrationPlatformEnum, GameIllustrationUrl);
         }
