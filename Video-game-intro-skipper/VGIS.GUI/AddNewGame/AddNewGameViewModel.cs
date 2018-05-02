@@ -196,7 +196,7 @@ namespace VGIS.GUI.AddNewGame
 
             if (result == CommonFileDialogResult.Ok)
             {
-                var selectedElements = dialog.FileNames;
+                var selectedElements = dialog.FileNames.Select(x => x.Replace(initialFolder, string.Empty));
                 AddToElementsToProcess(selectedElements, DisableActionTypeEnum.FileRename);
             }
         }
@@ -219,7 +219,7 @@ namespace VGIS.GUI.AddNewGame
 
             if (result == CommonFileDialogResult.Ok)
             {
-                var selectedElements = dialog.FileNames;
+                var selectedElements = dialog.FileNames.Select(x => x.Replace(initialFolder, string.Empty));
                 AddToElementsToProcess(selectedElements, DisableActionTypeEnum.FolderRename);
             }
         }

@@ -75,7 +75,7 @@ namespace VGIS.Domain.Repositories
 
             foreach (var action in disablingIntroductionActions)
             {
-                var pathToCheck = Path.Combine(platformFolder, gameRootFolder, action.InitialName);
+                var pathToCheck = Path.Combine(platformFolder.Trim('\\'), gameRootFolder.Trim('\\'), action.InitialName.Trim('\\'));
                 switch (action.Type)
                 {
                     case DisableActionTypeEnum.FileRename:
