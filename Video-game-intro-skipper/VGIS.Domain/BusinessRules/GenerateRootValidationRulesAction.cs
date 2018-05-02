@@ -27,7 +27,7 @@ namespace VGIS.Domain.BusinessRules
             var subFolders = _fileSystemDal.DirectoryGetChildren(gameRootFolder);
             foreach (var directoryInfo in subFolders)
             {
-                yield return new RootValidationRule()
+                yield return new RootValidationRule
                 {
                     Type = RootValidationTypeEnum.FolderValidation,
                     WitnessName = directoryInfo.Name
@@ -38,10 +38,11 @@ namespace VGIS.Domain.BusinessRules
             var exeFounds = GetExeInFolderAndSubFolders(gameRootFolder);
             foreach (var fileInfo in exeFounds)
             {
-                yield return new RootValidationRule()
+                var validationName = fileInfo.FullName.Replace($"{gameRootFolder}\\", string.Empty);
+                yield return new RootValidationRule
                 {
                     Type = RootValidationTypeEnum.FileValidation,
-                    WitnessName = fileInfo.Name
+                    WitnessName = validationName
                 };
             }
         }

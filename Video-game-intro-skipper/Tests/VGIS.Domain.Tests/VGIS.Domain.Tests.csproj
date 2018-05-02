@@ -61,6 +61,7 @@
     <Compile Include="BusinessRules\ApplyReenableIntroActionTests.cs" />
     <Compile Include="BusinessRules\ConstructIllustrationActionTests.cs" />
     <Compile Include="BusinessRules\ExtractIllustrationCodeActionTests.cs" />
+    <Compile Include="BusinessRules\GenerateRootValidationRulesActionTests.cs" />
     <Compile Include="BusinessRules\ValidateIllustrationActionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepositoryTests.cs" />
