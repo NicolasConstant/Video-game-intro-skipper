@@ -14,6 +14,7 @@ using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Vgis_crowdsourcing_api.Services;
 using Vgis_crowdsourcing_api.Settings;
 
 namespace Vgis_crowdsourcing_api.Controllers
@@ -23,11 +24,15 @@ namespace Vgis_crowdsourcing_api.Controllers
     {
         private IHostingEnvironment _hostingEnvironment;
         private StorageValues _storageSettings;
+        private readonly BlobStorageService _blobStorageService;
+
 
         public SettingsController(IHostingEnvironment hostingEnvironment, IOptions<StorageValues> storageValues)
         {
             _hostingEnvironment = hostingEnvironment;
             _storageSettings = storageValues.Value;
+
+            _blobStorageService = new BlobStorageService(_storageSettings.StorageAccountCs, _storageSettings.ContainerName);
         }
 
 
@@ -39,25 +44,24 @@ namespace Vgis_crowdsourcing_api.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm]User vm)
+        public async Task<IActionResult> Post([FromForm]SettingsData data)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, @"Uploads", vm.Avatar.FileName);
-
-            //using (var stream = new FileStream(filePath, FileMode.Create))
+            byte[] file;
             using (var stream = new MemoryStream())
             {
-                await vm.Avatar.CopyToAsync(stream);
-                if (stream.CanRead)
-                {
-                    var fileBytes = stream.ToArray();
-                    string s = Convert.ToBase64String(fileBytes);
-                }
+                await data.Avatar.CopyToAsync(stream);
+                file = stream.ToArray();
+                //var validate = Encoding.ASCII.GetString(stream.ToArray());
+            }
 
+            if (file != null)
+            {
+                await _blobStorageService.UploadFileToBlob(file, data.FileName);
             }
 
             return Ok();
@@ -65,9 +69,10 @@ namespace Vgis_crowdsourcing_api.Controllers
 
     }
 
-    public class User
+    public class SettingsData
     {
-        public string Name { get; set; }
+        public string User { get; set; }
+        public string FileName { get; set; }
         public IFormFile Avatar { get; set; }
     }
 }
