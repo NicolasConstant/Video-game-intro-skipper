@@ -73,8 +73,8 @@
         <Button Command="{Binding IllustrationHelpCommand}"
             Margin="2" Grid.Row="7" Grid.Column="6">?</Button>
 
-        <Button Command="{Binding TestCommand}"
-            Grid.Row="8" Grid.Column="3" Margin="2">Test</Button>
+        <!--<Button Command="{Binding TestCommand}"
+            Grid.Row="8" Grid.Column="3" Margin="2">Test</Button>-->
         <Button Command="{Binding CancelCommand}"
             Grid.Row="8" Grid.Column="4" Margin="2">Cancel</Button>
         <Button Command="{Binding SaveCommand}"

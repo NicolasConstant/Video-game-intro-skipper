@@ -95,7 +95,7 @@ namespace VGIS.Domain.BusinessRules
 
         private string ExtractSteam(string illustrationUrl)
         {
-            const string pre = "steamstatic.com/steam/apps/";
+            const string pre = "/steam/apps/";
             const string post = "/header.jpg";
 
             //Extract code

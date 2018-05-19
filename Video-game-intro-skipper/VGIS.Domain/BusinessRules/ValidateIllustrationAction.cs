@@ -67,7 +67,7 @@ namespace VGIS.Domain.BusinessRules
 
         private bool ValidateSteam(string illustrationUrl)
         {
-            const string pattern = @"steamstatic.com/steam/apps/([0-9]+)/header.jpg";
+            const string pattern = @"/steam/apps/([0-9]+)/header.jpg";
             return ValidateRegex(pattern, illustrationUrl);
         }
 
