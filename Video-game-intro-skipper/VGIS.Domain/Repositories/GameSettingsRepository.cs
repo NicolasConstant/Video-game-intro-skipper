@@ -97,7 +97,7 @@ namespace VGIS.Domain.Repositories
                 DeveloperName = developerName,
                 IllustrationPlatform = illustrationPlatform,
                 IllustrationId = illustrationId,
-                SettingVersion = new Version(0,0,1),
+                SettingVersion = new Version(0,0,1,0),
                 PotentialRootFolderNames = new List<string>() { gameRootFolder },
                 DisablingIntroductionActions = disablingIntroductionActions,
                 ValidationRules = validationRules
