@@ -13,6 +13,8 @@ using System.Text;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Vgis_crowdsourcing_api.Settings;
 
 namespace Vgis_crowdsourcing_api.Controllers
 {
@@ -20,17 +22,19 @@ namespace Vgis_crowdsourcing_api.Controllers
     public class SettingsController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
+        private StorageValues _storageSettings;
 
-        public SettingsController(IHostingEnvironment hostingEnvironment)
+        public SettingsController(IHostingEnvironment hostingEnvironment, IOptions<StorageValues> storageValues)
         {
             _hostingEnvironment = hostingEnvironment;
+            _storageSettings = storageValues.Value;
         }
 
 
         [HttpGet]
         public string Get()
         {
-            return "MUA";
+            return _storageSettings.ContainerName;
         }
 
         // POST api/values
