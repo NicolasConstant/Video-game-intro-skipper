@@ -8,7 +8,8 @@ namespace VGIS.Domain.Settings
 {
     public class GlobalSettings
     {
-        public string GamesSettingsFolder { get; set; }
+        public string DefaultGamesSettingsFolder { get; set; }
+        public string CustomGamesSettingsFolder { get; set; }
         public string DefaultInstallFolderConfigFile { get; set; }
         public string CustomInstallFolderConfigFile { get; set; }
     }

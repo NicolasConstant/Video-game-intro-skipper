@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using VGIS.Domain.Domain;
+using VGIS.Domain.Factories;
 using VGIS.Domain.Repositories;
 
 namespace VGIS.Domain.BusinessRules
@@ -10,12 +11,14 @@ namespace VGIS.Domain.BusinessRules
     {
         private readonly GameSettingsRepository _settingsRepository;
         private readonly InstallationDirectoriesRepository _installationDirectoryRepository;
+        private readonly IGameFactory _gameFact;
 
         #region Ctor
-        public DetectAllGamesStatus(GameSettingsRepository settingsRepository, InstallationDirectoriesRepository installationDirectoryRepository)
+        public DetectAllGamesStatus(GameSettingsRepository settingsRepository, InstallationDirectoriesRepository installationDirectoryRepository, IGameFactory gameFact)
         {
             _settingsRepository = settingsRepository;
             _installationDirectoryRepository = installationDirectoryRepository;
+            _gameFact = gameFact;
         }
         #endregion
 
@@ -33,7 +36,7 @@ namespace VGIS.Domain.BusinessRules
                 var gameDetection = new DetectGameStatus(gameSetting, installationRepositories);
                 var gameDetectionResult = gameDetection.Execute();
 
-                yield return new Game(gameSetting, gameDetectionResult);
+                yield return _gameFact.GetGame(gameSetting, gameDetectionResult);
             }
         }
     }

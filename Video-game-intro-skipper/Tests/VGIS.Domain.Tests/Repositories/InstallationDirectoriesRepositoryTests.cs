@@ -79,7 +79,6 @@ namespace VGIS.Domain.Tests.Repositories
         {
             const string pathToDefaultSettingFile = "myDefaultPath";
             const string pathToCustomSettingFile = "myCustomPath";
-            var defaultDirectories = "[\"dir1\", \"dir2\"]";
 
             #region Stubs and Mocks
             var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();
@@ -207,6 +206,59 @@ namespace VGIS.Domain.Tests.Repositories
             #region Validate 
             dalMock.VerifyAllExpectations();
             #endregion
+        }
+
+        [TestMethod]
+        public void GetSubFolder_DirExists()
+        {
+            const string parentFolder = "c:/parentFolder";
+            var subDirs = new List<DirectoryInfo>
+            {
+                new DirectoryInfo(parentFolder+"/subfolder1"),
+                new DirectoryInfo(parentFolder+"/subfolder2"),
+            };
+
+            #region Stubs and Mocks
+            var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();
+
+            var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
+            dalMock.Expect(x => x.DirectoryExists(Arg<string>.Is.Equal(parentFolder))).Return(true);
+            dalMock.Expect(x => x.DirectoryGetChildren(Arg<string>.Is.Equal(parentFolder))).Return(subDirs);
+            #endregion
+
+            var repo = new InstallationDirectoriesRepository(globalSettingsStub, dalMock);
+            var result = repo.GetSubFolders(parentFolder).ToList();
+
+            #region Validate 
+            dalMock.VerifyAllExpectations();
+
+            Assert.IsTrue(result.Count() == 2);
+            Assert.AreEqual(subDirs.First().Name, result.First());
+            #endregion
+
+        }
+
+        [TestMethod]
+        public void GetSubFolder_DirDontExists()
+        {
+            const string parentFolder = "parentFolder";
+
+            #region Stubs and Mocks
+            var globalSettingsStub = MockRepository.GenerateMock<GlobalSettings>();
+
+            var dalMock = MockRepository.GenerateMock<IFileSystemDal>();
+            dalMock.Expect(x => x.DirectoryExists(Arg<string>.Is.Equal(parentFolder))).Return(false);
+            #endregion
+
+            var repo = new InstallationDirectoriesRepository(globalSettingsStub, dalMock);
+            var subfolders = repo.GetSubFolders(parentFolder);
+
+            #region Validate 
+            dalMock.VerifyAllExpectations();
+
+            Assert.IsTrue(!subfolders.Any());
+            #endregion
+
         }
     }
 }

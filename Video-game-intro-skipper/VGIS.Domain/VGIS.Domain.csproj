@@ -33,6 +33,7 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessRules\AddNewGameSettings.cs" />
     <Compile Include="BusinessRules\ApplyDisableIntroAction.cs" />
     <Compile Include="BusinessRules\ApplyReenableIntroAction.cs" />
     <Compile Include="BusinessRules\Bases\DispatchActionsBase.cs" />
+    <Compile Include="BusinessRules\ConstructIllustrationAction.cs" />
     <Compile Include="BusinessRules\DetectGameStatus.cs" />
     <Compile Include="BusinessRules\DetectAllGamesStatus.cs" />
     <Compile Include="BusinessRules\DetectIntroductionState.cs" />
+    <Compile Include="BusinessRules\ExtractIllustrationCodeAction.cs" />
+    <Compile Include="BusinessRules\GenerateNewGameSettingAction.cs" />
+    <Compile Include="BusinessRules\GenerateRootValidationRulesAction.cs" />
     <Compile Include="BusinessRules\ValidateGameRoot.cs" />
     <Compile Include="Consts\GlobalNamesStruct.cs" />
     <Compile Include="Consts\SpecialChar.cs" />
@@ -59,17 +65,22 @@
     <Compile Include="Domain\GameDetectionResult.cs" />
     <Compile Include="Domain\GameSetting.cs" />
     <Compile Include="Domain\RootValidationRule.cs" />
+    <Compile Include="BusinessRules\ValidateIllustrationAction.cs" />
     <Compile Include="Enums\DisableActionTypeEnum.cs" />
     <Compile Include="Enums\IllustrationPlatformEnum.cs" />
     <Compile Include="Enums\IntroductionStateEnum.cs" />
     <Compile Include="Enums\RootValidationTypeEnum.cs" />
+    <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\GameSettingsRepository.cs" />
     <Compile Include="Repositories\InstallationDirectoriesRepository.cs" />
+    <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\IllustrationValidationService.cs" />
     <Compile Include="Services\InstallFolderService.cs" />
-    <Compile Include="Services\IntroEditionService.cs" />
+    <Compile Include="Services\IntroductionActivationService.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="Tools\DirectoryBrowser.cs" />
+    <Compile Include="Tools\EpochHandler.cs" />
     <Compile Include="Tools\FileAndFolderRenamer.cs" />
     <Compile Include="Tools\PathPatternTranslator.cs" />
   </ItemGroup>

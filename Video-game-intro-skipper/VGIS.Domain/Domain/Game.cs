@@ -9,24 +9,13 @@ namespace VGIS.Domain.Domain
         private readonly GameDetectionResult _detectionResult;
 
         #region Ctor
-        public Game(GameSetting settings, GameDetectionResult detectionResult)
+        public Game(GameSetting settings, GameDetectionResult detectionResult, string illustrationUrl)
         {
             _settings = settings;
             _detectionResult = detectionResult;
-            IllustrationUrl = GetIllustrationUrl(_settings.IllustrationPlatform, _settings.IllustrationId);
+            IllustrationUrl = illustrationUrl;
         }
         #endregion
-
-        private string GetIllustrationUrl(IllustrationPlatformEnum platform, string illustrationId)
-        {
-            switch (platform)
-            {
-                case IllustrationPlatformEnum.Steam:
-                    return $"http://cdn.edgecast.steamstatic.com/steam/apps/{illustrationId}/header.jpg?t=1504868428";
-                default:
-                    throw new NotImplementedException();
-            }
-        }
 
         public GameSetting Settings => _settings;
         public GameDetectionResult DetectionResult => _detectionResult;

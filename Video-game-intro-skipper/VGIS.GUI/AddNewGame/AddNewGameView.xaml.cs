@@ -21,6 +21,8 @@ namespace VGIS.GUI.AddNewGame
     {
         public AddNewGameView(AddNewGameViewModel viewModel)
         {
+            viewModel.FocusEvent += () => { Focus(); };
+            viewModel.CloseEvent += () => { Close(); };
             DataContext = viewModel;
             InitializeComponent();
         }

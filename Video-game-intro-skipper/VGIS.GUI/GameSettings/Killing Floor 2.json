@@ -1,0 +1,28 @@
+﻿{
+  "Name": "Killing Floor 2",
+  "PublisherName": "Tripwire Interactive",
+  "SettingVersion": null,
+  "PotentialRootFolderNames": [ "killingfloor2" ],
+  "ValidationRules": [
+    {
+      "Type": 2,
+      "WitnessName": "Binaries\\Win64\\KFGame.exe"
+    }
+  ],
+  "DisablingIntroductionActions": [
+    {
+      "Type": 2,
+      "InitialName": "\\KFGame\\Movies\\LogoGA.bik"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\KFGame\\Movies\\LogoHardsuit.bik"
+    },
+    {
+      "Type": 2,
+      "InitialName": "\\KFGame\\Movies\\LogoTripwire.bik"
+    }
+  ],
+  "IllustrationPlatform": 1,
+  "IllustrationId": "232090"
+}

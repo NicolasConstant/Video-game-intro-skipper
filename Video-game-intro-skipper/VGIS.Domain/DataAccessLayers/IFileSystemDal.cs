@@ -10,8 +10,10 @@ namespace VGIS.Domain.DataAccessLayers
         string ReadAllText(string fileFullName);
         bool FileExists(string filePath);
         void FileCreate(string filePath);
-        bool DirectoryExists(string path);
         void FileWriteAllText(string path, string content);
         void FileDelete(string filePath);
+        bool DirectoryExists(string path);
+        void DirectoryCreate(string path);
+        IEnumerable<DirectoryInfo> DirectoryGetChildren(string path);
     }
 }

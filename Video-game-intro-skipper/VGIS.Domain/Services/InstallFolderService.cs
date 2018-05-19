@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using VGIS.Domain.Repositories;
 
 namespace VGIS.Domain.Services
@@ -7,10 +8,12 @@ namespace VGIS.Domain.Services
     {
         private readonly InstallationDirectoriesRepository _repository;
 
+        #region Ctor
         public InstallFolderService(InstallationDirectoriesRepository repository)
         {
             _repository = repository;
         }
+        #endregion
 
         public string[] GetAllInstallFolder()
         {
@@ -30,6 +33,11 @@ namespace VGIS.Domain.Services
         public void ResetInstallationFolders()
         {
             _repository.ResetInstallationFolders();
+        }
+
+        public IEnumerable<string> GetSubFolders(string parentFolder)
+        {
+            return _repository.GetSubFolders(parentFolder);
         }
     }
 }

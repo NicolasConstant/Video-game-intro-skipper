@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VGIS.GUI.AddNewGame"
         mc:Ignorable="d"
-        Title="Add a new game" Height="400" Width="500">
+        Title="Add a new game" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -13,31 +13,71 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
             <RowDefinition Height="25" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="90" /> 
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="100" />
             <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="30" /> 
+            <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0">Name:</Label>
-        <TextBox  VerticalContentAlignment="Center" Margin="2" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"></TextBox>
-        <Label Grid.Row="1">Publisher:</Label>
-        <TextBox  VerticalContentAlignment="Center"  Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"></TextBox>
-        <Label Grid.Row="2">Install Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"></ComboBox> <Button Margin="2" Grid.Row="2" Grid.Column="4">+</Button>
-        <Label Grid.Row="3">Game Folder:</Label>
-        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4"></ComboBox>
-        <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5">Elements to rename:</Label>
-        <ListView Grid.Row="5"  Grid.Column="0" Grid.ColumnSpan="5" Margin="0 2 0 2">
-            
+        <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" 
+            VerticalContentAlignment="Center" Margin="2" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="1">Developer:</Label>
+        <TextBox Text="{Binding Path=Developer, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalContentAlignment="Center"  Margin="2" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="2">Publisher:</Label>
+        <TextBox Text="{Binding Path=Publisher, UpdateSourceTrigger=PropertyChanged}" 
+            VerticalContentAlignment="Center"  Margin="2" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="6"></TextBox>
+        <Label Grid.Row="3">Install Folder:</Label>
+        <ComboBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="5"
+                  ItemsSource="{Binding InstallFolders}" SelectedItem="{Binding Path=SelectedInstallFolder, Mode=TwoWay}"
+                  />
+        <Button Command="{Binding AddInstallFolderCommand}" Margin="2" Grid.Row="3" Grid.Column="6">+</Button>
+        <Label Grid.Row="4">Game Folder:</Label>
+        <ComboBox Margin="2" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="6"
+                  ItemsSource="{Binding PotentialGameFolders}" SelectedItem="{Binding Path=SelectedGameFolder, Mode=TwoWay}"/>
+        <Label Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4">Elements to rename:</Label>
+        <Button Command="{Binding PickFilesToRenameCommand}"
+                Grid.Row="5" Grid.Column="3"  Margin="2">Add File(s)</Button>
+        <Button Command="{Binding PickFoldersToRenameCommand}"
+                Grid.Row="5" Grid.Column="4"  Margin="2">Add Folder(s)</Button>
+        <Button Command="{Binding RemoveElementCommand}"
+                Grid.Row="5" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Remove</Button>
+        <ListView ItemsSource="{Binding ElementsToProcess}" SelectedItem="{Binding SelectedElementToProcess}"
+            Grid.Row="6"  Grid.Column="0" Grid.ColumnSpan="7" Margin="0 2 0 2">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="400" Header="Path"
+                                DisplayMemberBinding="{Binding InitialName}"  />
+                    <GridViewColumn Width="140" Header="Type"  
+                                DisplayMemberBinding="{Binding Type}" />
+                </GridView>
+            </ListView.View>
         </ListView>
-        <Button Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="3" Margin="2">Add new File/Folder to rename</Button>
-        <Button Grid.Row="6" Grid.Column="2" Margin="2">Cancel</Button>
-        <Button Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" Margin="2">Save</Button>
+        <Label Grid.Row="7" Grid.Column="0">Game Illustration:</Label>
+        <ComboBox Margin="2" Grid.Row="7" Grid.Column="1" 
+                  ItemsSource="{Binding IllustrationPlatforms}" SelectedItem="{Binding Path=SelectedIllustrationPlatform, Mode=TwoWay}"
+                  />
+        <TextBox Text="{Binding Path=GameIllustrationUrl, UpdateSourceTrigger=PropertyChanged}" 
+                 VerticalContentAlignment="Center" Margin="2" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="4"></TextBox>
+        <!--BorderThickness="1" BorderBrush="Red"-->
+        <Button Command="{Binding IllustrationHelpCommand}"
+            Margin="2" Grid.Row="7" Grid.Column="6">?</Button>
+
+        <!--<Button Command="{Binding TestCommand}"
+            Grid.Row="8" Grid.Column="3" Margin="2">Test</Button>-->
+        <Button Command="{Binding CancelCommand}"
+            Grid.Row="8" Grid.Column="4" Margin="2">Cancel</Button>
+        <Button Command="{Binding SaveCommand}"
+            Grid.Row="8" Grid.Column="5" Grid.ColumnSpan="2" Margin="2">Save</Button>
     </Grid>
 </Window>

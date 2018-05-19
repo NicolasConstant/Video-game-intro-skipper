@@ -41,6 +41,17 @@ namespace VGIS.Domain.DataAccessLayers
             return Directory.Exists(path);
         }
 
+        public void DirectoryCreate(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        public IEnumerable<DirectoryInfo> DirectoryGetChildren(string path)
+        {
+            var directoryInfo = new DirectoryInfo(path);
+            return directoryInfo.GetDirectories();
+        }
+
         public void FileWriteAllText(string path, string content)
         {
             File.WriteAllText(path, content);

@@ -6,28 +6,18 @@ using VGIS.Domain.Tools;
 
 namespace VGIS.Domain.Services
 {
-    public class IntroEditionService
+    public class IntroductionActivationService
     {
-        private readonly GameSettingsRepository _gameSettingsRepository;
-        private readonly InstallationDirectoriesRepository _installationDirRepo;
         private readonly FileAndFolderRenamer _fileAndFolderRenamer;
         private readonly PathPatternTranslator _pathPatternTranslator;
 
         #region Ctor
-        public IntroEditionService(GameSettingsRepository gameSettingsRepository, InstallationDirectoriesRepository installationDirRepo, FileAndFolderRenamer fileAndFolderRenamer, PathPatternTranslator pathPatternTranslator)
+        public IntroductionActivationService(FileAndFolderRenamer fileAndFolderRenamer, PathPatternTranslator pathPatternTranslator)
         {
-            _gameSettingsRepository = gameSettingsRepository;
-            _installationDirRepo = installationDirRepo;
             _fileAndFolderRenamer = fileAndFolderRenamer;
             _pathPatternTranslator = pathPatternTranslator;
         }
         #endregion
-
-        public IEnumerable<Game> GetAllGames()
-        {
-            var detectAllGamesStatus = new DetectAllGamesStatus(_gameSettingsRepository, _installationDirRepo);
-            return detectAllGamesStatus.Execute();
-        }
 
         public void DisableIntro(Game targetedGame)
         {
