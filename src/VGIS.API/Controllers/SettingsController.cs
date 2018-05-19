@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Vgis_crowdsourcing_api.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class SettingsController : Controller
     {
         // GET api/values
         [HttpGet]
