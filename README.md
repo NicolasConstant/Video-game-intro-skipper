@@ -13,7 +13,7 @@ Sorry, no binaries available, please build your own from the source code.
 - [x] enable/disable intro on detected games
 - [x] batch enable/batch disable
 - [x] support custom installation folders
-- [ ] support adding a new game
+- [x] support adding a new game
 - [ ] API + crowdsourcing the game settings
 - [ ] find logo, good name, enhance GUI
 - [ ] release software on Steam
