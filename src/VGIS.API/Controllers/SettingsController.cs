@@ -1,7 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Web;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Vgis_crowdsourcing_api.Controllers
@@ -9,36 +19,51 @@ namespace Vgis_crowdsourcing_api.Controllers
     [Route("api/[controller]")]
     public class SettingsController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IHostingEnvironment _hostingEnvironment;
+
+        public SettingsController(IHostingEnvironment hostingEnvironment)
         {
-            return new string[] { "value1", "value2" };
+            _hostingEnvironment = hostingEnvironment;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+
+        [HttpGet]
+        public string Get()
         {
-            return "value";
+            return "MUA";
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> Post([FromForm]User vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, @"Uploads", vm.Avatar.FileName);
+
+            //using (var stream = new FileStream(filePath, FileMode.Create))
+            using (var stream = new MemoryStream())
+            {
+                await vm.Avatar.CopyToAsync(stream);
+                if (stream.CanRead)
+                {
+                    var fileBytes = stream.ToArray();
+                    string s = Convert.ToBase64String(fileBytes);
+                }
+
+            }
+
+            return Ok();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+    }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+    public class User
+    {
+        public string Name { get; set; }
+        public IFormFile Avatar { get; set; }
     }
 }
