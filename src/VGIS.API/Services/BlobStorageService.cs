@@ -23,7 +23,7 @@ namespace Vgis_crowdsourcing_api.Services
             if (!CloudStorageAccount.TryParse(_storageCs, out var storageAccount))
                 throw new ArgumentException("Wrong Azure Blob CS");
 
-            var uniqueFileName = Guid.NewGuid() + "--" + fileName;
+            var uniqueFileName = Guid.NewGuid() + "." + fileName;
             var cloudBlobClient = storageAccount.CreateCloudBlobClient();
             var cloudBlobContainer = cloudBlobClient.GetContainerReference(_containerName);
 
@@ -32,7 +32,7 @@ namespace Vgis_crowdsourcing_api.Services
                 await cloudBlobContainer.CreateAsync();
 
             //Upload file
-            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(Guid.NewGuid() + "--" + fileName);
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(uniqueFileName);
             await cloudBlockBlob.UploadFromByteArrayAsync(fileBytes, 0, fileBytes.Length);
 
             return uniqueFileName;

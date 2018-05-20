@@ -23,8 +23,9 @@ namespace Vgis_crowdsourcing_api.Controllers
     public class SettingsController : Controller
     {
         private IHostingEnvironment _hostingEnvironment;
-        private StorageValues _storageSettings;
         private readonly BlobStorageService _blobStorageService;
+        private readonly TableStorageService _tableStorageService;
+        private readonly StorageValues _storageSettings;
 
 
         public SettingsController(IHostingEnvironment hostingEnvironment, IOptions<StorageValues> storageValues)
@@ -32,7 +33,9 @@ namespace Vgis_crowdsourcing_api.Controllers
             _hostingEnvironment = hostingEnvironment;
             _storageSettings = storageValues.Value;
 
+
             _blobStorageService = new BlobStorageService(_storageSettings.StorageAccountCs, _storageSettings.ContainerName);
+            _tableStorageService = new TableStorageService(_storageSettings.StorageAccountCs, _storageSettings.TableName);
         }
 
 
@@ -54,14 +57,14 @@ namespace Vgis_crowdsourcing_api.Controllers
             byte[] file;
             using (var stream = new MemoryStream())
             {
-                await data.Avatar.CopyToAsync(stream);
+                await data.File.CopyToAsync(stream);
                 file = stream.ToArray();
-                //var validate = Encoding.ASCII.GetString(stream.ToArray());
             }
 
             if (file != null)
             {
-                await _blobStorageService.UploadFileToBlob(file, data.FileName);
+                var fileName = await _blobStorageService.UploadFileToBlob(file, $"{data.GameId}.json");
+                await _tableStorageService.AddEntryToTable(data.UserId, data.GameId, fileName);
             }
 
             return Ok();
@@ -71,8 +74,8 @@ namespace Vgis_crowdsourcing_api.Controllers
 
     public class SettingsData
     {
-        public string User { get; set; }
-        public string FileName { get; set; }
-        public IFormFile Avatar { get; set; }
+        public string UserId { get; set; }
+        public string GameId { get; set; }
+        public IFormFile File { get; set; }
     }
 }
