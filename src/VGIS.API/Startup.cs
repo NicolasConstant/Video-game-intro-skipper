@@ -45,15 +45,7 @@ namespace Vgis_crowdsourcing_api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            //app.UseStaticFiles();
-
-            //app.UseStaticFiles(new StaticFileOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Uploads")),
-            //    RequestPath = new PathString("/Uploads")
-            //});
-
+            
             app.UseMvc();
         }
     }
