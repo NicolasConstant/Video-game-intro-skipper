@@ -182,6 +182,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VGIS.Crowdsourcing\VGIS.Crowdsourcing.csproj">
+      <Project>{10C47B7B-5AE4-4C23-8DA6-917541DE46D1}</Project>
+      <Name>VGIS.Crowdsourcing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VGIS.Domain\VGIS.Domain.csproj">
       <Project>{2ff3e3db-37bb-4327-885e-ccb7d5ee24d7}</Project>
       <Name>VGIS.Domain</Name>
