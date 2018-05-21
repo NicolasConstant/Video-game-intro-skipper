@@ -71,10 +71,15 @@ namespace VGIS.Domain.Services
                 gameRootFolder, disablingIntroductionActions, validationRules, illustration, illustrationCode);
         }
 
-        public void SaveNewGame(GameSetting newGame)
+        /// <summary>
+        /// Save the setting to a new settings file
+        /// </summary>
+        /// <param name="newGame">settings</param>
+        /// <returns>Path to the file</returns>
+        public string SaveNewGame(GameSetting newGame)
         {
             var addNewGameSettings = new AddNewGameSettings(_gameSettingsRepository, newGame);
-            addNewGameSettings.Execute();
+            return addNewGameSettings.Execute();
         }
     }
 }

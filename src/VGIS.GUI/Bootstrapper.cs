@@ -9,6 +9,7 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using Prism.Unity;
+using VGIS.Crowdsourcing.Settings;
 using VGIS.Domain.Settings;
 
 namespace VGIS.GUI
@@ -39,6 +40,12 @@ namespace VGIS.GUI
                 CustomGamesSettingsFolder = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\VGIS\GameSettings\"
             };
             Container.RegisterInstance(globalSettings, new ContainerControlledLifetimeManager());
+
+            var crowdsourcingSettings = new ApiEndpointSettings
+            {
+                EndpointUrl = "https://vgisapi.nicolas-constant.com"
+            };
+            Container.RegisterInstance(crowdsourcingSettings, new ContainerControlledLifetimeManager());
 
             // Register repositories
             Container.RegisterTypes(

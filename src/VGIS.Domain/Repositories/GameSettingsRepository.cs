@@ -12,7 +12,7 @@ namespace VGIS.Domain.Repositories
     public interface IGameSettingsRepository
     {
         IEnumerable<GameSetting> GetAllGameSettings();
-        void SaveNewGameSettings(GameSetting newGame);
+        string SaveNewGameSettings(GameSetting newGame);
         GameSetting CreateNewGameSetting(string gameName, string publisherName, string developerName, string platformFolder, string gameRootFolder, List<DisableIntroductionAction> disablingIntroductionActions, List<RootValidationRule> validationRules, IllustrationPlatformEnum illustrationPlatform, string illustrationId);
     }
 
@@ -57,13 +57,14 @@ namespace VGIS.Domain.Repositories
             }
         }
 
-        public void SaveNewGameSettings(GameSetting newGame)
+        public string SaveNewGameSettings(GameSetting newGame)
         {
             var fileNamePattern = $"{_customGameSettingsFilesPath}{newGame.Name.Trim()}{{0}}.json";
             var fileName = GetAvailableFileNameInFolder(fileNamePattern, _customGameSettingsFilesPath);
 
             var json = JsonConvert.SerializeObject(newGame);
             _fileSystemDal.FileWriteAllText(fileName, json);
+            return fileName;
         }
 
         public GameSetting CreateNewGameSetting(string gameName, string publisherName, string developerName, string platformFolder, string gameRootFolder, List<DisableIntroductionAction> disablingIntroductionActions, List<RootValidationRule> validationRules, IllustrationPlatformEnum illustrationPlatform, string illustrationId)

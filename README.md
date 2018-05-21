@@ -14,8 +14,10 @@ Sorry, no binaries available, please build your own from the source code.
 - [x] batch enable/batch disable
 - [x] support custom installation folders
 - [x] support adding a new game
-- [ ] API + crowdsourcing the game settings
-- [ ] find logo, good name, enhance GUI
+- [x] API + crowdsourcing the game settings
+- [ ] Create administration tools (autodownloader)
+- [ ] find logo, good name, enhance UI
+- [ ] beta stage
 - [ ] release software on Steam
 
 ## Screenshot (pre-alpha)

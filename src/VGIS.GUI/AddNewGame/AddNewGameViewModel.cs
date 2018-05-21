@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -11,6 +12,7 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
+using VGIS.Crowdsourcing;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
@@ -24,6 +26,7 @@ namespace VGIS.GUI.AddNewGame
         private readonly GameService _gameService;
         private readonly IllustrationValidationService _illustrationValidationService;
         private readonly IntroductionActivationService _introductionActivationService;
+        private readonly ICrowdsourcingService _crowdsourcingService;
 
         private ObservableCollection<string> _installFolders = new ObservableCollection<string>();
         private ObservableCollection<string> _potentialGameFolders = new ObservableCollection<string>();
@@ -129,12 +132,13 @@ namespace VGIS.GUI.AddNewGame
         public event Action FocusEvent;
 
         #region Ctor
-        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService, IllustrationValidationService illustrationValidationService, IntroductionActivationService introductionActivationService)
+        public AddNewGameViewModel(InstallFolderService installFolderService, GameService gameService, IllustrationValidationService illustrationValidationService, IntroductionActivationService introductionActivationService, ICrowdsourcingService crowdsourcingService)
         {
             _installFolderService = installFolderService;
             _gameService = gameService;
             _illustrationValidationService = illustrationValidationService;
             _introductionActivationService = introductionActivationService;
+            _crowdsourcingService = crowdsourcingService;
 
             InstallFolders.AddRange(_installFolderService.GetAllInstallFolder());
             SelectedInstallFolder = InstallFolders?.FirstOrDefault();
@@ -310,9 +314,21 @@ namespace VGIS.GUI.AddNewGame
 
             if (game.IsDetected)
             {
-                _gameService.SaveNewGame(gameSetting);
+                var settingsFilePath = _gameService.SaveNewGame(gameSetting);
 
-                //TODO Call API
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var t =  _crowdsourcingService.SendSettingsToCloud(gameSetting.PotentialRootFolderNames.First(), settingsFilePath);
+                        t.Wait();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                });
+
                 CloseEvent?.Invoke();
             }
             else

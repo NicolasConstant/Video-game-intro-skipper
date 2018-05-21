@@ -17,11 +17,9 @@ namespace VGIS.Domain.BusinessRules
         }
         #endregion
 
-        public void Execute()
+        public string Execute()
         {
-            //TODO add crowdsourcing here
-
-            _gameSettingsRepository.SaveNewGameSettings(_newGame);
+            return _gameSettingsRepository.SaveNewGameSettings(_newGame);
         }
     }
 }
