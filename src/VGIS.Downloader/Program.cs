@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using VGIS.Azure;
+using VGIS.Downloader.Domain;
 using VGIS.Downloader.Settings;
 
 
@@ -11,11 +14,22 @@ namespace VGIS.Downloader
     {
         static void Main(string[] args)
         {
-            var settings = GetSettings();
+            try
+            {
+                var settings = GetSettings();
 
+                var blobStorageService = new BlobStorageService(settings.StorageAccountCs, settings.ContainerName);
+                var tableStorageService = new TableStorageService(settings.StorageAccountCs, settings.TableName);
 
-            Console.WriteLine(settings.StorageAccountCs);
-            Console.ReadKey();
+                var downloadLogic = new DownloaderLogic(blobStorageService, tableStorageService);
+                var t = downloadLogic.RunAsync();
+                t.Wait();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.ReadKey();
+            }
         }
 
         private static StorageValues GetSettings()
