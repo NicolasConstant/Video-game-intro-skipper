@@ -28,8 +28,9 @@ namespace VGIS.Downloader
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                Console.ReadKey();
             }
+            Console.WriteLine("Job done!");
+            Console.ReadKey();
         }
 
         private static StorageValues GetSettings()

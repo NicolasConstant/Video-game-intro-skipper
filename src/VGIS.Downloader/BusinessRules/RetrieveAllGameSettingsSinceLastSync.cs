@@ -25,6 +25,7 @@ namespace VGIS.Downloader.BusinessRules
             var entries = await _tableStorageService.GetEntries(lastSync, maxDate);
             foreach (var settingsEntity in entries)
             {
+                Console.WriteLine($"Downloading: {settingsEntity.RowKey}");
                 await _blobStorageService.DownloadFile(@"C:\Temp\", settingsEntity.SettingFileName);
             }
 
