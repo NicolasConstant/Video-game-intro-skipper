@@ -14,7 +14,7 @@ namespace VGIS.Downloader.Repositories
             var syncDir = $@"{Directory.GetCurrentDirectory()}\SyncStatus\";
             if (!Directory.Exists(syncDir)) Directory.CreateDirectory(syncDir);
             _syncFilFullPath = $"{syncDir}status.json";
-            if (!File.Exists(_syncFilFullPath)) File.Create(_syncFilFullPath);
+            if (!File.Exists(_syncFilFullPath)) File.WriteAllText(_syncFilFullPath, string.Empty);
         }
         #endregion
         
