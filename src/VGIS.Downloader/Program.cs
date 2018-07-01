@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using VGIS.Azure;
 using VGIS.Downloader.Domain;
+using VGIS.Downloader.Repositories;
 using VGIS.Downloader.Settings;
 
 
@@ -20,8 +21,9 @@ namespace VGIS.Downloader
 
                 var blobStorageService = new BlobStorageService(settings.StorageAccountCs, settings.ContainerName);
                 var tableStorageService = new TableStorageService(settings.StorageAccountCs, settings.TableName);
+                var syncStatusRepository = new SyncStatusRepository();
 
-                var downloadLogic = new DownloaderLogic(blobStorageService, tableStorageService);
+                var downloadLogic = new DownloaderLogic(blobStorageService, tableStorageService, syncStatusRepository);
                 var t = downloadLogic.RunAsync();
                 t.Wait();
             }
@@ -30,7 +32,7 @@ namespace VGIS.Downloader
                 Console.WriteLine(e);
             }
             Console.WriteLine("Job done!");
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
         private static StorageValues GetSettings()
