@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace Vgis_crowdsourcing_api.Services
+namespace VGIS.Azure
 {
     public class BlobStorageService
     {
@@ -52,6 +50,24 @@ namespace Vgis_crowdsourcing_api.Services
 
             //await cloudBlockBlob.DownloadToFileAsync(destinationFile, FileMode.Create);
 
+        }
+
+        public async Task DownloadFile(string path, string fileName)
+        {
+            if (!CloudStorageAccount.TryParse(_storageCs, out var storageAccount))
+                throw new ArgumentException("Wrong Azure Blob CS");
+
+            var cloudBlobClient = storageAccount.CreateCloudBlobClient();
+            var cloudBlobContainer = cloudBlobClient.GetContainerReference(_containerName);
+
+            //Create blob if needed
+            if (!await cloudBlobContainer.ExistsAsync())
+                await cloudBlobContainer.CreateAsync();
+
+            //Upload file
+            var cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+            var target = Path.Combine(path, fileName);
+            await cloudBlockBlob.DownloadToFileAsync(target, FileMode.Create);
         }
     }
 }

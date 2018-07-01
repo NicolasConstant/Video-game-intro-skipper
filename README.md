@@ -15,7 +15,7 @@ Sorry, no binaries available, please build your own from the source code.
 - [x] support custom installation folders
 - [x] support adding a new game
 - [x] API + crowdsourcing the game settings
-- [ ] Create administration tools (autodownloader)
+- [x] Create administration tools (autodownloader)
 - [ ] find logo, good name, enhance UI
 - [ ] beta stage
 - [ ] release software on Steam
