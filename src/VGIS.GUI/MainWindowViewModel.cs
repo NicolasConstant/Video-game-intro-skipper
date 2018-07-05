@@ -20,6 +20,7 @@ using VGIS.Domain.Services;
 using VGIS.GUI.AddNewGame;
 using VGIS.GUI.Annotations;
 using VGIS.GUI.Options;
+using VGIS.GUI.Structs;
 using VGIS.GUI.ViewModels;
 
 namespace VGIS.GUI
@@ -31,7 +32,23 @@ namespace VGIS.GUI
         private readonly IUnityContainer _container;
 
         private string _filter = "";
+        private bool _allGamesVisible = false;
+        private string _detectedGamesVisibility = UiVisibilityStruct.Visible;
+        private string _allGamesVisibility = UiVisibilityStruct.Collapsed;
+
         private ObservableCollection<GameViewModel> _detectedGames;
+
+        #region Properties
+        public string AllGamesVisibility
+        {
+            get => _allGamesVisibility;
+            set => SetProperty(ref _allGamesVisibility, value);
+        }
+        public string DetectedGamesVisibility
+        {
+            get => _detectedGamesVisibility;
+            set => SetProperty(ref _detectedGamesVisibility, value);
+        }
 
         public ObservableCollection<GameViewModel> DetectedGames
         {
@@ -64,6 +81,7 @@ namespace VGIS.GUI
                 FilteredDetectedGames.Refresh();
             }
         }
+        #endregion
 
         #region Ctor
         public MainWindowViewModel(IntroductionActivationService introEditionService, GameService gameService, IUnityContainer container)
@@ -78,6 +96,7 @@ namespace VGIS.GUI
             RefreshCommand = new DelegateCommand(Refresh);
             AddNewGameCommand = new DelegateCommand(AddNewGame);
             OpenOptionsCommand = new DelegateCommand(OpenOptions);
+            ToogleGamesVisibilityCommand = new DelegateCommand(ToogleGamesVisibility);
 
             //Load games
             DetectedGames = new ObservableCollection<GameViewModel>();
@@ -94,6 +113,8 @@ namespace VGIS.GUI
         public ICommand AddNewGameCommand { get; set; }
 
         public ICommand OpenOptionsCommand { get; set; }
+
+        public ICommand ToogleGamesVisibilityCommand { get; set; }
 
         private void AddNewGame()
         {
@@ -150,7 +171,7 @@ namespace VGIS.GUI
 
         private void LoadGames()
         {
-            var games = _gameService.GetAllGames();
+            var games = _gameService.GetAllGames(!_allGamesVisible);
             foreach (var game in games)
             {
                 DispatchToBackground(() =>
@@ -162,6 +183,23 @@ namespace VGIS.GUI
             {
                 FilteredDetectedGames.Refresh();
             });
+        }
+
+        private void ToogleGamesVisibility()
+        {
+            if (_allGamesVisible)
+            {
+                AllGamesVisibility = UiVisibilityStruct.Collapsed;
+                DetectedGamesVisibility = UiVisibilityStruct.Visible;
+            }
+            else
+            {
+                AllGamesVisibility = UiVisibilityStruct.Visible;
+                DetectedGamesVisibility = UiVisibilityStruct.Collapsed;
+            }
+            _allGamesVisible = !_allGamesVisible;
+
+            Refresh();
         }
 
         private void DispatchToBackground(Action action)

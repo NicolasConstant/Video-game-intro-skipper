@@ -97,6 +97,7 @@
       <DependentUpon>OptionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Options\OptionsViewModel.cs" />
+    <Compile Include="Structs\UiVisibilityStruct.cs" />
     <Compile Include="ViewModels\GameViewModel.cs" />
     <Page Include="AddNewGame\AddNewGameView.xaml">
       <SubType>Designer</SubType>

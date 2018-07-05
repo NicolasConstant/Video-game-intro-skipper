@@ -8,6 +8,7 @@ using Prism.Mvvm;
 using VGIS.Domain.Domain;
 using VGIS.Domain.Enums;
 using VGIS.Domain.Services;
+using VGIS.GUI.Structs;
 
 namespace VGIS.GUI.ViewModels
 {
@@ -17,10 +18,9 @@ namespace VGIS.GUI.ViewModels
         private readonly IntroductionActivationService _introEditionService;
 
         private IntroductionStateEnum _introductionCurrentState;
-        //private string _displayableState = "U";
-        private string _introDesactivatedVisibility = "Hidden";
-        private string _introEnabledVisibility = "Hidden";
-        private string _introStateUnknownVisibility = "Hidden";
+        private string _introDesactivatedVisibility = UiVisibilityStruct.Hidden;
+        private string _introEnabledVisibility = UiVisibilityStruct.Hidden;
+        private string _introStateUnknownVisibility = UiVisibilityStruct.Hidden;
 
         #region Ctor
         public GameViewModel(Game game, IntroductionActivationService introEditionService)
@@ -39,12 +39,6 @@ namespace VGIS.GUI.ViewModels
         public float Opacity => _game.IsDetected ? 1f : 0.2f;
         public bool IsDetected => _game.IsDetected;
         public bool IsEnabled;
-
-        //public string DisplayableState
-        //{
-        //    get => _displayableState;
-        //    set => SetProperty(ref _displayableState, value);
-        //}
 
         public string IntroDesactivatedVisibility
         {
@@ -72,19 +66,19 @@ namespace VGIS.GUI.ViewModels
                 switch (value)
                 {
                     case IntroductionStateEnum.Disabled:
-                        IntroDesactivatedVisibility = "Visible";
-                        IntroEnabledVisibility = "Hidden";
-                        IntroStateUnknownVisibility = "Hidden";
+                        IntroDesactivatedVisibility = UiVisibilityStruct.Visible;
+                        IntroEnabledVisibility = UiVisibilityStruct.Hidden;
+                        IntroStateUnknownVisibility = UiVisibilityStruct.Hidden;
                         break;
                     case IntroductionStateEnum.Enabled:
-                        IntroDesactivatedVisibility = "Hidden";
-                        IntroEnabledVisibility = "Visible";
-                        IntroStateUnknownVisibility = "Hidden";
+                        IntroDesactivatedVisibility = UiVisibilityStruct.Hidden;
+                        IntroEnabledVisibility = UiVisibilityStruct.Visible;
+                        IntroStateUnknownVisibility = UiVisibilityStruct.Hidden;
                         break;
                     case IntroductionStateEnum.Unknown:
-                        IntroDesactivatedVisibility = "Hidden";
-                        IntroEnabledVisibility = "Hidden";
-                        IntroStateUnknownVisibility = "Visible";
+                        IntroDesactivatedVisibility = UiVisibilityStruct.Hidden;
+                        IntroEnabledVisibility = UiVisibilityStruct.Hidden;
+                        IntroStateUnknownVisibility = UiVisibilityStruct.Visible;
                         break;
                 }
 
