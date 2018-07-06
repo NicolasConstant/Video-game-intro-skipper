@@ -12,13 +12,15 @@ namespace VGIS.Domain.BusinessRules
         private readonly GameSettingsRepository _settingsRepository;
         private readonly InstallationDirectoriesRepository _installationDirectoryRepository;
         private readonly IGameFactory _gameFact;
+        private readonly bool _returnOnlyDetectedGames;
 
         #region Ctor
-        public DetectAllGamesStatus(GameSettingsRepository settingsRepository, InstallationDirectoriesRepository installationDirectoryRepository, IGameFactory gameFact)
+        public DetectAllGamesStatus(GameSettingsRepository settingsRepository, InstallationDirectoriesRepository installationDirectoryRepository, IGameFactory gameFact, bool returnOnlyDetectedGames)
         {
             _settingsRepository = settingsRepository;
             _installationDirectoryRepository = installationDirectoryRepository;
             _gameFact = gameFact;
+            _returnOnlyDetectedGames = returnOnlyDetectedGames;
         }
         #endregion
 
@@ -36,7 +38,8 @@ namespace VGIS.Domain.BusinessRules
                 var gameDetection = new DetectGameStatus(gameSetting, installationRepositories);
                 var gameDetectionResult = gameDetection.Execute();
 
-                yield return _gameFact.GetGame(gameSetting, gameDetectionResult);
+                if (!_returnOnlyDetectedGames | (_returnOnlyDetectedGames && gameDetectionResult.Detected))
+                    yield return _gameFact.GetGame(gameSetting, gameDetectionResult);
             }
         }
     }

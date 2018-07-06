@@ -30,9 +30,9 @@ namespace VGIS.Domain.Services
         }
         #endregion
 
-        public IEnumerable<Game> GetAllGames()
+        public IEnumerable<Game> GetAllGames(bool returnOnlyDetectedGames)
         {
-            var detectAllGamesStatus = new DetectAllGamesStatus(_gameSettingsRepository, _installationDirRepository, _gameFact);
+            var detectAllGamesStatus = new DetectAllGamesStatus(_gameSettingsRepository, _installationDirRepository, _gameFact, returnOnlyDetectedGames);
             return detectAllGamesStatus.Execute();
         }
 
