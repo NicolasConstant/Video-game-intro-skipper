@@ -33,6 +33,7 @@ namespace VGIS.GUI
 
         private string _filter = "";
         private bool _allGamesVisible = false;
+        private bool _canRemoveIntros = false;
         private string _detectedGamesVisibility = UiVisibilityStruct.Visible;
         private string _allGamesVisibility = UiVisibilityStruct.Collapsed;
 
@@ -44,6 +45,7 @@ namespace VGIS.GUI
             get => _allGamesVisibility;
             set => SetProperty(ref _allGamesVisibility, value);
         }
+
         public string DetectedGamesVisibility
         {
             get => _detectedGamesVisibility;
@@ -79,7 +81,14 @@ namespace VGIS.GUI
             {
                 SetProperty(ref _filter, value);
                 FilteredDetectedGames.Refresh();
+                AnalyseIfIntroAreStillNotDisabled();
             }
+        }
+
+        public bool CanRemoveIntros
+        {
+            get => _canRemoveIntros;
+            set => SetProperty(ref _canRemoveIntros, value);
         }
         #endregion
 
@@ -182,7 +191,17 @@ namespace VGIS.GUI
             DispatchToBackground(() =>
             {
                 FilteredDetectedGames.Refresh();
+                AnalyseIfIntroAreStillNotDisabled();
             });
+        }
+
+        private void AnalyseIfIntroAreStillNotDisabled()
+        {
+            var filteredElements = FilteredDetectedGames.Cast<GameViewModel>().ToList();
+            var introEnabledElements = filteredElements
+                .Where(x => x.IsDetected && x.IntroductionCurrentState == IntroductionStateEnum.Enabled).Select(x => x)
+                .ToList();
+            CanRemoveIntros = introEnabledElements.Any();
         }
 
         private void ToogleGamesVisibility()

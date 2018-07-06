@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VGIS.GUI.Options"
         mc:Ignorable="d"
-        Title="Options" Height="300" Width="300">
+        Title="Options" Height="300" Width="300" Icon="/VGIS.GUI;component/icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
