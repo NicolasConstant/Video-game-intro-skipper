@@ -7,7 +7,7 @@ Many video-games have intros that you can (and sometimes can't) skip by interact
 
 ## Supported Games
 There is currently 8 games supported. 
-See the (complete list)](/documentation/SupportedGames.md).
+See the [complete list](documentation/SupportedGames.md).
 
 ## Install
 Sorry, no binaries available, please build your own from the source code.
@@ -32,7 +32,7 @@ The resulting binaries are only for personnal use, you cannot redistribute or se
    <img alt="screenshot" src="https://raw.githubusercontent.com/NicolasConstant/Video-game-intro-skipper/master/VGIS.PNG" />
 </p>
  
-## License
+## Licenses
 Source code and official releases/binaries are distributed under our [End-User License Agreement for VGIS (EULA)](EULA.txt).
 
-Icons used under the provided (license)](IconsLicense.md).
+Icons used under the provided [license](IconsLicense.md).
