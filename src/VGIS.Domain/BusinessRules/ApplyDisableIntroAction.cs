@@ -39,6 +39,9 @@ namespace VGIS.Domain.BusinessRules
                 foreach (var path in pathsToRename)
                 {
                     var destinationFileFullPath = $@"{path}{GlobalNamesStruct.RenameSuffix}";
+
+                    if(File.Exists(destinationFileFullPath)) File.Delete(destinationFileFullPath);
+
                     _fileRenamer.RenameFile(path, destinationFileFullPath);
                 }
 
@@ -57,7 +60,8 @@ namespace VGIS.Domain.BusinessRules
                 var directoryFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}";
                 var destinationDirectoryFullPath = $"{_detectionResult.InstallationPath}\\{action.InitialName}{GlobalNamesStruct.RenameSuffix}";
 
-                if (Directory.Exists(destinationDirectoryFullPath)) File.Delete(destinationDirectoryFullPath);
+                if (Directory.Exists(destinationDirectoryFullPath))
+                    RecursiveDelete(new DirectoryInfo(destinationDirectoryFullPath));
 
                 Directory.Move(directoryFullPath, destinationDirectoryFullPath);
                 return true;
@@ -71,6 +75,17 @@ namespace VGIS.Domain.BusinessRules
         protected override bool ProcessEditShortcut(DisableIntroductionAction action)
         {
             throw new NotImplementedException();
+        }
+
+        private void RecursiveDelete(DirectoryInfo baseDir)
+        {
+            if (!baseDir.Exists) return;
+
+            foreach (var dir in baseDir.EnumerateDirectories())
+            {
+                RecursiveDelete(dir);
+            }
+            baseDir.Delete(true);
         }
     }
 }
