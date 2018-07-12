@@ -131,7 +131,7 @@
                     <Path Width="19" Height="11.692" Canvas.Top="4" Stretch="Fill" Fill="#FF000000" SnapsToDevicePixels="True" Data="F1 M 38,33.1538C 40.6765,33.1538 42.8462,35.3235 42.8462,38C 42.8462,40.6765 40.6765,42.8461 38,42.8461C 35.3235,42.8461 33.1539,40.6765 33.1539,38C 33.1539,35.3235 35.3236,33.1538 38,33.1538 Z M 38,25.0769C 49.3077,25.0769 59,33.1538 59,38C 59,42.8461 49.3077,50.9231 38,50.9231C 26.6923,50.9231 17,42.8461 17,38C 17,33.1538 26.6923,25.0769 38,25.0769 Z M 38,29.1154C 33.0932,29.1154 29.1154,33.0932 29.1154,38C 29.1154,42.9068 33.0932,46.8846 38,46.8846C 42.9068,46.8846 46.8846,42.9068 46.8846,38C 46.8846,33.0932 42.9068,29.1154 38,29.1154 Z "/>
                 </Canvas>
             </Button>
-            <Button Command="{Binding DisableAllCommand}" Style="{StaticResource ToolBarStyle}"  Margin="0 5 5 5" Padding="0" BorderThickness="0"  ToolTip="Reenable all intros">
+            <Button Command="{Binding ActivateAllCommand}" Style="{StaticResource ToolBarStyle}"  Margin="0 5 5 5" Padding="0" BorderThickness="0"  ToolTip="Reenable all intros">
                 <Canvas x:Name="appbar_checkmark_cross" Width="20" Height="20" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
                     <Path Width="19" Height="19" Stretch="Fill" Fill="#FF000000" SnapsToDevicePixels="True" Data="F1 M 22,54L 22,22L 54,22L 54,54L 22,54 Z M 26,26L 26,50L 50,50L 50,26L 26,26 Z M 30.755,27.65L 38,34.895L 45.2449,27.6501L 48.3499,30.7551L 41.105,38L 48.35,45.245L 45.245,48.35L 38,41.105L 30.755,48.35L 27.65,45.245L 34.895,38L 27.65,30.755L 30.755,27.65 Z "/>
                 </Canvas>
@@ -149,7 +149,7 @@
             </Button>
             
         </StackPanel>
-        <Button Grid.Row="1" Margin="10 0 10 5" Background="GreenYellow" Command="{Binding ActivateAllCommand}" IsEnabled="{Binding CanRemoveIntros }">
+        <Button Grid.Row="1" Margin="10 0 10 5" Background="GreenYellow" Command="{Binding DisableAllCommand}" IsEnabled="{Binding CanRemoveIntros }">
             Remove all intros
         </Button>
 

@@ -149,6 +149,8 @@ namespace VGIS.GUI
                         gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Enabled)
                         gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Enabled);
                 }
+
+                CanRemoveIntros = true;
             });
         }
 
@@ -162,6 +164,8 @@ namespace VGIS.GUI
                         gameViewModel.IntroductionCurrentState != IntroductionStateEnum.Disabled)
                         gameViewModel.ChangeStateCommandTo(IntroductionStateEnum.Disabled);
                 }
+
+                CanRemoveIntros = false;
             });
         }
 
